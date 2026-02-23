@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Servicio</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="detalle">
+            <h1 th:text="${servicio.nombre}"></h1>
+            <img th:src="${servicio.imagenUrl}">
+            <p th:text="${servicio.descripcion}"></p>
+            <p class="detalle-precio" th:text="${servicio.precio}"></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout">
+
+<body>
+    <div class="container">
+        <h1>Servicios</h1>
+        <div class="cards-container">
+            <div class="card" th:each="servicio : ${servicios}">
+                <img th:src="${servicio.imagenUrl}">
+                <div class="card-body">
+                    <div class="card-title" th:text="${servicio.nombre}"></div>
+                    <div th:text="${servicio.descripcion}"></div>
+                    <div class="card-price" th:text="${servicio.precio}"></div>
+                    <a class="btn-gold" th:href="@{'/servicios/' + ${servicio.id}}">
+                        Ver mas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

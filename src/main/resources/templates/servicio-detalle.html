@@ -20,7 +20,7 @@
             <p class="service-summary" th:text="${servicio.descripcion}"></p>
             <!-- Descripción detallada (campo usado en el repositorio) -->
             <p class="service-detail" th:text="${servicio.descripcionDetallada}"></p>
-            <p class="detalle-precio" th:text="${servicio.precio}"></p>
+            <p class="detalle-precio"th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></p>
         </div>
     </div>
 

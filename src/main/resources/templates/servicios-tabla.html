@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Servicios</title>
@@ -24,7 +25,7 @@
                 <tr th:each="servicio : ${servicios}">
                     <td th:text="${servicio.id}"></td>
                     <td th:text="${servicio.nombre}"></td>
-                    <td th:text="${#numbers.formatCurrency(servicio.precio)}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></td>
                     <td>
                         <a class="btn-gold" th:href="@{'/servicios/' + ${servicio.id}}">
                             Ver

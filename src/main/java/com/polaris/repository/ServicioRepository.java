@@ -50,6 +50,17 @@ public class ServicioRepository {
                 "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&q=80",
                 "Gastronomía"
         ));
+
+        servicios.add(new Servicio(
+                4L,
+                "test test",
+                "awawawawa",
+                "Una locura" +
+                "chaval",
+                199990.0,
+                "https://static0.cbrimages.com/wordpress/wp-content/uploads/2023/08/reze-chainsaw-man.jpg?w=1200&h=900&fit=crop",
+                "final feliz"
+        ));
     }
 
     public List<Servicio> findAll() {

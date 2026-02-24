@@ -17,7 +17,7 @@ public class Servicio {
         this.descripcion = descripcion;
         this.precio = precio;
         this.imagenUrl = imagenUrl;
-        this.descripcionDetallada = descripcion; // fallback
+        this.descripcionDetallada = descripcion;
         this.categoria = "Servicio";
     }
 

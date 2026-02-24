@@ -16,7 +16,10 @@
         <div class="detalle">
             <h1 th:text="${servicio.nombre}"></h1>
             <img th:src="${servicio.imagenUrl}">
-            <p th:text="${servicio.descripcion}"></p>
+            <!-- Resumen corto -->
+            <p class="service-summary" th:text="${servicio.descripcion}"></p>
+            <!-- Descripción detallada (campo usado en el repositorio) -->
+            <p class="service-detail" th:text="${servicio.descripcionDetallada}"></p>
             <p class="detalle-precio" th:text="${servicio.precio}"></p>
         </div>
     </div>

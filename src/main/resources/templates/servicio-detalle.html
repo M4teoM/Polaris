@@ -7,8 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
+
 <body>
-    <div class="container">
+    <!-- NAVBAR que ahora implementamos desde fragmento -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container page-content">
         <div class="detalle">
             <h1 th:text="${servicio.nombre}"></h1>
             <img th:src="${servicio.imagenUrl}">
@@ -16,6 +20,9 @@
             <p class="detalle-precio" th:text="${servicio.precio}"></p>
         </div>
     </div>
+
+    <!-- FOOTER que ahora implementamos desde fragmento -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 
 </html>

@@ -7,28 +7,39 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
-<body>
 
-    <div class="container">
+<body>
+    <!-- NAVBAR implementao desde fragmento -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container page-content">
         <h1>Servicios</h1>
+
+        <p>
+            Descubre los servicios exclusivos que Polaris ofrece para brindar una experiencia premium a cada huésped.
+        </p>
+
+        <div style="margin: 20px 0;">
+            <a class="btn" th:href="@{/servicios/cards}">
+                Ver en formato tarjetas
+            </a>
+        </div>
 
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Precio</th>
-                    <th>Accion</th>
+                    <th>Información</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="servicio : ${servicios}">
-                    <td th:text="${servicio.id}"></td>
                     <td th:text="${servicio.nombre}"></td>
                     <td th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></td>
                     <td>
-                        <a class="btn-gold" th:href="@{'/servicios/' + ${servicio.id}}">
-                            Ver
+                        <a class="btn" th:href="@{'/servicios/' + ${servicio.id}}">
+                            Ver Detalles
                         </a>
                     </td>
                 </tr>
@@ -36,6 +47,9 @@
         </table>
     </div>
 
+
+    <!-- FOOTER implementao desde fragmento -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 
 </html>

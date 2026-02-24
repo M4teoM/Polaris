@@ -4,15 +4,17 @@ import com.polaris.model.Servicio;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
-public class ServicioRepository {
+public class ServicioRepository implements IServicioRepository {
 
-    private List<Servicio> servicios = new ArrayList<>();
+    private final Map<Long, Servicio> baseDeDatos = new HashMap<>();
 
     public ServicioRepository() {
-        servicios.add(new Servicio(
+        baseDeDatos.put(1L, new Servicio(
                 1L,
                 "Spa Premium",
                 "Experiencia completa de relajacion",
@@ -25,7 +27,7 @@ public class ServicioRepository {
                 "Bienestar"
         ));
 
-        servicios.add(new Servicio(
+        baseDeDatos.put(2L, new Servicio(
                 2L,
                 "Tour Historico",
                 "Recorrido guiado por la ciudad",
@@ -38,7 +40,7 @@ public class ServicioRepository {
                 "Turismo"
         ));
 
-        servicios.add(new Servicio(
+        baseDeDatos.put(3L, new Servicio(
                 3L,
                 "Cena Gourmet",
                 "Menu degustacion de cinco tiempos",
@@ -51,26 +53,24 @@ public class ServicioRepository {
                 "Gastronomía"
         ));
 
-        servicios.add(new Servicio(
+        baseDeDatos.put(4L, new Servicio(
                 4L,
                 "test test",
                 "awawawawa",
-                "Una locura" +
-                "chaval",
+                "Una locura chaval",
                 199990.0,
                 "https://static0.cbrimages.com/wordpress/wp-content/uploads/2023/08/reze-chainsaw-man.jpg?w=1200&h=900&fit=crop",
                 "final feliz"
         ));
     }
 
+    @Override
     public List<Servicio> findAll() {
-        return servicios;
+        return new ArrayList<>(baseDeDatos.values());
     }
 
+    @Override
     public Servicio findById(Long id) {
-        return servicios.stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return baseDeDatos.get(id);
     }
 }

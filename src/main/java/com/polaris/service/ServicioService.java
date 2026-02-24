@@ -1,7 +1,7 @@
 package com.polaris.service;
 
 import com.polaris.model.Servicio;
-import com.polaris.repository.ServicioRepository;
+import com.polaris.repository.IServicioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +9,10 @@ import java.util.List;
 @Service
 public class ServicioService {
 
-    private final ServicioRepository servicioRepository;
+    
+    private final IServicioRepository servicioRepository;
 
-    public ServicioService(ServicioRepository servicioRepository) {
+    public ServicioService(IServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
     }
 
@@ -19,7 +20,6 @@ public class ServicioService {
         return servicioRepository.findAll();
     }
 
-    // Retorna Servicio directamente igual que el Repository (sin Optional)
     public Servicio obtenerPorId(Long id) {
         return servicioRepository.findById(id);
     }

@@ -9,17 +9,18 @@ import java.util.List;
 @Service
 public class ServicioService {
 
-    private final ServicioRepository repository;
+    private final ServicioRepository servicioRepository;
 
-    public ServicioService(ServicioRepository repository) {
-        this.repository = repository;
+    public ServicioService(ServicioRepository servicioRepository) {
+        this.servicioRepository = servicioRepository;
     }
 
     public List<Servicio> obtenerTodos() {
-        return repository.findAll();
+        return servicioRepository.findAll();
     }
 
+    // Retorna Servicio directamente igual que el Repository (sin Optional)
     public Servicio obtenerPorId(Long id) {
-        return repository.findById(id);
+        return servicioRepository.findById(id);
     }
 }

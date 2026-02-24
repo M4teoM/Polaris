@@ -52,17 +52,17 @@ a {
 
 /* ===== BOTONES ===== */
 
-.btn-gold {
-    background-color: var(--gold-principal);
+.btn {
+    background-color: var(--color-aguamarina);
     color: var(--navy-principal);
-    padding: 8px 14px;
+    padding: 2px 2px;
     border-radius: 4px;
-    font-weight: 600;
+    font-weight: 200px;
     transition: background-color 0.2s ease;
 }
 
-.btn-gold:hover {
-    background-color: var(--gold-hover);
+.btn:hover {
+    background-color: var(--color-aguamarina-light);
 }
 
 .btn-cta {
@@ -75,11 +75,21 @@ a {
 .btn-cta:hover {
     opacity: 0.9;
 }
+
+/* ===== TABLAS ===== */
+
+table td,
+table th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
 table {
     width: 100%;
     border-collapse: collapse;
     background-color: var(--white);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 th {
@@ -95,8 +105,9 @@ td {
 }
 
 tr:hover {
-    background-color: var(--ivory);
+    background-color: #e1e1e1;
 }
+
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -142,6 +153,7 @@ tr:hover {
     font-weight: 700;
     color: var(--gold-principal);
 }
+
 .detalle {
     background-color: var(--white);
     padding: 40px;
@@ -161,6 +173,7 @@ tr:hover {
     font-weight: 700;
     color: var(--gold-principal);
 }
+
 /* Navbar legacy: solo aplica background en contextos sin .header; el header tiene su propio fondo */
 .navbar {
     background-color: var(--navy-principal);
@@ -190,22 +203,7 @@ tr:hover {
 .navbar-links a:hover {
     color: var(--gold-principal);
 }
-.footer {
-    background-color: var(--midnight);
-    color: var(--taupe-claro);
-    padding: 30px 0;
-    margin-top: 80px;
-}
 
-.footer-container {
-    width: 85%;
-    margin: auto;
-    text-align: center;
-}
-
-.footer strong {
-    color: var(--gold-principal);
-}
 
 /* =========================================
    HOTEL POLARIS - ESTILOS PRINCIPALES
@@ -257,6 +255,8 @@ tr:hover {
     --radius-xl: 16px;
 
     --container-max-width: 1280px;
+    /* altura aproximada del header (ajusta si cambias el header) */
+    --header-height: 64px;
 }
 
 /* ===== RESET Y BASE ===== */
@@ -316,6 +316,12 @@ textarea {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 var(--spacing-md);
+}
+
+/* Utilidad para secciones que deben dejar espacio bajo el header fijo */
+.page-content {
+    padding-top: calc(var(--header-height) + var(--spacing-md));
+    padding-bottom: var(--spacing-lg);
 }
 
 /* ===== HEADER / NAVEGACIÓN ===== */
@@ -384,8 +390,17 @@ textarea {
 }
 
 @keyframes starPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.05); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
 }
 
 .nav-menu {
@@ -559,6 +574,8 @@ textarea {
     z-index: 2;
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-md);
+    /* mover contenido hacia arriba dentro del hero */
+    top: -7rem;
 }
 
 .hero-title {
@@ -612,14 +629,23 @@ textarea {
 }
 
 @keyframes scroll {
-    0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(16px); }
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(16px);
+    }
 }
 
 /* ===== SEARCH SECTION ===== */
 .search-section {
     position: relative;
-    padding: var(--spacing-3xl) 0;
+    /* menor relleno vertical para reducir la franja gris */
+    padding: var(--spacing-md) 0;
+    /* antes era spacing-3xl */
     background: var(--color-pearl);
     margin-top: -12rem;
     z-index: 10;
@@ -630,6 +656,10 @@ textarea {
     border-radius: var(--radius-xl);
     padding: var(--spacing-xs);
     box-shadow: var(--shadow-lg);
+    /* elevar ligeramente y sobreponer al hero */
+    position: relative;
+    top: -5.5rem;
+    z-index: 20;
 }
 
 .search-title {
@@ -857,12 +887,10 @@ textarea {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(10, 22, 40, 0.90) 0%,
-        rgba(15, 46, 46, 0.85) 50%,
-        rgba(10, 22, 40, 0.90) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(10, 22, 40, 0.90) 0%,
+            rgba(15, 46, 46, 0.85) 50%,
+            rgba(10, 22, 40, 0.90) 100%);
     z-index: 1;
 }
 
@@ -888,7 +916,7 @@ textarea {
     opacity: 0;
     transform: translateY(32px);
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .explore-card.in-view {
@@ -912,8 +940,15 @@ textarea {
 }
 
 @keyframes badgePulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(46, 196, 182, 0); }
-    50%       { box-shadow: 0 0 14px 4px rgba(46, 196, 182, 0.2); }
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 196, 182, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 14px 4px rgba(46, 196, 182, 0.2);
+    }
 }
 
 .explore-title {
@@ -945,8 +980,13 @@ textarea {
 }
 
 @keyframes shimmerLine {
-    from { transform: translateX(-100%); }
-    to   { transform: translateX(100%); }
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
 }
 
 .explore-text {
@@ -977,9 +1017,23 @@ textarea {
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.explore-card.in-view .explore-feature:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.25s; }
-.explore-card.in-view .explore-feature:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.38s; }
-.explore-card.in-view .explore-feature:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.51s; }
+.explore-card.in-view .explore-feature:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.25s;
+}
+
+.explore-card.in-view .explore-feature:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.38s;
+}
+
+.explore-card.in-view .explore-feature:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.51s;
+}
 
 .btn-explore {
     display: inline-flex;
@@ -999,7 +1053,7 @@ textarea {
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.5s ease 0.6s, transform 0.5s ease 0.6s,
-                background var(--transition-base), color var(--transition-base);
+        background var(--transition-base), color var(--transition-base);
 }
 
 .explore-card.in-view .btn-explore {
@@ -1017,8 +1071,13 @@ textarea {
     z-index: -1;
 }
 
-.btn-explore:hover { color: var(--color-primary-deep); }
-.btn-explore:hover::before { transform: translateX(0); }
+.btn-explore:hover {
+    color: var(--color-primary-deep);
+}
+
+.btn-explore:hover::before {
+    transform: translateX(0);
+}
 
 /* ===== SERVICES SECTION ===== */
 .services-section {
@@ -1236,10 +1295,22 @@ textarea {
 }
 
 /* ===== FOOTER ===== */
+
 .footer {
-    background: var(--color-primary-deep);
-    color: var(--color-pearl);
-    padding: var(--spacing-3xl) 0 var(--spacing-lg);
+    background-color: var(--midnight);
+    color: var(--taupe-claro);
+    padding: 30px 0;
+    margin-top: 80px;
+}
+
+.footer-container {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+}
+
+.footer strong {
+    color: var(--gold-principal);
 }
 
 .footer-content {
@@ -1315,6 +1386,7 @@ textarea {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
+
     .rooms-grid,
     .services-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1322,6 +1394,7 @@ textarea {
 }
 
 @media (max-width: 768px) {
+
     .nav-menu,
     .nav-actions {
         display: none;

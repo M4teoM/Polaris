@@ -1,7 +1,8 @@
 package com.polaris.controller;
 
 import com.polaris.model.Servicio;
-import com.polaris.service.ServicioService;
+import com.polaris.service.IServicioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/servicios")
 public class ServicioController {
 
-    private final ServicioService servicioService;
+    @Autowired
+    private IServicioService servicioService;
 
-    public ServicioController(ServicioService servicioService) {
-        this.servicioService = servicioService;
-    }
-
-    // GET /servicios → tabla (entrega 1, se mantiene)
+    // GET /servicios → tabla 
     @GetMapping
     public String listarServicios(Model model) {
         model.addAttribute("servicios", servicioService.obtenerTodos());
@@ -26,7 +24,6 @@ public class ServicioController {
     }
 
     // GET /servicios/cards → tarjetas con diseño Polaris
-    // OJO: debe ir ANTES de /{id} para que "cards" no se confunda con un Long
     @GetMapping("/cards")
     public String listarCards(Model model) {
         model.addAttribute("servicios", servicioService.obtenerTodos());

@@ -12,15 +12,18 @@
     <!-- NAVBAR que ahora implementamos desde fragmento -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="container page-content">
+    <div class="servicio">
         <div class="detalle">
             <h1 th:text="${servicio.nombre}"></h1>
             <img th:src="${servicio.imagenUrl}">
-            <!-- Resumen corto -->
-            <p class="service-summary" th:text="${servicio.descripcion}"></p>
-            <!-- Descripción detallada (campo usado en el repositorio) -->
-            <p class="service-detail" th:text="${servicio.descripcionDetallada}"></p>
+            <div class="detalle-descripcion">
+                <!-- Resumen corto -->
+                <p th:text="${servicio.descripcion}"></p>
+                <!-- Descripción detallada (campo usado en el repositorio) -->
+                <p th:text="${servicio.descripcionDetallada}"></p>
+            </div>
             <p class="detalle-precio"th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></p>
+            <a class="btn detalle-btn" href="">!Compra ya¡</a>
         </div>
     </div>
 

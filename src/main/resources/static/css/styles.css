@@ -1516,15 +1516,27 @@ textarea {
 /* Carta de polaris para presentacion*/
 
 .polaris-card {
-    border: 3px;
-    border-color: #C9A961;
+    border: 1px solid transparent;
 }
 
 
 .polaris-card :hover {
-    background-color: #6ee7d8;
+    background-color: #273b54;
 }
 
 .polaris-card :hover a {
     color: #D4AF37;
+    background-color: transparent;
+}
+
+.polaris-card :hover p{
+    color: #ffffff;
+    cursor: default;
+    background-color: transparent;
+}
+
+.polaris-card :hover span{
+    color: #ffffff;
+    cursor: default;
+    background-color: transparent;
 }

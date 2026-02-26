@@ -55,12 +55,72 @@ public class ServicioRepository implements IServicioRepository {
 
         baseDeDatos.put(4L, new Servicio(
                 4L,
-                "test test",
-                "awawawawa",
-                "Una locura chaval",
-                199990.0,
-                "https://static0.cbrimages.com/wordpress/wp-content/uploads/2023/08/reze-chainsaw-man.jpg?w=1200&h=900&fit=crop",
-                "final feliz"
+                "Aventura en Helicoptero",
+                "Vuelo panoramico sobre la ciudad",
+                "Disfrute de una experiencia exclusiva sobrevolando los principales paisajes urbanos y naturales de la region. Incluye piloto certificado, audio guia personalizada y brindis premium al aterrizar. Duracion aproximada: 45 minutos.",
+                450000.0,
+                "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?w=800&q=80",
+                "Aventura"
+        ));
+
+        baseDeDatos.put(5L, new Servicio(
+                5L,
+                "Sesion Fotografica Profesional",
+                "Captura momentos inolvidables",
+                "Sesion fotografica profesional en locaciones iconicas del hotel y sus alrededores. Incluye fotografo experto, edicion digital avanzada y entrega de 25 fotografias en alta resolucion. Ideal para parejas o celebraciones especiales.",
+                320000.0,
+                "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
+                "Experiencias"
+        ));
+
+        baseDeDatos.put(6L, new Servicio(
+                6L,
+                "Clase Privada de Cocina",
+                "Aprende con nuestro chef ejecutivo",
+                "Clase exclusiva donde aprendera tecnicas gourmet junto a nuestro chef ejecutivo. Incluye ingredientes premium, preparacion de tres platos y degustacion final con maridaje seleccionado. Duracion aproximada: 3 horas.",
+                210000.0,
+                "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+                "Gastronomia"
+        ));
+
+        baseDeDatos.put(7L, new Servicio(
+                7L,
+                "Noche Romantica Deluxe",
+                "Decoracion especial y amenidades premium",
+                "Transforme su estancia con una ambientacion romantica que incluye decoracion floral, velas aromaticas, botella de champagne, fresas con chocolate y desayuno especial en la habitacion al dia siguiente.",
+                280000.0,
+                "https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&q=80",
+                "Romantico"
+        ));
+
+        baseDeDatos.put(8L, new Servicio(
+                8L,
+                "Ruta en Yate Privado",
+                "Experiencia nautica exclusiva",
+                "Navegue en un yate privado con tripulacion certificada y servicio premium a bordo. Incluye bebidas, snacks gourmet y recorrido por paisajes costeros seleccionados. Ideal para celebraciones o experiencias VIP. Duracion aproximada: 3 horas.",
+                520000.0,
+                "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&q=80",
+                "Lujo"
+        ));
+
+        baseDeDatos.put(9L, new Servicio(
+                9L,
+                "Sesion de Yoga al Amanecer",
+                "Bienestar con vista panoramica",
+                "Clase privada de yoga guiada por instructor certificado en terraza panoramica. Incluye kit de bienestar, hidratacion natural y desayuno saludable posterior a la sesion. Duracion aproximada: 90 minutos.",
+                120000.0,
+                "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+                "Bienestar"
+        ));
+
+        baseDeDatos.put(10L, new Servicio(
+                10L,
+                "Experiencia Sommelier Privada",
+                "Cata exclusiva de vinos internacionales",
+                "Degustacion privada dirigida por sommelier profesional con seleccion de vinos internacionales premium. Incluye maridaje con tabla de quesos artesanales y explicacion tecnica de cada etiqueta. Duracion aproximada: 2 horas.",
+                260000.0,
+                "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=800&q=80",
+                "Gastronomia"
         ));
     }
 

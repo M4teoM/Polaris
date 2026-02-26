@@ -2,7 +2,6 @@ package com.polaris.controller;
 
 import com.polaris.model.Servicio;
 import com.polaris.service.IServicioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/servicios")
 public class ServicioController {
 
-    @Autowired
-    private IServicioService servicioService;
+    private final IServicioService servicioService;
 
+    public ServicioController(IServicioService servicioService) {
+        this.servicioService = servicioService;
+    }
+
+    
     // GET /servicios → tabla 
     @GetMapping
     public String listarServicios(Model model) {

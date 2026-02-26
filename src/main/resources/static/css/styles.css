@@ -141,6 +141,7 @@ tr:hover {
 .card-body {
     padding: 18px;
     text-align: center;
+    border: 3px solid #C9A961;
 }
 
 .card-title {
@@ -1516,7 +1517,7 @@ textarea {
 /* Carta de polaris para presentacion*/
 
 .polaris-card {
-    border: 3px;
+    border: 5px;
     border-color: #C9A961;
 }
 

@@ -22,8 +22,9 @@
                 <!-- Descripción detallada (campo usado en el repositorio) -->
                 <p th:text="${servicio.descripcionDetallada}"></p>
             </div>
-            <p class="detalle-precio"th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></p>
-            <a class="btn detalle-btn" href="">!Compra ya¡</a>
+            <p class="detalle-precio"
+                th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></p>
+            <a class="btn detalle-btn" href="">Adquierelo ahora</a>
         </div>
     </div>
 

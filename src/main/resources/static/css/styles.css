@@ -109,14 +109,19 @@ tr:hover {
 }
 
 .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: calc(var(--header-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-2xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    justify-items: center;
 }
 
 .card {
     background-color: var(--white);
-    width: 300px;
+    width: 100%;
+    max-width: 320px;
     border-radius: 8px;
     border: 1px solid var(--silver);
     overflow: hidden;
@@ -135,6 +140,7 @@ tr:hover {
 
 .card-body {
     padding: 18px;
+    text-align: center;
 }
 
 .card-title {
@@ -156,7 +162,7 @@ tr:hover {
     cursor: default;
 }
 
-.card-price :hover{
+.card-price :hover {
     color: var(--gold-principal);
 }
 
@@ -167,10 +173,10 @@ tr:hover {
     border: 2px solid #C9A961;
     overflow: hidden;
     display: grid;
-    grid-template-areas: 
-    "nombre nombre"
-    "foto desc"
-    "precio boton";
+    grid-template-areas:
+        "nombre nombre"
+        "foto desc"
+        "precio boton";
 }
 
 .detalle img {
@@ -180,7 +186,7 @@ tr:hover {
     margin: 20px 20px 20px 20px;
     float: left;
     display: block;
-    grid-area: foto ;
+    grid-area: foto;
 
 }
 
@@ -193,12 +199,12 @@ tr:hover {
     align-content: center;
 }
 
-.detalle h1{
+.detalle h1 {
     color: #0A1628;
     grid-area: nombre;
 }
 
-.detalle-descripcion{
+.detalle-descripcion {
     grid-area: desc;
     display: flex;
     flex-direction: column;
@@ -206,12 +212,12 @@ tr:hover {
     margin: 10px 30px 10px 40px;
 }
 
-.detalle-btn{
+.detalle-btn {
     grid-area: boton;
     color: #0A1628;
 }
 
-.detalle-btn :hover{
+.detalle-btn :hover {
     color: #0f2e2e;
 }
 
@@ -1509,17 +1515,16 @@ textarea {
 
 /* Carta de polaris para presentacion*/
 
-.polaris-card{
+.polaris-card {
     border: 3px;
     border-color: #C9A961;
 }
 
 
-.polaris-card :hover{
+.polaris-card :hover {
     background-color: #6ee7d8;
 }
 
-.polaris-card :hover a{
+.polaris-card :hover a {
     color: #D4AF37;
 }
-

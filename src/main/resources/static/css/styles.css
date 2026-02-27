@@ -690,11 +690,9 @@ textarea {
 /* ===== SEARCH SECTION ===== */
 .search-section {
     position: relative;
-    /* menor relleno vertical para reducir la franja gris */
-    padding: var(--spacing-md) 0;
-    /* antes era spacing-3xl */
-    background: var(--color-pearl);
-    margin-top: -12rem;
+    padding: 0;
+    background: transparent;
+    margin-top: -14rem;
     z-index: 10;
 }
 
@@ -703,15 +701,14 @@ textarea {
     border-radius: var(--radius-xl);
     padding: var(--spacing-xs);
     box-shadow: var(--shadow-lg);
-    /* elevar ligeramente y sobreponer al hero */
     position: relative;
-    top: -5.5rem;
+    top: 0;
     z-index: 20;
 }
 
 .search-title {
     font-family: var(--font-display);
-    font-size: 1.rem;
+    font-size: 1rem;
     color: var(--color-primary);
     text-align: center;
     margin-bottom: var(--spacing-md);
@@ -1264,6 +1261,8 @@ textarea {
 
 .stars svg {
     flex-shrink: 0;
+    width: 48px;
+    height: 48px;
 }
 
 .testimonial-text {

@@ -1,20 +1,21 @@
 <header class="header" id="header" th:fragment="navbar">
     <nav class="navbar container">
         <div class="nav-logo">
-            <a th:href="@{/}" class="nav-logo-link" aria-label="Polaris - Inicio">
-                <img th:src="@{/images/polaris-logo.png}" alt="Polaris" class="nav-logo-img"/>
+            <a th:href="@{/}" class="nav-logo-link" style="text-decoration:none; display:flex; align-items:center;">
+                <img th:src="@{/images/polaris-logo.png}" alt="Polaris" class="nav-logo-img"
+                     style="height:36px; width:auto;">
             </a>
         </div>
 
         <ul class="nav-menu" id="navMenu">
             <li><a th:href="@{/#inicio}"         class="nav-link">Inicio</a></li>
-            <li><a th:href="@{/#habitaciones}"   class="nav-link">Habitaciones</a></li>
+            <li><a th:href="@{/habitaciones}"    class="nav-link">Habitaciones</a></li>
             <li><a th:href="@{/servicios/cards}" class="nav-link">Servicios</a></li>
             <li><a th:href="@{/#testimonios}"    class="nav-link">Testimonios</a></li>
         </ul>
 
         <div class="nav-actions">
-            <a th:href="@{/servicios/cards}" class="btn btn-primary">Ver Servicios</a>
+            <a th:href="@{/habitaciones}" class="btn btn-primary">Ver Habitaciones</a>
         </div>
 
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaciones | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .hab-hero {
+            height: 320px;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0d1f3c 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative; overflow: hidden;
+            margin-top: 80px;
+        }
+        .hab-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover;
+            opacity: 0.25;
+        }
+        .hab-hero-content { position: relative; z-index: 1; }
+        .hab-hero-badge {
+            display: inline-block; color: #2ec4b6; font-size: 0.8rem;
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .hab-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem; color: #fff; margin-bottom: 12px;
+        }
+        .hab-hero p { color: rgba(255,255,255,0.7); font-family: 'Montserrat', sans-serif; }
+
+        .hab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px; padding: 50px 0 20px;
+        }
+        .hab-card {
+            background: #fff; border-radius: 16px;
+            overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .hab-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.14); }
+        .hab-card-img { height: 220px; overflow: hidden; position: relative; }
+        .hab-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .hab-card:hover .hab-card-img img { transform: scale(1.06); }
+        .hab-card-badge {
+            position: absolute; top: 16px; left: 16px;
+            background: #2ec4b6; color: #fff;
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+        }
+        .hab-card-body { padding: 24px; }
+        .hab-card-meta {
+            display: flex; gap: 16px; margin-bottom: 10px;
+            font-size: 0.8rem; color: #888; font-family: 'Montserrat', sans-serif;
+        }
+        .hab-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; color: #0a1628; margin-bottom: 8px;
+        }
+        .hab-card p {
+            font-family: 'Montserrat', sans-serif; font-size: 0.88rem;
+            color: #666; line-height: 1.6; margin-bottom: 16px;
+        }
+        .hab-card-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; color: #888; margin-bottom: 20px;
+        }
+        .hab-card-price strong { color: #2ec4b6; font-size: 1.2rem; }
+        .btn-ver {
+            display: block; text-align: center;
+            background: #0a1628; color: #fff;
+            padding: 12px; border-radius: 8px;
+            text-decoration: none; font-family: 'Montserrat', sans-serif;
+            font-size: 0.88rem; font-weight: 600; transition: background 0.3s;
+        }
+        .btn-ver:hover { background: #2ec4b6; }
+
+        /* Zona admin discreta al final */
+        .admin-zone {
+            text-align: center;
+            padding: 40px 0 80px;
+            border-top: 1px solid #eef0f5;
+            margin-top: 20px;
+        }
+        .admin-zone p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; color: #bbb; margin-bottom: 12px;
+        }
+        .btn-admin {
+            display: inline-block;
+            border: 1px solid #ddd; color: #aaa;
+            padding: 8px 20px; border-radius: 6px;
+            text-decoration: none; font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; transition: all 0.3s;
+        }
+        .btn-admin:hover { border-color: #2ec4b6; color: #2ec4b6; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="hab-hero">
+        <div class="hab-hero-content">
+            <span class="hab-hero-badge">&#10022; Hotel Polaris</span>
+            <h1>Nuestras Habitaciones</h1>
+            <p>Encuentre el santuario perfecto para su estad&#237;a</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hab-grid">
+            <div class="hab-card" th:each="habitacion : ${habitaciones}">
+                <div class="hab-card-img">
+                    <img th:src="${habitacion.imagenUrl}" th:alt="${habitacion.nombre}">
+                    <span class="hab-card-badge" th:text="${habitacion.tipoCama}">Cama</span>
+                </div>
+                <div class="hab-card-body">
+                    <div class="hab-card-meta">
+                        <span th:text="${habitacion.metrosCuadrados} + ' m²'">30 m²</span>
+                        <span th:text="${habitacion.capacidad} + ' personas'">2 personas</span>
+                    </div>
+                    <h3 th:text="${habitacion.nombre}">Nombre</h3>
+                    <p th:text="${habitacion.descripcion}">Descripcion</p>
+                    <p class="hab-card-price">
+                        Desde <strong th:text="'$' + ${#numbers.formatInteger(habitacion.precioPorNoche, 0, 'COMMA')}">$0</strong>/noche
+                    </p>
+                    <a class="btn-ver" th:href="@{/habitaciones/{id}(id=${habitacion.id})}">Ver Detalle</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acceso discreto al panel de administración -->
+        <div class="admin-zone">
+            <p>&#9679; Administraci&#243;n del sistema</p>
+            <a th:href="@{/habitaciones/admin}" class="btn-admin">Panel de Administraci&#243;n</a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

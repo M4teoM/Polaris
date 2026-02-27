@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaci&#243;n | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .form-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+            padding: 120px 0 80px;
+        }
+        .form-card {
+            max-width: 720px; margin: 0 auto;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+            overflow: hidden;
+        }
+        .form-card-header {
+            background: linear-gradient(135deg, #0a1628, #1a2a4a);
+            padding: 36px 40px;
+        }
+        .form-card-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; color: #fff; margin-bottom: 4px;
+        }
+        .form-card-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; color: rgba(255,255,255,0.6);
+        }
+        .form-card-body { padding: 40px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .form-row.full { grid-template-columns: 1fr; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 600;
+            color: #0a1628; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            padding: 12px 16px;
+            border: 2px solid #e8edf5; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+            color: #0a1628; background: #fafbff;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus { border-color: #2ec4b6; background: #fff; }
+        .form-field textarea { resize: vertical; min-height: 100px; }
+
+        .img-preview {
+            width: 100%; height: 200px; border-radius: 10px;
+            object-fit: cover; margin-top: 10px;
+            display: none; border: 2px solid #e8edf5;
+        }
+
+        .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px; }
+        .btn-guardar {
+            background: #2ec4b6; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px;
+            border: none; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-guardar:hover { background: #D4AF37; }
+        .btn-cancelar {
+            background: #f0f4ff; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-cancelar:hover { background: #e0e6f0; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="form-page">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h1 th:text="${habitacion.id == null} ? 'Nueva Habitaci&#243;n' : 'Editar Habitaci&#243;n'">Formulario</h1>
+                <p th:text="${habitacion.id == null} ? 'Complete los campos para agregar un nuevo tipo de habitaci&#243;n' : 'Modifique los campos que desea actualizar'">Subtitulo</p>
+            </div>
+
+            <div class="form-card-body">
+                <!-- La action cambia si es crear o editar -->
+                <form th:action="${habitacion.id == null} ? @{/habitaciones/nueva} : @{/habitaciones/editar/{id}(id=${habitacion.id})}"
+                      method="post">
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre"
+                                   th:value="${habitacion.nombre}"
+                                   placeholder="Ej: Suite Ejecutiva" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="tipoCama">Tipo de Cama</label>
+                            <select id="tipoCama" name="tipoCama">
+                                <option value="Cama Queen" th:selected="${habitacion.tipoCama == 'Cama Queen'}">Cama Queen</option>
+                                <option value="Cama King"  th:selected="${habitacion.tipoCama == 'Cama King'}">Cama King</option>
+                                <option value="Dos Camas"  th:selected="${habitacion.tipoCama == 'Dos Camas'}">Dos Camas</option>
+                                <option value="Cama Doble" th:selected="${habitacion.tipoCama == 'Cama Doble'}">Cama Doble</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-field">
+                            <label for="descripcion">Descripci&#243;n</label>
+                            <textarea id="descripcion" name="descripcion"
+                                      placeholder="Describe la habitaci&#243;n..."
+                                      th:text="${habitacion.descripcion}" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="precioPorNoche">Precio por Noche ($)</label>
+                            <input type="number" id="precioPorNoche" name="precioPorNoche"
+                                   th:value="${habitacion.precioPorNoche}"
+                                   placeholder="250000" min="0" step="1000" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="metrosCuadrados">&#193;rea (m&#178;)</label>
+                            <input type="number" id="metrosCuadrados" name="metrosCuadrados"
+                                   th:value="${habitacion.metrosCuadrados}"
+                                   placeholder="30" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="capacidad">Capacidad (personas)</label>
+                            <input type="number" id="capacidad" name="capacidad"
+                                   th:value="${habitacion.capacidad}"
+                                   placeholder="2" min="1" max="10" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="imagenUrl">URL de Imagen</label>
+                            <input type="url" id="imagenUrl" name="imagenUrl"
+                                   th:value="${habitacion.imagenUrl}"
+                                   placeholder="https://..." oninput="previewImg(this.value)">
+                        </div>
+                    </div>
+
+                    <img id="imgPreview" class="img-preview" alt="Vista previa">
+
+                    <div class="form-actions">
+                        <a th:href="@{/habitaciones}" class="btn-cancelar">Cancelar</a>
+                        <button type="submit" class="btn-guardar"
+                                th:text="${habitacion.id == null} ? 'Crear Habitaci&#243;n' : 'Guardar Cambios'">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewImg(url) {
+            var img = document.getElementById('imgPreview');
+            if (url && url.startsWith('http')) {
+                img.src = url;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        }
+        // Mostrar preview si ya hay URL al cargar (edición)
+        window.addEventListener('load', function() {
+            var input = document.getElementById('imagenUrl');
+            if (input && input.value) previewImg(input.value);
+        });
+    </script>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

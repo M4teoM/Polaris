@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Habitaciones | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .admin-hero {
+            height: 220px;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative; overflow: hidden;
+            margin-top: 80px;
+        }
+        .admin-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover;
+            opacity: 0.15;
+        }
+        .admin-hero-content { position: relative; z-index: 1; }
+        .admin-hero-badge {
+            display: inline-block; background: rgba(212,175,55,0.2);
+            color: #D4AF37; font-size: 0.75rem; letter-spacing: 2px;
+            text-transform: uppercase; padding: 4px 14px; border-radius: 20px;
+            font-family: 'Montserrat', sans-serif; margin-bottom: 12px;
+        }
+        .admin-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; color: #fff;
+        }
+
+        .admin-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 32px 0 20px;
+        }
+        .admin-toolbar h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; color: #0a1628;
+        }
+        .admin-toolbar span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; color: #888;
+        }
+        .btn-nueva {
+            background: #2ec4b6; color: #0a1628;
+            padding: 11px 24px; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            text-decoration: none; font-size: 0.88rem;
+            transition: background 0.3s;
+        }
+        .btn-nueva:hover { background: #D4AF37; }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px; padding-bottom: 80px;
+        }
+        .admin-card {
+            background: #fff; border-radius: 14px;
+            overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f5;
+            transition: box-shadow 0.3s;
+        }
+        .admin-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+        .admin-card-img { height: 180px; overflow: hidden; position: relative; }
+        .admin-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .admin-card-id {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(10,22,40,0.7); color: #fff;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 0.7rem; font-family: 'Montserrat', sans-serif;
+        }
+        .admin-card-body { padding: 20px; }
+        .admin-card-meta {
+            display: flex; gap: 12px; margin-bottom: 8px;
+            font-size: 0.76rem; color: #999; font-family: 'Montserrat', sans-serif;
+        }
+        .admin-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem; color: #0a1628; margin-bottom: 6px;
+        }
+        .admin-card-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem; color: #888; margin-bottom: 16px;
+        }
+        .admin-card-price strong { color: #2ec4b6; font-size: 1.1rem; }
+        .admin-card-actions { display: flex; gap: 8px; }
+        .btn-ver-admin {
+            flex: 1; text-align: center;
+            background: #f4f6fb; color: #0a1628;
+            padding: 9px; border-radius: 7px;
+            text-decoration: none; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; transition: background 0.3s;
+        }
+        .btn-ver-admin:hover { background: #e0e6f0; }
+        .btn-editar {
+            flex: 1; text-align: center;
+            background: #fff8e6; color: #a07800;
+            padding: 9px; border-radius: 7px;
+            text-decoration: none; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; transition: background 0.3s;
+        }
+        .btn-editar:hover { background: #D4AF37; color: #fff; }
+        .btn-eliminar {
+            flex: 1; text-align: center;
+            background: #fff0f0; color: #c0392b;
+            padding: 9px; border-radius: 7px;
+            border: none; cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; transition: background 0.3s;
+        }
+        .btn-eliminar:hover { background: #c0392b; color: #fff; }
+
+        .btn-volver {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: #888; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; text-decoration: none;
+            transition: color 0.3s;
+        }
+        .btn-volver:hover { color: #2ec4b6; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="admin-hero">
+        <div class="admin-hero-content">
+            <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
+            <h1>Gesti&#243;n de Habitaciones</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="admin-toolbar">
+            <div>
+                <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
+                <h2 style="margin-top:8px;">Tipos de Habitaci&#243;n</h2>
+                <span th:text="${#lists.size(habitaciones)} + ' habitaciones registradas'">0 habitaciones</span>
+            </div>
+            <a th:href="@{/habitaciones/nueva}" class="btn-nueva">+ Nueva Habitaci&#243;n</a>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-card" th:each="habitacion : ${habitaciones}">
+                <div class="admin-card-img">
+                    <img th:src="${habitacion.imagenUrl}" th:alt="${habitacion.nombre}">
+                    <span class="admin-card-id" th:text="'ID: ' + ${habitacion.id}">ID: 1</span>
+                </div>
+                <div class="admin-card-body">
+                    <div class="admin-card-meta">
+                        <span th:text="${habitacion.metrosCuadrados} + ' m²'">30 m²</span>
+                        <span th:text="${habitacion.tipoCama}">Cama King</span>
+                        <span th:text="${habitacion.capacidad} + ' personas'">2</span>
+                    </div>
+                    <h3 th:text="${habitacion.nombre}">Nombre</h3>
+                    <p class="admin-card-price">
+                        <strong th:text="'$' + ${#numbers.formatInteger(habitacion.precioPorNoche, 0, 'COMMA')}">$0</strong>/noche
+                    </p>
+                    <div class="admin-card-actions">
+                        <a class="btn-ver-admin" th:href="@{/habitaciones/{id}(id=${habitacion.id})}">Ver</a>
+                        <a class="btn-editar" th:href="@{/habitaciones/editar/{id}(id=${habitacion.id})}">Editar</a>
+                        <form th:action="@{/habitaciones/eliminar/{id}(id=${habitacion.id})}" method="post" style="flex:1; margin:0;">
+                            <button type="submit" class="btn-eliminar" style="width:100%;"
+                                    onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

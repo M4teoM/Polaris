@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaciones | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .ops-header {
+            background: #0a1628;
+            padding: 28px 0 24px;
+            margin-top: 80px;
+            border-bottom: 3px solid #2ec4b6;
+        }
+        .ops-header-inner {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .ops-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; color: #fff; margin-bottom: 4px;
+        }
+        .ops-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; color: rgba(255,255,255,0.5);
+        }
+        .btn-admin-panel {
+            background: #D4AF37; color: #0a1628;
+            padding: 10px 22px; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            text-decoration: none; font-size: 0.85rem; transition: background 0.3s;
+        }
+        .btn-admin-panel:hover { background: #2ec4b6; }
+
+        /* Resumen de estados */
+        .ops-summary {
+            display: flex; gap: 16px; padding: 24px 0 8px; flex-wrap: wrap;
+        }
+        .summary-card {
+            background: #fff; border-radius: 10px;
+            padding: 16px 24px; border-left: 4px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); min-width: 140px;
+        }
+        .summary-card.disponible { border-left-color: #2ec4b6; }
+        .summary-card.ocupada    { border-left-color: #e74c3c; }
+        .summary-card.mant       { border-left-color: #f39c12; }
+        .summary-card .s-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; color: #0a1628; line-height: 1;
+        }
+        .summary-card .s-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem; color: #888; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-top: 4px;
+        }
+
+        /* Filtros */
+        .ops-filters {
+            display: flex; gap: 8px; padding: 16px 0 20px; flex-wrap: wrap; align-items: center;
+        }
+        .ops-filters span {
+            font-family: 'Montserrat', sans-serif; font-size: 0.78rem;
+            color: #888; margin-right: 4px;
+        }
+        .filter-btn {
+            padding: 6px 16px; border-radius: 20px; border: 2px solid #e0e6f0;
+            background: #fff; color: #555; font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: #0a1628; color: #fff; border-color: #0a1628; }
+        .filter-btn.f-disp.active  { background: #1a9e94; border-color: #1a9e94; }
+        .filter-btn.f-ocup.active  { background: #c0392b; border-color: #c0392b; }
+        .filter-btn.f-mant.active  { background: #b8780a; border-color: #b8780a; }
+
+        /* Tabla */
+        .ops-table-wrap {
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f5; overflow: hidden; margin-bottom: 60px;
+        }
+        .ops-table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .ops-table thead { background: #0a1628; }
+        .ops-table thead th {
+            padding: 13px 16px; text-align: left;
+            font-size: 0.7rem; font-weight: 700;
+            color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .ops-table tbody tr {
+            border-bottom: 1px solid #f0f3f9; transition: background 0.15s;
+        }
+        .ops-table tbody tr:last-child { border-bottom: none; }
+        .ops-table tbody tr:hover { background: #f8faff; }
+        .ops-table tbody tr.hidden-row { display: none; }
+        .ops-table td {
+            padding: 13px 16px; font-size: 0.85rem; color: #333; vertical-align: middle;
+        }
+        td.num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: #0a1628; font-weight: 600;
+        }
+        .estado-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .estado-Disponible    { background: #e6faf8; color: #1a9e94; }
+        .estado-Ocupada       { background: #fdecea; color: #c0392b; }
+        .estado-Mantenimiento { background: #fef3e2; color: #b8780a; }
+        .tipo-chip {
+            display: inline-block; background: #f0f3f9; color: #0a1628;
+            padding: 3px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 500;
+        }
+        .btn-detalle {
+            background: #f4f6fb; color: #0a1628;
+            padding: 6px 14px; border-radius: 6px;
+            text-decoration: none; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-detalle:hover { background: #2ec4b6; color: #fff; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- Cabecera operacional -->
+<div class="ops-header">
+    <div class="container ops-header-inner">
+        <div>
+            <h1>Habitaciones — Vista Operacional</h1>
+            <p>Disponibilidad y estado en tiempo real</p>
+        </div>
+        <a th:href="@{/habitaciones/admin(tab=rooms)}" class="btn-admin-panel">&#9881; Ir al Panel Admin</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Resumen por estado -->
+    <div class="ops-summary">
+        <div class="summary-card disponible">
+            <div class="s-num" id="cnt-disponible">0</div>
+            <div class="s-label">Disponibles</div>
+        </div>
+        <div class="summary-card ocupada">
+            <div class="s-num" id="cnt-ocupada">0</div>
+            <div class="s-label">Ocupadas</div>
+        </div>
+        <div class="summary-card mant">
+            <div class="s-num" id="cnt-mant">0</div>
+            <div class="s-label">Mantenimiento</div>
+        </div>
+    </div>
+
+    <!-- Filtros rápidos -->
+    <div class="ops-filters">
+        <span>Filtrar:</span>
+        <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filter-btn f-disp" onclick="filtrar('Disponible', this)">Disponibles</button>
+        <button class="filter-btn f-ocup" onclick="filtrar('Ocupada', this)">Ocupadas</button>
+        <button class="filter-btn f-mant" onclick="filtrar('Mantenimiento', this)">Mantenimiento</button>
+    </div>
+
+    <!-- Tabla operacional -->
+    <div class="ops-table-wrap">
+        <table class="ops-table" id="roomsTable">
+            <thead>
+            <tr>
+                <th>N&#250;m.</th>
+                <th>Piso</th>
+                <th>Tipo</th>
+                <th>Cama</th>
+                <th>Capacidad</th>
+                <th>Precio/noche</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${rooms}" th:attr="data-estado=${room.estado}">
+                <td class="num" th:text="${room.numero}">101</td>
+                <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
+                <td>
+                            <span class="tipo-chip"
+                                  th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
+                </td>
+                <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
+                <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">—</td>
+                <td th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">—</td>
+                <td>
+                            <span class="estado-pill"
+                                  th:classappend="'estado-' + ${room.estado}"
+                                  th:text="${room.estado}">Estado</span>
+                </td>
+                <td>
+                    <a class="btn-detalle" th:href="@{/rooms/{id}(id=${room.id})}">Ver detalle</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Contadores por estado
+    document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('#roomsTable tbody tr');
+        var cnt = { Disponible: 0, Ocupada: 0, Mantenimiento: 0 };
+        rows.forEach(function(r) { cnt[r.dataset.estado]++; });
+        document.getElementById('cnt-disponible').textContent = cnt.Disponible;
+        document.getElementById('cnt-ocupada').textContent    = cnt.Ocupada;
+        document.getElementById('cnt-mant').textContent       = cnt.Mantenimiento;
+    });
+
+    // Filtro por estado
+    function filtrar(estado, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('#roomsTable tbody tr').forEach(function(r) {
+            r.style.display = (estado === 'todos' || r.dataset.estado === estado) ? '' : 'none';
+        });
+    }
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

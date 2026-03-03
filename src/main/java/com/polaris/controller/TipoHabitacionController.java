@@ -1,6 +1,8 @@
 package com.polaris.controller;
 
+import com.polaris.model.Habitacion;
 import com.polaris.model.TipoHabitacion;
+import com.polaris.service.IHabitacionService;
 import com.polaris.service.ITipoHabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,12 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/habitaciones")
 public class TipoHabitacionController {
 
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
+
+    @Autowired
+    private IHabitacionService habitacionService;
 
     // GET /habitaciones → vista pública (solo lectura)
     @GetMapping
@@ -25,10 +32,20 @@ public class TipoHabitacionController {
         return "habitaciones/lista";
     }
 
-    // GET /habitaciones/admin → panel de administración (crear, editar, eliminar)
+    // GET /habitaciones/admin → panel de administración completo
     @GetMapping("/admin")
     public String admin(Model model) {
         model.addAttribute("habitaciones", tipoHabitacionService.obtenerTodos());
+
+        // Cargar habitaciones físicas enriquecidas con su tipo
+        List<Habitacion> rooms = habitacionService.obtenerTodos();
+        rooms.forEach(h -> {
+            if (h.getTipoHabitacionId() != null) {
+                h.setTipoHabitacion(tipoHabitacionService.obtenerPorId(h.getTipoHabitacionId()));
+            }
+        });
+        model.addAttribute("rooms", rooms);
+
         return "habitaciones/lista-admin";
     }
 

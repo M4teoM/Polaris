@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaci&#243;n | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .form-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+            padding: 120px 0 80px;
+        }
+        .form-card {
+            max-width: 720px; margin: 0 auto;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+            overflow: hidden;
+        }
+        .form-card-header {
+            background: linear-gradient(135deg, #0a1628, #1a2a4a);
+            padding: 36px 40px;
+        }
+        .form-card-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; color: #fff; margin-bottom: 4px;
+        }
+        .form-card-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; color: rgba(255,255,255,0.6);
+        }
+        .form-card-body { padding: 40px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .form-row.full { grid-template-columns: 1fr; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 600;
+            color: #0a1628; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-field input,
+        .form-field select {
+            padding: 12px 16px;
+            border: 2px solid #e8edf5; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+            color: #0a1628; background: #fafbff;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .form-field input:focus,
+        .form-field select:focus { border-color: #2ec4b6; background: #fff; }
+
+        /* Preview de tipo seleccionado */
+        .tipo-preview {
+            display: none; background: #f8faff; border-radius: 14px;
+            padding: 20px; margin-top: 4px; border: 1px solid #e0e6f4;
+            transition: all 0.3s;
+        }
+        .tipo-preview.visible { display: flex; gap: 16px; align-items: flex-start; }
+        .tipo-preview img {
+            width: 100px; height: 70px; object-fit: cover; border-radius: 8px; flex-shrink: 0;
+        }
+        .tipo-preview-info { flex: 1; }
+        .tipo-preview-nombre {
+            font-family: 'Playfair Display', serif; font-size: 1rem; color: #0a1628;
+            margin-bottom: 4px;
+        }
+        .tipo-preview-meta {
+            font-family: 'Montserrat', sans-serif; font-size: 0.78rem; color: #888;
+            display: flex; gap: 12px; flex-wrap: wrap;
+        }
+        .tipo-preview-precio {
+            font-family: 'Montserrat', sans-serif; font-size: 0.82rem;
+            color: #2ec4b6; font-weight: 600; margin-top: 4px;
+        }
+
+        .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px; }
+        .btn-guardar {
+            background: #2ec4b6; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px;
+            border: none; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-guardar:hover { background: #D4AF37; }
+        .btn-cancelar {
+            background: #f0f4ff; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-cancelar:hover { background: #e0e6f0; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="form-page">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h1 th:text="${room.id == null} ? 'Nueva Habitaci&#243;n' : 'Editar Habitaci&#243;n'">Formulario</h1>
+                <p th:text="${room.id == null} ? 'Complete los campos para registrar una nueva habitaci&#243;n' : 'Modifique los campos que desea actualizar'">Subt&#237;tulo</p>
+            </div>
+
+            <div class="form-card-body">
+                <form th:action="${room.id == null} ? @{/rooms/nueva} : @{/rooms/editar/{id}(id=${room.id})}"
+                      method="post">
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="numero">N&#250;mero de Habitaci&#243;n</label>
+                            <input type="text" id="numero" name="numero"
+                                   th:value="${room.numero}"
+                                   placeholder="Ej: 101, 205B" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="piso">Piso</label>
+                            <input type="number" id="piso" name="piso"
+                                   th:value="${room.piso}"
+                                   placeholder="1" min="1" max="50" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="estado">Estado</label>
+                            <select id="estado" name="estado" required>
+                                <option value="Disponible"
+                                        th:selected="${room.estado == 'Disponible'}">Disponible</option>
+                                <option value="Ocupada"
+                                        th:selected="${room.estado == 'Ocupada'}">Ocupada</option>
+                                <option value="Mantenimiento"
+                                        th:selected="${room.estado == 'Mantenimiento'}">Mantenimiento</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="tipoHabitacionId">Tipo de Habitaci&#243;n</label>
+                            <select id="tipoHabitacionId" name="tipoHabitacionId"
+                                    onchange="mostrarPreview(this)" required>
+                                <option value="">-- Seleccione un tipo --</option>
+                                <option th:each="tipo : ${tipos}"
+                                        th:value="${tipo.id}"
+                                        th:text="${tipo.nombre}"
+                                        th:selected="${room.tipoHabitacionId != null and room.tipoHabitacionId == tipo.id}"
+                                        th:attr="data-img=${tipo.imagenUrl},
+                                                 data-m2=${tipo.metrosCuadrados},
+                                                 data-cap=${tipo.capacidad},
+                                                 data-cama=${tipo.tipoCama},
+                                                 data-precio=${'$' + #numbers.formatInteger(tipo.precioPorNoche, 0, 'COMMA')}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Preview del tipo seleccionado -->
+                    <div class="form-row full" style="margin-bottom:24px;">
+                        <div id="tipoPreview" class="tipo-preview">
+                            <img id="previewImg" src="" alt="preview">
+                            <div class="tipo-preview-info">
+                                <div class="tipo-preview-nombre" id="previewNombre"></div>
+                                <div class="tipo-preview-meta">
+                                    <span id="previewM2"></span>
+                                    <span id="previewCap"></span>
+                                    <span id="previewCama"></span>
+                                </div>
+                                <div class="tipo-preview-precio" id="previewPrecio"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a th:href="@{/rooms/admin}" class="btn-cancelar">Cancelar</a>
+                        <button type="submit" class="btn-guardar"
+                                th:text="${room.id == null} ? 'Crear Habitaci&#243;n' : 'Guardar Cambios'">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarPreview(select) {
+            var opt = select.options[select.selectedIndex];
+            var preview = document.getElementById('tipoPreview');
+            if (!opt.value) {
+                preview.classList.remove('visible');
+                return;
+            }
+            document.getElementById('previewImg').src      = opt.getAttribute('data-img') || '';
+            document.getElementById('previewNombre').textContent = opt.text;
+            document.getElementById('previewM2').textContent    = opt.getAttribute('data-m2')  + ' m²';
+            document.getElementById('previewCap').textContent   = opt.getAttribute('data-cap') + ' personas';
+            document.getElementById('previewCama').textContent  = opt.getAttribute('data-cama');
+            document.getElementById('previewPrecio').textContent = opt.getAttribute('data-precio') + '/noche';
+            preview.classList.add('visible');
+        }
+        // Mostrar preview al cargar si ya hay tipo seleccionado (edición)
+        window.addEventListener('load', function() {
+            var sel = document.getElementById('tipoHabitacionId');
+            if (sel && sel.value) mostrarPreview(sel);
+        });
+    </script>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

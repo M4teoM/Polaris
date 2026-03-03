@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Habitaci&#243;n ' + ${room.numero} + ' | Hotel Polaris'">Habitaci&#243;n</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .det-hero {
+            height: 460px; position: relative; margin-top: 80px; overflow: hidden;
+        }
+        .det-hero img { width: 100%; height: 100%; object-fit: cover; }
+        .det-hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.2) 60%);
+        }
+        .det-hero-text {
+            position: absolute; bottom: 40px; left: 0; right: 0;
+            text-align: center;
+        }
+        .det-hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem; color: #fff;
+        }
+        .det-hero-text p { color: #2ec4b6; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; }
+
+        .det-grid {
+            display: grid; grid-template-columns: 1fr 340px;
+            gap: 48px; padding: 60px 0 80px;
+        }
+        @media (max-width: 900px) { .det-grid { grid-template-columns: 1fr; } }
+
+        .det-desc h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; color: #0a1628; margin-bottom: 16px;
+        }
+        .det-desc p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem; color: #555; line-height: 1.8; margin-bottom: 32px;
+        }
+        .det-tipo-tag {
+            display: inline-block; background: #f0fdfc; color: #2ec4b6;
+            border: 1px solid #2ec4b6; border-radius: 20px;
+            padding: 5px 16px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 600; margin-bottom: 24px;
+        }
+        .det-specs {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+        .det-spec {
+            background: #f8faff; border-radius: 12px; padding: 20px;
+            text-align: center;
+        }
+        .det-spec-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .det-spec-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; color: #0a1628; margin-top: 4px;
+        }
+        .det-spec-value.estado-Disponible    { color: #2ec4b6; }
+        .det-spec-value.estado-Ocupada       { color: #e74c3c; }
+        .det-spec-value.estado-Mantenimiento { color: #f39c12; }
+
+        .det-price-card {
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+            padding: 32px; position: sticky; top: 100px;
+            border-top: 4px solid #D4AF37;
+            align-self: start;
+        }
+        .det-price-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; color: #888; margin-bottom: 8px;
+        }
+        .det-price-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem; color: #2ec4b6; margin-bottom: 4px;
+        }
+        .det-price-unit {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; color: #aaa; margin-bottom: 28px;
+        }
+        .det-price-features { list-style: none; padding: 0; margin-bottom: 28px; }
+        .det-price-features li {
+            font-family: 'Montserrat', sans-serif; font-size: 0.88rem;
+            color: #555; padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .det-price-features li::before { content: '✓'; color: #2ec4b6; font-weight: bold; }
+        .btn-reservar {
+            display: block; width: 100%; text-align: center;
+            background: #D4AF37; color: #0a1628;
+            padding: 14px; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            text-decoration: none; font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .btn-reservar:hover { background: #2ec4b6; }
+        .btn-volver {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #2ec4b6; font-family: 'Montserrat', sans-serif;
+            font-size: 0.88rem; text-decoration: none; margin-bottom: 32px;
+        }
+        .btn-volver:hover { color: #D4AF37; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="det-hero">
+        <img th:src="${room.tipoHabitacion != null ? room.tipoHabitacion.imagenUrl : ''}"
+             th:alt="${room.numero}">
+        <div class="det-hero-overlay"></div>
+        <div class="det-hero-text">
+            <p>&#10022; Hotel Polaris</p>
+            <h1 th:text="'Habitaci&#243;n ' + ${room.numero}">Habitaci&#243;n</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="det-grid">
+            <div class="det-desc">
+                <a th:href="@{/rooms}" class="btn-volver">&#8592; Volver a Habitaciones</a>
+
+                <div class="det-tipo-tag"
+                     th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : 'Sin tipo'}">Tipo</div>
+
+                <h2 th:text="'Habitaci&#243;n ' + ${room.numero} + ' — Piso ' + ${room.piso}">Habitaci&#243;n</h2>
+                <p th:if="${room.tipoHabitacion != null}" th:text="${room.tipoHabitacion.descripcion}">Descripci&#243;n</p>
+                <p th:if="${room.tipoHabitacion == null}">Esta habitaci&#243;n no tiene tipo asignado.</p>
+
+                <div class="det-specs">
+                    <div class="det-spec">
+                        <div class="det-spec-label">N&#250;mero</div>
+                        <div class="det-spec-value" th:text="${room.numero}">101</div>
+                    </div>
+                    <div class="det-spec">
+                        <div class="det-spec-label">Piso</div>
+                        <div class="det-spec-value" th:text="${room.piso}">1</div>
+                    </div>
+                    <div class="det-spec">
+                        <div class="det-spec-label">Estado</div>
+                        <div class="det-spec-value"
+                             th:classappend="'estado-' + ${room.estado}"
+                             th:text="${room.estado}">Disponible</div>
+                    </div>
+                    <div class="det-spec" th:if="${room.tipoHabitacion != null}">
+                        <div class="det-spec-label">&#193;rea</div>
+                        <div class="det-spec-value" th:text="${room.tipoHabitacion.metrosCuadrados} + ' m²'">30 m²</div>
+                    </div>
+                    <div class="det-spec" th:if="${room.tipoHabitacion != null}">
+                        <div class="det-spec-label">Capacidad</div>
+                        <div class="det-spec-value" th:text="${room.tipoHabitacion.capacidad} + ' hu&#233;spedes'">2</div>
+                    </div>
+                    <div class="det-spec" th:if="${room.tipoHabitacion != null}">
+                        <div class="det-spec-label">Tipo de cama</div>
+                        <div class="det-spec-value" th:text="${room.tipoHabitacion.tipoCama}">King</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="det-price-card" th:if="${room.tipoHabitacion != null}">
+                <h3>Precio por noche</h3>
+                <div class="det-price-amount"
+                     th:text="'$' + ${#numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA')}">$0</div>
+                <div class="det-price-unit">por noche / por habitaci&#243;n</div>
+                <ul class="det-price-features">
+                    <li>WiFi de alta velocidad</li>
+                    <li>Desayuno incluido</li>
+                    <li th:text="${room.tipoHabitacion.tipoCama}">Cama King</li>
+                    <li th:text="${room.tipoHabitacion.metrosCuadrados} + ' m² de espacio'">30 m²</li>
+                    <li>Servicio de limpieza diario</li>
+                    <li>Acceso a instalaciones</li>
+                </ul>
+                <a href="#" class="btn-reservar">Reservar Ahora</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

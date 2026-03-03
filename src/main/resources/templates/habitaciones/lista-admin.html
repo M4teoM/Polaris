@@ -33,9 +33,29 @@
             font-size: 2rem; color: #fff;
         }
 
+        /* ── Navegación de secciones ── */
+        .section-tabs {
+            display: flex; gap: 4px;
+            border-bottom: 2px solid #eef0f5;
+            margin: 32px 0 0;
+        }
+        .section-tab {
+            padding: 12px 24px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600;
+            color: #888; cursor: pointer; border: none; background: none;
+            border-bottom: 3px solid transparent; margin-bottom: -2px;
+            transition: all 0.2s; text-decoration: none;
+        }
+        .section-tab.active { color: #0a1628; border-bottom-color: #2ec4b6; }
+        .section-tab:hover:not(.active) { color: #0a1628; }
+
+        .section-panel { display: none; }
+        .section-panel.active { display: block; }
+
+        /* ── Toolbar ── */
         .admin-toolbar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 32px 0 20px;
+            padding: 28px 0 20px;
         }
         .admin-toolbar h2 {
             font-family: 'Playfair Display', serif;
@@ -54,16 +74,16 @@
         }
         .btn-nueva:hover { background: #D4AF37; }
 
+        /* ── Grid de tipos ── */
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 28px; padding-bottom: 80px;
+            gap: 28px; padding-bottom: 60px;
         }
         .admin-card {
             background: #fff; border-radius: 14px;
             overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-            border: 1px solid #eef0f5;
-            transition: box-shadow 0.3s;
+            border: 1px solid #eef0f5; transition: box-shadow 0.3s;
         }
         .admin-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
         .admin-card-img { height: 180px; overflow: hidden; position: relative; }
@@ -115,33 +135,110 @@
         }
         .btn-eliminar:hover { background: #c0392b; color: #fff; }
 
+        /* ── Tabla de habitaciones físicas ── */
+        .rooms-table-wrap {
+            background: #fff; border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f5;
+            overflow: hidden; margin-bottom: 60px;
+        }
+        .rooms-table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .rooms-table thead {
+            background: #0a1628;
+        }
+        .rooms-table thead th {
+            padding: 14px 18px; text-align: left;
+            font-size: 0.72rem; font-weight: 700;
+            color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .rooms-table tbody tr {
+            border-bottom: 1px solid #f0f3f9;
+            transition: background 0.15s;
+        }
+        .rooms-table tbody tr:last-child { border-bottom: none; }
+        .rooms-table tbody tr:hover { background: #f8faff; }
+        .rooms-table td {
+            padding: 14px 18px; font-size: 0.85rem; color: #333; vertical-align: middle;
+        }
+        .rooms-table td.num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; color: #0a1628; font-weight: 600;
+        }
+        .estado-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .estado-Disponible    { background: #e6faf8; color: #1a9e94; }
+        .estado-Ocupada       { background: #fdecea; color: #c0392b; }
+        .estado-Mantenimiento { background: #fef3e2; color: #b8780a; }
+        .tipo-chip {
+            display: inline-block; background: #f0f3f9; color: #0a1628;
+            padding: 3px 10px; border-radius: 6px;
+            font-size: 0.78rem; font-weight: 500;
+        }
+        .table-actions { display: flex; gap: 6px; }
+        .btn-tbl-edit {
+            background: #fff8e6; color: #a07800;
+            padding: 6px 14px; border-radius: 6px;
+            text-decoration: none; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .btn-tbl-edit:hover { background: #D4AF37; color: #fff; }
+        .btn-tbl-del {
+            background: #fff0f0; color: #c0392b;
+            padding: 6px 14px; border-radius: 6px;
+            border: none; cursor: pointer; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s; white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .btn-tbl-del:hover { background: #c0392b; color: #fff; }
+        .btn-tbl-ver {
+            background: #f4f6fb; color: #0a1628;
+            padding: 6px 14px; border-radius: 6px;
+            text-decoration: none; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .btn-tbl-ver:hover { background: #e0e6f0; }
+
         .btn-volver {
             display: inline-flex; align-items: center; gap: 6px;
             color: #888; font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem; text-decoration: none;
-            transition: color 0.3s;
+            font-size: 0.8rem; text-decoration: none; transition: color 0.3s;
+            margin: 28px 0 0;
         }
         .btn-volver:hover { color: #2ec4b6; }
     </style>
 </head>
 <body>
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="admin-hero">
-        <div class="admin-hero-content">
-            <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
-            <h1>Gesti&#243;n de Habitaciones</h1>
-        </div>
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
+        <h1>Gesti&#243;n de Habitaciones</h1>
+    </div>
+</div>
+
+<div class="container">
+    <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
+
+    <!-- Tabs de navegación entre secciones -->
+    <div class="section-tabs">
+        <button class="section-tab active" onclick="switchTab('tipos', this)">Tipos de Habitaci&#243;n</button>
+        <button class="section-tab" onclick="switchTab('rooms', this)">Habitaciones F&#237;sicas</button>
     </div>
 
-    <div class="container">
+    <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
+    <div id="panel-tipos" class="section-panel active">
         <div class="admin-toolbar">
             <div>
-                <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
-                <h2 style="margin-top:8px;">Tipos de Habitaci&#243;n</h2>
-                <span th:text="${#lists.size(habitaciones)} + ' habitaciones registradas'">0 habitaciones</span>
+                <h2>Tipos de Habitaci&#243;n</h2>
+                <span th:text="${#lists.size(habitaciones)} + ' tipos registrados'">0 tipos</span>
             </div>
-            <a th:href="@{/habitaciones/nueva}" class="btn-nueva">+ Nueva Habitaci&#243;n</a>
+            <a th:href="@{/habitaciones/nueva}" class="btn-nueva">+ Nuevo Tipo</a>
         </div>
 
         <div class="admin-grid">
@@ -165,7 +262,7 @@
                         <a class="btn-editar" th:href="@{/habitaciones/editar/{id}(id=${habitacion.id})}">Editar</a>
                         <form th:action="@{/habitaciones/eliminar/{id}(id=${habitacion.id})}" method="post" style="flex:1; margin:0;">
                             <button type="submit" class="btn-eliminar" style="width:100%;"
-                                    onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
+                                    onclick="return confirm('&#191;Eliminar este tipo?')">Eliminar</button>
                         </form>
                     </div>
                 </div>
@@ -173,6 +270,79 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <!-- ══ PANEL: HABITACIONES FÍSICAS ══ -->
+    <div id="panel-rooms" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Habitaciones F&#237;sicas</h2>
+                <span th:text="${#lists.size(rooms)} + ' habitaciones registradas'">0 habitaciones</span>
+            </div>
+            <a th:href="@{/rooms/nueva}" class="btn-nueva">+ Nueva Habitaci&#243;n</a>
+        </div>
+
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                <tr>
+                    <th>N&#250;m.</th>
+                    <th>Piso</th>
+                    <th>Tipo</th>
+                    <th>Cama</th>
+                    <th>Capacidad</th>
+                    <th>Precio/noche</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room : ${rooms}">
+                    <td class="num" th:text="${room.numero}">101</td>
+                    <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
+                    <td>
+                                <span class="tipo-chip"
+                                      th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
+                    </td>
+                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
+                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">—</td>
+                    <td th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">—</td>
+                    <td>
+                                <span class="estado-pill"
+                                      th:classappend="'estado-' + ${room.estado}"
+                                      th:text="${room.estado}">Estado</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver" th:href="@{/rooms/{id}(id=${room.id})}">Ver</a>
+                            <a class="btn-tbl-edit" th:href="@{/rooms/editar/{id}(id=${room.id})}">Editar</a>
+                            <form th:action="@{/rooms/eliminar/{id}(id=${room.id})}" method="post" style="margin:0;">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(panel, btn) {
+        document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.section-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + panel).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // Si la URL tiene ?tab=rooms, abrir directo ese panel
+    window.addEventListener('load', function() {
+        if (new URLSearchParams(window.location.search).get('tab') === 'rooms') {
+            switchTab('rooms', document.querySelectorAll('.section-tab')[1]);
+        }
+    });
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
-</html>
+</html>>

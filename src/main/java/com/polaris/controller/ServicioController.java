@@ -2,6 +2,7 @@ package com.polaris.controller;
 
 import com.polaris.model.Servicio;
 import com.polaris.service.IServicioService;
+import org.springframework.beans.factory.annotation.Autowired; // Se agrega la importación para Autowired
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/servicios")
 public class ServicioController {
 
-    private final IServicioService servicioService;
+    @Autowired // Implementación de Autowired para inyección de dependencias
+    private IServicioService servicioService; 
 
-    public ServicioController(IServicioService servicioService) {
-        this.servicioService = servicioService;
-    }
+    // Se elimina el constructor manual que se utilizaba anteriormente
 
-    
     // GET /servicios → tabla 
     @GetMapping
     public String listarServicios(Model model) {

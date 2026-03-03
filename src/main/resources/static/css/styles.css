@@ -66,7 +66,7 @@ a {
 }
 
 .btn-cta {
-    background-color: var(--boton-cta);
+    background-color: var(--color-aguamarina);
     color: var(--white);
     padding: 8px 14px;
     border-radius: 4px;
@@ -77,6 +77,123 @@ a {
 }
 
 /* ===== TABLAS ===== */
+
+
+/* Contenedor de la Sección */
+.page-section {
+    padding: calc(var(--header-height) + 2rem) 5% 4rem;
+    background-color: var(--pearl);
+}
+
+/* Encabezado de la página */
+.table-header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--gold-principal);
+    padding-left: 1.5rem;
+}
+
+.premium-title {
+    margin: 0;
+    font-size: 2.2rem;
+    color: var(--navy-principal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilo de la Tabla */
+.table-wrapper {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    /* Para que los bordes redondeados funcionen */
+}
+
+.polaris-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+}
+
+.polaris-table thead {
+    background-color: var(--navy-principal);
+    color: var(--white);
+}
+
+.polaris-table th {
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.polaris-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--pearl);
+    color: var(--charcoal);
+    transition: all 0.2s ease;
+}
+
+/* Efecto de Hover en Filas */
+.polaris-table tbody tr:hover td {
+    background-color: rgba(212, 175, 55, 0.05);
+    /* Dorado muy sutil */
+    color: var(--navy-claro);
+}
+
+/* Celdas Específicas */
+.font-bold {
+    font-weight: 600;
+}
+
+.price-cell {
+    color: var(--gold-principal);
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    /* Toque de "factura" elegante */
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Botón de Acción en Tabla */
+.btn-table-action {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--navy-claro);
+    color: var(--navy-claro);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-table-action:hover {
+    background-color: var(--navy-principal);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Botón Outline para el Header */
+.btn-outline {
+    padding: 0.7rem 1.5rem;
+    border: 1px solid var(--gold-principal);
+    color: var(--gold-principal);
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.btn-outline:hover {
+    background-color: var(--gold-principal);
+    color: var(--white);
+}
 
 table td,
 table th {
@@ -590,7 +707,7 @@ textarea {
 /* ===== HERO SECTION ===== */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -622,7 +739,7 @@ textarea {
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-md);
     /* mover contenido hacia arriba dentro del hero */
-    top: -7rem;
+    top: -4rem;
 }
 
 .hero-title {
@@ -692,7 +809,7 @@ textarea {
     position: relative;
     padding: 0;
     background: transparent;
-    margin-top: -14rem;
+    margin-top: -9rem;
     z-index: 10;
 }
 
@@ -1511,6 +1628,111 @@ textarea {
     padding-bottom: var(--spacing-lg);
 }
 
+/* Contenedor Principal */
+.servicio-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: var(--header-height) var(--spacing-md) var(--spacing-xl);
+}
+
+/* Tarjeta de Detalle */
+.servicio-card-detalle {
+    background-color: var(--white);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    /* Dorado sutil */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding: 3rem;
+    overflow: hidden;
+}
+
+.detalle-titulo {
+    color: var(--navy-principal);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--gold-principal);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+/* Grid Layout */
+.detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Imagen */
+.detalle-imagen-wrapper img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Información y Texto */
+.detalle-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.detalle-descripcion-box h3 {
+    color: var(--taupe);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.resumen {
+    font-weight: 600;
+    color: var(--navy-claro);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.completa {
+    color: var(--charcoal);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Footer de la tarjeta: Precio y Botón */
+.detalle-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2rem;
+    border-top: 1px solid var(--pearl);
+}
+
+.detalle-precio {
+    font-size: 2rem;
+    color: var(--gold-principal);
+    font-weight: bold;
+    margin: 0;
+}
+
+.detalle-btn {
+    text-align: center;
+    min-width: 200px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .detalle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .servicio-card-detalle {
+        padding: 1.5rem;
+    }
+}
+
 
 /* Carta de polaris para presentacion*/
 
@@ -1528,13 +1750,13 @@ textarea {
     background-color: transparent;
 }
 
-.polaris-card :hover p{
+.polaris-card :hover p {
     color: #ffffff;
     cursor: default;
     background-color: transparent;
 }
 
-.polaris-card :hover span{
+.polaris-card :hover span {
     color: #ffffff;
     cursor: default;
     background-color: transparent;

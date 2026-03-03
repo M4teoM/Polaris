@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Detalle Servicio</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 
@@ -12,19 +13,59 @@
     <!-- NAVBAR que ahora implementamos desde fragmento -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="servicio">
-        <div class="detalle">
-            <h1 th:text="${servicio.nombre}"></h1>
-            <img th:src="${servicio.imagenUrl}">
-            <div class="detalle-descripcion">
-                <!-- Resumen corto -->
-                <p th:text="${servicio.descripcion}"></p>
-                <!-- Descripción detallada (campo usado en el repositorio) -->
-                <p th:text="${servicio.descripcionDetallada}"></p>
+    <div class="servicio-container">
+        <div class="servicio-card-detalle">
+            <h1 class="detalle-titulo" th:text="${servicio.nombre}"></h1>
+
+            <div class="detalle-grid">
+                <div class="detalle-imagen-wrapper">
+                    <img th:src="${servicio.imagenUrl}" th:alt="${servicio.nombre}">
+                </div>
+
+                <div class="detalle-info">
+                    <div class="detalle-descripcion-box">
+                        <h3>Descripción</h3>
+                        <p class="resumen" th:text="${servicio.descripcion}"></p>
+                        <p class="completa" th:text="${servicio.descripcionDetallada}"></p>
+                    </div>
+
+                    <div class="detalle-footer">
+                        <p class="detalle-precio"
+                            th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}">
+                        </p>
+                        <a class="btn-cta detalle-btn" href="#">Reservar este Servicio</a>
+                    </div>
+                </div>
             </div>
-            <p class="detalle-precio"
-                th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></p>
-            <a class="btn detalle-btn" href="">Adquierelo ahora</a>
+        </div>
+    </div>
+
+    <!--tailwind-->
+    <h1 class ="text-3xl font-bold text-amber-600">tailwind</h1>
+
+    <div class="max-w-6xl mx-auto px-4 py-20">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-100 flex flex-col md:flex-row">
+            <div class="md:w-1/2">
+                <img class="h-96 w-full object-cover" th:src="${servicio.imagenUrl}" th:alt="${servicio.nombre}">
+            </div>
+
+            <div class="p-8 md:w-1/2 flex flex-col justify-between">
+                <div>
+                    <h1 class="text-4xl font-serif text-slate-900 border-b-2 border-amber-500 inline-block mb-6"
+                        th:text="${servicio.nombre}"></h1>
+                    <p class="text-lg font-semibold text-slate-700 mb-4" th:text="${servicio.descripcion}"></p>
+                    <p class="text-gray-600 leading-relaxed" th:text="${servicio.descripcionDetallada}"></p>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+                    <span class="text-3xl font-bold text-amber-600"
+                        th:text="${'$' + #numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}"></span>
+                    <a href="#"
+                        class="bg-slate-900 text-white px-8 py-3 rounded-md hover:bg-slate-800 transition-colors uppercase tracking-widest text-sm font-bold">
+                        Reservar
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

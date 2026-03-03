@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .form-page { min-height: 100vh; background: #f4f7fb; padding: 120px 0 80px; }
+        .form-card {
+            max-width: 620px; margin: 0 auto;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.09); overflow: hidden;
+        }
+        .form-card-header {
+            background: linear-gradient(135deg, #0a1628, #1a2a4a);
+            padding: 36px 40px;
+        }
+        .form-card-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; color: #fff; margin-bottom: 4px;
+        }
+        .form-card-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; color: rgba(255,255,255,0.6);
+        }
+        .form-card-body { padding: 40px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .form-row.full { grid-template-columns: 1fr; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 600;
+            color: #0a1628; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-field input {
+            padding: 12px 16px;
+            border: 2px solid #e8edf5; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+            color: #0a1628; background: #fafbff;
+            transition: border-color 0.3s; outline: none;
+        }
+        .form-field input:focus { border-color: #2ec4b6; background: #fff; }
+        .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px; }
+        .btn-guardar {
+            background: #2ec4b6; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px; border: none;
+            cursor: pointer; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-guardar:hover { background: #D4AF37; }
+        .btn-cancelar {
+            background: #f0f4ff; color: #0a1628;
+            padding: 13px 32px; border-radius: 10px; text-decoration: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.9rem; transition: background 0.3s;
+        }
+        .btn-cancelar:hover { background: #e0e6f0; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!--Formularios del cliente nuevo-->
+    <div class="form-page">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h1 th:text="${cliente.id == null} ? 'Nuevo Cliente' : 'Editar Cliente'">Formulario</h1>
+                <p th:text="${cliente.id == null} ? 'Complete los campos para registrar un nuevo cliente' : 'Modifique los datos del cliente'">Subtitulo</p>
+            </div>
+            <div class="form-card-body">
+                <form th:action="${cliente.id == null} ? @{/clientes/nuevo} : @{/clientes/editar/{id}(id=${cliente.id})}"
+                      method="post">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre"
+                                   th:value="${cliente.nombre}" placeholder="Ej: Jose" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido"
+                                   th:value="${cliente.apellido}" placeholder="Ej: Perez" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-field">
+                            <label for="correo">Correo electr&#243;nico</label>
+                            <input type="email" id="correo" name="correo"
+                                   th:value="${cliente.correo}" placeholder="usuario@correo.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-field">
+                            <label for="contrasena">Contrase&#241;a</label>
+                            <input type="password" id="contrasena" name="contrasena"
+                                   th:value="${cliente.contrasena}" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a th:href="@{/clientes/admin}" class="btn-cancelar">Cancelar</a>
+                        <button type="submit" class="btn-guardar"
+                                th:text="${cliente.id == null} ? 'Crear Cliente' : 'Guardar Cambios'">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

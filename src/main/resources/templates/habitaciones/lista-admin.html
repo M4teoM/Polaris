@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
+        /* ===== HERO ===== */
         .admin-hero {
             height: 220px;
             background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
@@ -33,7 +34,7 @@
             font-size: 2rem; color: #fff;
         }
 
-        /* ── Navegación de secciones ── */
+        /* ===== TABS ===== */
         .section-tabs {
             display: flex; gap: 4px;
             border-bottom: 2px solid #eef0f5;
@@ -52,7 +53,7 @@
         .section-panel { display: none; }
         .section-panel.active { display: block; }
 
-        /* ── Toolbar ── */
+        /* ===== TOOLBAR ===== */
         .admin-toolbar {
             display: flex; justify-content: space-between; align-items: center;
             padding: 28px 0 20px;
@@ -74,7 +75,7 @@
         }
         .btn-nueva:hover { background: #D4AF37; }
 
-        /* ── Grid de tipos ── */
+        /* ===== GRID DE TIPOS ===== */
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -135,7 +136,7 @@
         }
         .btn-eliminar:hover { background: #c0392b; color: #fff; }
 
-        /* ── Tabla de habitaciones físicas ── */
+        /* ===== TABLAS ===== */
         .rooms-table-wrap {
             background: #fff; border-radius: 14px;
             box-shadow: 0 2px 16px rgba(0,0,0,0.07);
@@ -146,9 +147,7 @@
             width: 100%; border-collapse: collapse;
             font-family: 'Montserrat', sans-serif;
         }
-        .rooms-table thead {
-            background: #0a1628;
-        }
+        .rooms-table thead { background: #0a1628; }
         .rooms-table thead th {
             padding: 14px 18px; text-align: left;
             font-size: 0.72rem; font-weight: 700;
@@ -180,6 +179,13 @@
             font-size: 0.78rem; font-weight: 500;
         }
         .table-actions { display: flex; gap: 6px; }
+        .btn-tbl-ver {
+            background: #f4f6fb; color: #0a1628;
+            padding: 6px 14px; border-radius: 6px;
+            text-decoration: none; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .btn-tbl-ver:hover { background: #e0e6f0; }
         .btn-tbl-edit {
             background: #fff8e6; color: #a07800;
             padding: 6px 14px; border-radius: 6px;
@@ -195,13 +201,6 @@
             font-family: 'Montserrat', sans-serif;
         }
         .btn-tbl-del:hover { background: #c0392b; color: #fff; }
-        .btn-tbl-ver {
-            background: #f4f6fb; color: #0a1628;
-            padding: 6px 14px; border-radius: 6px;
-            text-decoration: none; font-size: 0.78rem; font-weight: 600;
-            transition: background 0.2s; white-space: nowrap;
-        }
-        .btn-tbl-ver:hover { background: #e0e6f0; }
 
         .btn-volver {
             display: inline-flex; align-items: center; gap: 6px;
@@ -218,17 +217,18 @@
 <div class="admin-hero">
     <div class="admin-hero-content">
         <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
-        <h1>Gesti&#243;n de Habitaciones</h1>
+        <h1>Gesti&#243;n General</h1>
     </div>
 </div>
 
 <div class="container">
     <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
 
-    <!-- Tabs de navegación entre secciones -->
+    <!-- Tabs de navegación -->
     <div class="section-tabs">
         <button class="section-tab active" onclick="switchTab('tipos', this)">Tipos de Habitaci&#243;n</button>
         <button class="section-tab" onclick="switchTab('rooms', this)">Habitaciones F&#237;sicas</button>
+        <button class="section-tab" onclick="switchTab('clientes', this)">Clientes</button>
     </div>
 
     <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
@@ -283,48 +283,92 @@
         <div class="rooms-table-wrap">
             <table class="rooms-table">
                 <thead>
-                <tr>
-                    <th>N&#250;m.</th>
-                    <th>Piso</th>
-                    <th>Tipo</th>
-                    <th>Cama</th>
-                    <th>Capacidad</th>
-                    <th>Precio/noche</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
+                    <tr>
+                        <th>N&#250;m.</th>
+                        <th>Piso</th>
+                        <th>Tipo</th>
+                        <th>Cama</th>
+                        <th>Capacidad</th>
+                        <th>Precio/noche</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:each="room : ${rooms}">
-                    <td class="num" th:text="${room.numero}">101</td>
-                    <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
-                    <td>
-                                <span class="tipo-chip"
-                                      th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
-                    </td>
-                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
-                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">—</td>
-                    <td th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">—</td>
-                    <td>
-                                <span class="estado-pill"
-                                      th:classappend="'estado-' + ${room.estado}"
-                                      th:text="${room.estado}">Estado</span>
-                    </td>
-                    <td>
-                        <div class="table-actions">
-                            <a class="btn-tbl-ver" th:href="@{/rooms/{id}(id=${room.id})}">Ver</a>
-                            <a class="btn-tbl-edit" th:href="@{/rooms/editar/{id}(id=${room.id})}">Editar</a>
-                            <form th:action="@{/rooms/eliminar/{id}(id=${room.id})}" method="post" style="margin:0;">
-                                <button type="submit" class="btn-tbl-del"
-                                        onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                    <tr th:each="room : ${rooms}">
+                        <td class="num" th:text="${room.numero}">101</td>
+                        <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
+                        <td>
+                            <span class="tipo-chip"
+                                  th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
+                        </td>
+                        <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
+                        <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">—</td>
+                        <td th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">—</td>
+                        <td>
+                            <span class="estado-pill"
+                                  th:classappend="'estado-' + ${room.estado}"
+                                  th:text="${room.estado}">Estado</span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn-tbl-ver" th:href="@{/rooms/{id}(id=${room.id})}">Ver</a>
+                                <a class="btn-tbl-edit" th:href="@{/rooms/editar/{id}(id=${room.id})}">Editar</a>
+                                <form th:action="@{/rooms/eliminar/{id}(id=${room.id})}" method="post" style="margin:0;">
+                                    <button type="submit" class="btn-tbl-del"
+                                            onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- ══ PANEL: CLIENTES ══ -->
+<div id="panel-clientes" class="section-panel">
+    <div class="admin-toolbar">
+        <div>
+            <h2>Clientes Registrados</h2>
+            <span th:text="${#lists.size(clientes)} + ' clientes registrados'">0 clientes</span>
+        </div>
+        <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
+    </div>
+
+    <div class="rooms-table-wrap">
+        <table class="rooms-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td class="num" th:text="${cliente.id}">1</td>
+                    <td th:text="${cliente.nombre}">Nombre</td>
+                    <td th:text="${cliente.apellido}">Apellido</td>
+                    <td th:text="${cliente.correo}">correo@mail.com</td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver" th:href="@{/clientes/ver/{id}(id=${cliente.id})}">Ver</a>
+                            <a class="btn-tbl-edit" th:href="@{/clientes/editar/{id}(id=${cliente.id})}">Editar</a>
+                            <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post" style="margin:0;">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Eliminar este cliente?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 </div>
 
 <script>
@@ -335,14 +379,13 @@
         btn.classList.add('active');
     }
 
-    // Si la URL tiene ?tab=rooms, abrir directo ese panel
     window.addEventListener('load', function() {
-        if (new URLSearchParams(window.location.search).get('tab') === 'rooms') {
-            switchTab('rooms', document.querySelectorAll('.section-tab')[1]);
-        }
+        const tab = new URLSearchParams(window.location.search).get('tab');
+        if (tab === 'rooms')    switchTab('rooms',    document.querySelectorAll('.section-tab')[1]);
+        if (tab === 'clientes') switchTab('clientes', document.querySelectorAll('.section-tab')[2]);
     });
 </script>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
-</html>>
+</html>

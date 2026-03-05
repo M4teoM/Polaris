@@ -59,10 +59,44 @@
             font-weight: 700; font-size: 0.95rem; transition: background 0.3s;
         }
         .btn-login:hover { background: #D4AF37; }
+        .login-register {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .login-register span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            color: #888;
+        }
+        .login-register a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #2ec4b6;
+            text-decoration: none;
+            margin-left: 4px;
+            transition: color 0.3s;
+        }
+        .login-register a:hover { color: #D4AF37; }
+        .btn-lista-clientes {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0a1628;
+            background: #f0f4ff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid #e0e4ee;
+            transition: background 0.3s;
+        }
+        .btn-lista-clientes:hover { background: #e0e6f0; }
     </style>
 </head>
 <body>
-    <!--Formulario para iniciar sesion-->
     <div class="login-page">
         <div class="login-card">
             <div class="login-card-header">
@@ -82,6 +116,13 @@
                     </div>
                     <button type="submit" class="btn-login">Ingresar</button>
                 </form>
+                <div class="login-register">
+                    <span>¿No tienes cuenta?</span>
+                    <a th:href="@{/clientes/nuevo}">Regístrate aquí</a>
+                </div>
+                <a th:href="@{/habitaciones/admin}" class="btn-lista-clientes">
+                    📋 Lista de clientes
+                </a>
             </div>
         </div>
     </div>

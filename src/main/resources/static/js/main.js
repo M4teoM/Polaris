@@ -466,3 +466,58 @@ window.HotelPolaris = {
   validateEmail,
   validatePhone,
 };
+
+// ===== TOGGLE SERVICE DETAIL (INDEX PAGE) =====
+function toggleServiceDetail(el, e) {
+  e.preventDefault();
+  const card = el.closest(".svc-card-v2");
+  const detail = card.querySelector(".svc-card-v2-detail");
+  const isOpen = detail.classList.contains("svc-detail-open");
+
+  // Close all other open details
+  document.querySelectorAll(".svc-card-v2-detail.svc-detail-open").forEach(function (d) {
+    d.classList.remove("svc-detail-open");
+    const link = d.closest(".svc-card-v2").querySelector(".svc-card-v2-link");
+    if (link) link.innerHTML = "Descubrir m\u00e1s \u2192";
+  });
+
+  if (!isOpen) {
+    detail.classList.add("svc-detail-open");
+    el.innerHTML = "Ocultar \u2190";
+  }
+}
+window.toggleServiceDetail = toggleServiceDetail;
+
+// ===== SERVICES SECTION FLOATING PARTICLES =====
+function initServicesParticles() {
+  const container = document.getElementById("servicesParticles");
+  if (!container) return;
+
+  for (let i = 0; i < 30; i++) {
+    const dot = document.createElement("div");
+    const size = Math.random() * 3 + 1;
+    Object.assign(dot.style, {
+      position: "absolute",
+      width: size + "px",
+      height: size + "px",
+      borderRadius: "50%",
+      background: Math.random() > 0.5 ? "rgba(212,175,55,0.3)" : "rgba(46,196,182,0.25)",
+      left: Math.random() * 100 + "%",
+      top: Math.random() * 100 + "%",
+      animation: "svcFloat " + (4 + Math.random() * 6) + "s ease-in-out " + Math.random() * 4 + "s infinite alternate",
+    });
+    container.appendChild(dot);
+  }
+
+  // Inject animation keyframes once
+  if (!document.getElementById("svcFloatStyle")) {
+    const s = document.createElement("style");
+    s.id = "svcFloatStyle";
+    s.textContent = "@keyframes svcFloat{0%{transform:translateY(0) scale(1);opacity:.4}100%{transform:translateY(-40px) scale(1.5);opacity:.8}}";
+    document.head.appendChild(s);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initServicesParticles();
+});

@@ -175,61 +175,120 @@
     </section>
 
     <!-- SERVICIOS -->
-    <section class="services-section" id="servicios">
-        <div class="container">
+    <section class="services-section-v2" id="servicios">
+        <div class="services-v2-bg"></div>
+        <div class="services-v2-particles" id="servicesParticles"></div>
+        <div class="container" style="position:relative; z-index:2;">
             <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Servicios Excepcionales</h2>
-                <p class="section-subtitle">Cada detalle dise&#241;ado a la perfecci&#243;n para una experiencia inolvidable</p>
+                <h2 class="section-title" style="color:#fff;">Servicios Excepcionales</h2>
+                <p class="section-subtitle" style="color:rgba(255,255,255,0.7);">Cada detalle dise&#241;ado a la perfecci&#243;n para una experiencia inolvidable</p>
             </div>
-            <div class="services-grid">
-                <article class="service-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80" alt="Spa Wellness" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#D4AF37" stroke-width="2"/></svg>
-                        <h3 class="service-name">Spa &amp; Wellness</h3>
-                        <p class="service-description">Rejuvenezca su cuerpo y mente con nuestros servicios de spa de clase mundial</p>
+            <div class="services-grid-v2">
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80" alt="Spa Wellness" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#D4AF37" stroke-width="2"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Spa &amp; Wellness</h3>
+                        <p class="svc-card-v2-desc">Rejuvenezca su cuerpo y mente con nuestros servicios de spa de clase mundial</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Disfrute de masajes terap&#233;uticos, aromaterapia, ba&#241;os termales y tratamientos faciales premium. Nuestro equipo de especialistas le ofrece una experiencia de relajaci&#243;n total en un ambiente de lujo incomparable.</p>
                     </div>
                 </article>
-                <article class="service-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Alta Cocina" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M8 2v7M12 2v7M16 2v7M5 9h14M4 13h16M6 17h12M7 21h10" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
-                        <h3 class="service-name">Alta Cocina</h3>
-                        <p class="service-description">Experimente la excelencia culinaria en nuestro restaurante galardonado</p>
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Alta Cocina" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M8 2v7M12 2v7M16 2v7M5 9h14M4 13h16M6 17h12M7 21h10" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Alta Cocina</h3>
+                        <p class="svc-card-v2-desc">Experimente la excelencia culinaria en nuestro restaurante galardonado</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Nuestro chef ejecutivo crea men&#250;s de temporada con ingredientes locales y t&#233;cnicas de vanguardia. Maridajes exclusivos, cenas privadas y experiencias gastron&#243;micas que deleitar&#225;n todos sus sentidos.</p>
                     </div>
                 </article>
-                <article class="service-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Centro de Negocios" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#D4AF37" stroke-width="2"/><path d="M3 9h18M9 21V9" stroke="#D4AF37" stroke-width="2"/></svg>
-                        <h3 class="service-name">Centro de Negocios</h3>
-                        <p class="service-description">Instalaciones de &#250;ltima generaci&#243;n para el profesional moderno</p>
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="300">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Centro de Negocios" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#D4AF37" stroke-width="2"/><path d="M3 9h18M9 21V9" stroke="#D4AF37" stroke-width="2"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Centro de Negocios</h3>
+                        <p class="svc-card-v2-desc">Instalaciones de &#250;ltima generaci&#243;n para el profesional moderno</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Salas de reuniones equipadas con tecnolog&#237;a de punta, videoconferencia HD, servicio de secretar&#237;a y espacios de coworking dise&#241;ados para maximizar su productividad en un entorno premium.</p>
                     </div>
                 </article>
-                <article class="service-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800&q=80" alt="Piscina Fitness" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M2 15c1.67-2.67 4-4 7-4s5.33 1.33 7 4c1.67-2.67 4-4 7-4M2 20c1.67-2.67 4-4 7-4s5.33 1.33 7 4c1.67-2.67 4-4 7-4" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
-                        <h3 class="service-name">Piscina &amp; Fitness</h3>
-                        <p class="service-description">Piscina infinita y equipamiento deportivo premium</p>
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800&q=80" alt="Piscina Fitness" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M2 15c1.67-2.67 4-4 7-4s5.33 1.33 7 4c1.67-2.67 4-4 7-4M2 20c1.67-2.67 4-4 7-4s5.33 1.33 7 4c1.67-2.67 4-4 7-4" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Piscina &amp; Fitness</h3>
+                        <p class="svc-card-v2-desc">Piscina infinita y equipamiento deportivo premium</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Nuestra piscina infinita con vista panor&#225;mica, gimnasio con equipos Technogym de &#250;ltima generaci&#243;n, clases de yoga al amanecer y entrenadores personales certificados a su disposici&#243;n.</p>
                     </div>
                 </article>
-                <article class="service-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80" alt="Concierge" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#D4AF37" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke="#D4AF37" stroke-width="2"/></svg>
-                        <h3 class="service-name">Concierge</h3>
-                        <p class="service-description">Servicio personalizado 24/7 para todas sus necesidades</p>
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80" alt="Concierge" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#D4AF37" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke="#D4AF37" stroke-width="2"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Concierge</h3>
+                        <p class="svc-card-v2-desc">Servicio personalizado 24/7 para todas sus necesidades</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Nuestro equipo de concierge est&#225; disponible las 24 horas para organizar reservas exclusivas, transporte de lujo, tours privados y cualquier solicitud especial que haga su estad&#237;a perfecta.</p>
                     </div>
                 </article>
-                <article class="service-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-image"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" alt="Room Service" loading="lazy"></div>
-                    <div class="service-content">
-                        <svg class="service-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="#D4AF37" stroke-width="2"/><path d="M6 1v3M10 1v3M14 1v3" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
-                        <h3 class="service-name">Room Service</h3>
-                        <p class="service-description">Gastronom&#237;a gourmet entregada en su suite</p>
+                <article class="svc-card-v2" data-aos="fade-up" data-aos-delay="300">
+                    <div class="svc-card-v2-img">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" alt="Room Service" loading="lazy">
+                        <div class="svc-card-v2-shine"></div>
+                    </div>
+                    <div class="svc-card-v2-body">
+                        <div class="svc-card-v2-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="#D4AF37" stroke-width="2"/><path d="M6 1v3M10 1v3M14 1v3" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3 class="svc-card-v2-name">Room Service</h3>
+                        <p class="svc-card-v2-desc">Gastronom&#237;a gourmet entregada en su suite</p>
+                        <a href="#" class="svc-card-v2-link" onclick="toggleServiceDetail(this, event)">Descubrir m&#225;s &#8594;</a>
+                    </div>
+                    <div class="svc-card-v2-detail">
+                        <p>Men&#250; gourmet disponible las 24 horas con presentaci&#243;n impecable. Desde desayunos continentales hasta cenas rom&#225;nticas en la intimidad de su suite con la m&#225;xima calidad y atenci&#243;n al detalle.</p>
                     </div>
                 </article>
+            </div>
+            <div style="text-align:center; margin-top:3rem;">
+                <a th:href="@{/servicios/cards}" class="svc-v2-view-all">Ver Todos los Servicios &#8594;</a>
             </div>
         </div>
     </section>

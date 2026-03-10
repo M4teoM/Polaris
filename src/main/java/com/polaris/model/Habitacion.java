@@ -1,24 +1,44 @@
 package com.polaris.model;
 
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "habitacion")
 public class Habitacion {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numero;       // Ej: "101", "205"
-    private int piso;
-    private String estado;       // Disponible, Ocupada, Mantenimiento
-    private Long tipoHabitacionId;
 
-    // Transient: se rellena en el controlador para las vistas
+    @Column(length = 10, nullable = false, unique = true)
+    private String numero;
+
+    @Column(nullable = false)
+    private int piso;
+
+    @Column(length = 20, nullable = false)
+    private String estado;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tipo_habitacion_id", nullable = false)
     private TipoHabitacion tipoHabitacion;
 
     public Habitacion() {}
 
-    public Habitacion(Long id, String numero, int piso, String estado, Long tipoHabitacionId) {
+    public Habitacion(Long id, String numero, int piso, String estado, TipoHabitacion tipoHabitacion) {
         this.id = id;
         this.numero = numero;
         this.piso = piso;
         this.estado = estado;
-        this.tipoHabitacionId = tipoHabitacionId;
+        this.tipoHabitacion = tipoHabitacion;
+    }
+
+    public Habitacion(String numero, int piso, String estado, TipoHabitacion tipoHabitacion) {
+        this.numero = numero;
+        this.piso = piso;
+        this.estado = estado;
+        this.tipoHabitacion = tipoHabitacion;
     }
 
     public Long getId() { return id; }
@@ -33,9 +53,11 @@ public class Habitacion {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 
-    public Long getTipoHabitacionId() { return tipoHabitacionId; }
-    public void setTipoHabitacionId(Long tipoHabitacionId) { this.tipoHabitacionId = tipoHabitacionId; }
-
     public TipoHabitacion getTipoHabitacion() { return tipoHabitacion; }
     public void setTipoHabitacion(TipoHabitacion tipoHabitacion) { this.tipoHabitacion = tipoHabitacion; }
+
+    // Helper para formularios
+    public Long getTipoHabitacionId() {
+        return tipoHabitacion != null ? tipoHabitacion.getId() : null;
+    }
 }

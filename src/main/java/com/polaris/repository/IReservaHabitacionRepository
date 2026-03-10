@@ -1,0 +1,13 @@
+package com.polaris.repository;
+
+import com.polaris.model.ReservaHabitacion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabitacion, Long> {
+    List<ReservaHabitacion> findByClienteId(Long clienteId);
+    List<ReservaHabitacion> findByHabitacionId(Long habitacionId);
+}

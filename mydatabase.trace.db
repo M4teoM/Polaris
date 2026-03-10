@@ -1,0 +1,17 @@
+2026-03-09 20:59:36.622884-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM RESERVA_HABITACION RESERVA_HABITACION\000d\000a[*]TIPO_HABITACION"
+Syntax error in SQL statement "SELECT * FROM RESERVA_HABITACION RESERVA_HABITACION\000d\000a[*]TIPO_HABITACION"; SQL statement:
+SELECT * FROM RESERVA_HABITACION RESERVA_HABITACION
+TIPO_HABITACION [42000-232]
+2026-03-09 20:59:46.356103-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]TIPO_HABITACION"; se esperaba "TRUNCATE"
+Syntax error in SQL statement "[*]TIPO_HABITACION"; expected "TRUNCATE"; SQL statement:
+TIPO_HABITACION [42001-232]
+2026-03-09 20:59:52.461628-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]TIPO_HABITACION TIPO_HABITACION"; se esperaba "TRUNCATE"
+Syntax error in SQL statement "[*]TIPO_HABITACION TIPO_HABITACION"; expected "TRUNCATE"; SQL statement:
+TIPO_HABITACION TIPO_HABITACION [42001-232]
+2026-03-09 20:59:59.958196-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM TIPO_HABITACION TIPO_HABITACION [*]TIPO_HABITACION"
+Syntax error in SQL statement "SELECT * FROM TIPO_HABITACION TIPO_HABITACION [*]TIPO_HABITACION"; SQL statement:
+SELECT * FROM TIPO_HABITACION TIPO_HABITACION TIPO_HABITACION [42000-232]

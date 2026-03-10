@@ -1,47 +1,46 @@
 package com.polaris.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.polaris.model.Cliente;
+import com.polaris.repository.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.polaris.model.Cliente;
-import com.polaris.repository.IClienteRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService implements IClienteService {
 
     @Autowired
-    private IClienteRepository clienteRepository;
+    private IClienteRepository repository;
 
     @Override
     public List<Cliente> obtenerTodos() {
-        return clienteRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Cliente obtenerPorId(Long id) {
-        return clienteRepository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Optional<Cliente> buscarPorCorreo(String correo) {
-        return clienteRepository.findByCorreo(correo);
+        return repository.findByCorreo(correo);
     }
 
     @Override
     public void crear(Cliente cliente) {
-        clienteRepository.save(cliente);
+        repository.save(cliente);
     }
 
     @Override
     public void actualizar(Cliente cliente) {
-        clienteRepository.update(cliente);
+        repository.save(cliente);
     }
 
     @Override
     public void eliminar(Long id) {
-        clienteRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

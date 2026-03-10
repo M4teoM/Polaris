@@ -1,6 +1,7 @@
 package com.polaris.controller;
 
 import com.polaris.model.Habitacion;
+import com.polaris.model.TipoHabitacion;
 import com.polaris.service.IHabitacionService;
 import com.polaris.service.ITipoHabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-/**
- * CRUD de Habitaciones físicas (número, piso, estado, tipo).
- * Rutas bajo /rooms para no colisionar con TipoHabitacionController (/habitaciones).
- */
 @Controller
 @RequestMapping("/rooms")
 public class HabitacionController {
@@ -24,46 +19,26 @@ public class HabitacionController {
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
 
-    // ── Utilidad: enriquecer una habitación con su TipoHabitacion ──────────
-    private void enriquecer(Habitacion h) {
-        if (h.getTipoHabitacionId() != null) {
-            h.setTipoHabitacion(tipoHabitacionService.obtenerPorId(h.getTipoHabitacionId()));
-        }
-    }
-
-    private void enriquecerLista(List<Habitacion> lista) {
-        lista.forEach(this::enriquecer);
-    }
-
-    // ── Vista pública ──────────────────────────────────────────────────────
     @GetMapping
     public String listar(Model model) {
-        List<Habitacion> lista = habitacionService.obtenerTodos();
-        enriquecerLista(lista);
-        model.addAttribute("rooms", lista);
+        model.addAttribute("rooms", habitacionService.obtenerTodos());
         return "rooms/lista";
     }
 
-    // ── Detalle público ────────────────────────────────────────────────────
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
         Habitacion h = habitacionService.obtenerPorId(id);
         if (h == null) return "redirect:/rooms";
-        enriquecer(h);
         model.addAttribute("room", h);
         return "rooms/detalle";
     }
 
-    // ── Panel admin ────────────────────────────────────────────────────────
     @GetMapping("/admin")
     public String admin(Model model) {
-        List<Habitacion> lista = habitacionService.obtenerTodos();
-        enriquecerLista(lista);
-        model.addAttribute("rooms", lista);
+        model.addAttribute("rooms", habitacionService.obtenerTodos());
         return "rooms/lista-admin";
     }
 
-    // ── Formulario nueva ───────────────────────────────────────────────────
     @GetMapping("/nueva")
     public String nuevaForm(Model model) {
         model.addAttribute("room", new Habitacion());
@@ -72,12 +47,14 @@ public class HabitacionController {
     }
 
     @PostMapping("/nueva")
-    public String nuevaGuardar(@ModelAttribute Habitacion habitacion) {
+    public String nuevaGuardar(@ModelAttribute Habitacion habitacion,
+                               @RequestParam Long tipoHabitacionId) {
+        TipoHabitacion tipo = tipoHabitacionService.obtenerPorId(tipoHabitacionId);
+        habitacion.setTipoHabitacion(tipo);
         habitacionService.crear(habitacion);
         return "redirect:/rooms/admin";
     }
 
-    // ── Formulario editar ──────────────────────────────────────────────────
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         Habitacion h = habitacionService.obtenerPorId(id);
@@ -89,13 +66,15 @@ public class HabitacionController {
 
     @PostMapping("/editar/{id}")
     public String editarGuardar(@PathVariable Long id,
-                                @ModelAttribute Habitacion habitacion) {
+                                @ModelAttribute Habitacion habitacion,
+                                @RequestParam Long tipoHabitacionId) {
+        TipoHabitacion tipo = tipoHabitacionService.obtenerPorId(tipoHabitacionId);
         habitacion.setId(id);
+        habitacion.setTipoHabitacion(tipo);
         habitacionService.actualizar(habitacion);
         return "redirect:/rooms/admin";
     }
 
-    // ── Eliminar ───────────────────────────────────────────────────────────
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         habitacionService.eliminar(id);

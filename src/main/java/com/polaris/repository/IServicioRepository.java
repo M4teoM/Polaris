@@ -1,12 +1,9 @@
 package com.polaris.repository;
 
 import com.polaris.model.Servicio;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface IServicioRepository {
-
-    List<Servicio> findAll();
-
-    Servicio findById(Long id);
+@Repository
+public interface IServicioRepository extends JpaRepository<Servicio, Long> {
 }

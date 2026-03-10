@@ -1,18 +1,9 @@
 package com.polaris.repository;
 
 import com.polaris.model.TipoHabitacion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface ITipoHabitacionRepository {
-
-    List<TipoHabitacion> findAll();
-
-    TipoHabitacion findById(Long id);
-
-    void save(TipoHabitacion tipoHabitacion);
-
-    void update(TipoHabitacion tipoHabitacion);
-
-    void deleteById(Long id);
+@Repository
+public interface ITipoHabitacionRepository extends JpaRepository<TipoHabitacion, Long> {
 }

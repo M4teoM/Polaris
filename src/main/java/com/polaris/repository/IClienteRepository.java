@@ -1,15 +1,12 @@
 package com.polaris.repository;
 
-import java.util.List;
+import com.polaris.model.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
-import com.polaris.model.Cliente;
-
-public interface IClienteRepository {
-    List<Cliente> findAll();
-    Cliente findById(Long id);
+@Repository
+public interface IClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByCorreo(String correo);
-    void save(Cliente cliente);
-    void update(Cliente cliente);
-    void deleteById(Long id);
 }

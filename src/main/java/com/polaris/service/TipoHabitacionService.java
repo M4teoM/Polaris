@@ -11,30 +11,30 @@ import java.util.List;
 public class TipoHabitacionService implements ITipoHabitacionService {
 
     @Autowired
-    private ITipoHabitacionRepository tipoHabitacionRepository;
+    private ITipoHabitacionRepository repository;
 
     @Override
     public List<TipoHabitacion> obtenerTodos() {
-        return tipoHabitacionRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public TipoHabitacion obtenerPorId(Long id) {
-        return tipoHabitacionRepository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public void crear(TipoHabitacion tipoHabitacion) {
-        tipoHabitacionRepository.save(tipoHabitacion);
+    public void crear(TipoHabitacion tipo) {
+        repository.save(tipo);
     }
 
     @Override
-    public void actualizar(TipoHabitacion tipoHabitacion) {
-        tipoHabitacionRepository.update(tipoHabitacion);
+    public void actualizar(TipoHabitacion tipo) {
+        repository.save(tipo);
     }
 
     @Override
     public void eliminar(Long id) {
-        tipoHabitacionRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

@@ -1,12 +1,13 @@
 package com.polaris.repository;
 
-import com.polaris.model.Habitacion;
 import java.util.List;
 
-public interface IHabitacionRepository {
-    List<Habitacion> findAll();
-    Habitacion findById(Long id);
-    void save(Habitacion habitacion);
-    void update(Habitacion habitacion);
-    void deleteById(Long id);
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.polaris.model.Habitacion;
+
+@Repository
+public interface IHabitacionRepository extends JpaRepository<Habitacion, Long> {
+    List<Habitacion> findByTipoHabitacion_Id(Long tipoId);
 }

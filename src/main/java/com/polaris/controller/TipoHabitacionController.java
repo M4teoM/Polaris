@@ -15,6 +15,7 @@ import com.polaris.model.Habitacion;
 import com.polaris.model.TipoHabitacion;
 import com.polaris.service.IClienteService;
 import com.polaris.service.IHabitacionService;
+import com.polaris.service.IServicioService;
 import com.polaris.service.ITipoHabitacionService;
 
 @Controller
@@ -29,6 +30,9 @@ public class TipoHabitacionController {
 
     @Autowired
     private IClienteService clienteService;
+
+    @Autowired
+    private IServicioService servicioService;
 
     // GET /habitaciones → vista pública (solo lectura)
     @GetMapping
@@ -50,6 +54,7 @@ public class TipoHabitacionController {
         });
         model.addAttribute("rooms", rooms);
         model.addAttribute("clientes", clienteService.obtenerTodos());
+        model.addAttribute("servicios", servicioService.obtenerTodos());
 
         return "habitaciones/lista-admin";
     }

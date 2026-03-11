@@ -28,9 +28,17 @@
 
     <!-- TARJETAS -->
     <main class="svc-page-main">
+
+        <!-- FILTRO POR CATEGORÍA -->
+        <div class="svc-filter-bar">
+            <button class="svc-filter-btn svc-filter-active" data-filter="all">Todos</button>
+            <button class="svc-filter-btn" th:each="cat : ${categorias}" th:data-filter="${cat}" th:text="${cat}">Categoría</button>
+        </div>
+
         <div class="svc-page-grid">
 
             <article class="svc-page-card svc-reveal" th:each="servicio, iterStat : ${servicios}"
+                     th:data-categoria="${servicio.categoria}"
                      th:styleappend="'--delay:' + ${iterStat.index * 100} + 'ms'">
                 <div class="svc-page-card-img">
                     <img th:src="${servicio.imagenUrl}" th:alt="${servicio.nombre}" loading="lazy">
@@ -53,6 +61,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Scroll reveal
         const cards = document.querySelectorAll('.svc-reveal');
         const obs = new IntersectionObserver(function(entries) {
             entries.forEach(function(e) {
@@ -60,6 +69,25 @@
             });
         }, { threshold: 0.1 });
         cards.forEach(function(c) { obs.observe(c); });
+
+        // Filtro por categoría
+        const filterBtns = document.querySelectorAll('.svc-filter-btn');
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b) { b.classList.remove('svc-filter-active'); });
+                btn.classList.add('svc-filter-active');
+                var filter = btn.getAttribute('data-filter');
+                cards.forEach(function(card) {
+                    var cat = card.getAttribute('data-categoria');
+                    if (filter === 'all' || cat === filter) {
+                        card.style.display = '';
+                        card.classList.add('svc-visible');
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
     });
     </script>
 

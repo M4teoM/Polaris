@@ -200,7 +200,7 @@ public class DataInitializer implements CommandLineRunner {
         servicioRepo.save(new Servicio(
             "Servicio de Limusina", "Transporte de lujo premium",
             "Viaje con la máxima distinción en nuestra flota de limusinas de última generación. Servicio ejecutivo con chofer profesional para traslados, eventos especiales o recorridos nocturnos.",
-            350000.0, "https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=800&q=80", "Lujo",
+            350000.0, "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80", "Lujo",
             "Hasta 5 horas", "Disponible 24/7, reserva con 12h de anticipación",
             "Limusina de última generación|Chofer profesional bilingüe|Bebidas premium a bordo|WiFi y sistema multimedia|Periódicos y revistas internacionales|Climatización personalizada",
             "Disponibilidad 24/7|Flota impecable y moderna|Chofer profesional uniformado|Máxima puntualidad garantizada"));

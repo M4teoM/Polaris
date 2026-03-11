@@ -229,6 +229,7 @@
         <button class="section-tab active" onclick="switchTab('tipos', this)">Tipos de Habitaci&#243;n</button>
         <button class="section-tab" onclick="switchTab('rooms', this)">Habitaciones F&#237;sicas</button>
         <button class="section-tab" onclick="switchTab('clientes', this)">Clientes</button>
+        <button class="section-tab" onclick="switchTab('servicios', this)">Servicios</button>
     </div>
 
     <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
@@ -369,6 +370,60 @@
     </div>
 </div>
 
+    <!-- ══ PANEL: SERVICIOS ══ -->
+    <div id="panel-servicios" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Servicios</h2>
+                <span th:text="${#lists.size(servicios)} + ' servicios registrados'">0 servicios</span>
+            </div>
+            <a th:href="@{/servicios/nuevo}" class="btn-nueva">+ Nuevo Servicio</a>
+        </div>
+
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categor&#237;a</th>
+                        <th>Descripci&#243;n</th>
+                        <th>Precio</th>
+                        <th>Duraci&#243;n</th>
+                        <th>Horario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="servicio : ${servicios}">
+                        <td class="num" th:text="${servicio.id}">1</td>
+                        <td th:text="${servicio.nombre}">Nombre</td>
+                        <td>
+                            <span class="tipo-chip" th:text="${servicio.categoria}">Categor&#237;a</span>
+                        </td>
+                        <td style="max-width: 250px;">
+                            <span style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:0.82rem; color:#666;"
+                                  th:text="${servicio.descripcion}">Descripci&#243;n</span>
+                        </td>
+                        <td th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</td>
+                        <td th:text="${servicio.duracion != null ? servicio.duracion : '—'}">—</td>
+                        <td style="max-width: 180px; font-size:0.8rem;" th:text="${servicio.horario != null ? servicio.horario : '—'}">—</td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn-tbl-ver" th:href="@{/servicios/{id}(id=${servicio.id})}">Ver</a>
+                                <a class="btn-tbl-edit" th:href="@{/servicios/editar/{id}(id=${servicio.id})}">Editar</a>
+                                <form th:action="@{/servicios/eliminar/{id}(id=${servicio.id})}" method="post" style="margin:0;">
+                                    <button type="submit" class="btn-tbl-del"
+                                            onclick="return confirm('&#191;Eliminar este servicio?')">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -381,8 +436,9 @@
 
     window.addEventListener('load', function() {
         const tab = new URLSearchParams(window.location.search).get('tab');
-        if (tab === 'rooms')    switchTab('rooms',    document.querySelectorAll('.section-tab')[1]);
-        if (tab === 'clientes') switchTab('clientes', document.querySelectorAll('.section-tab')[2]);
+        if (tab === 'rooms')     switchTab('rooms',     document.querySelectorAll('.section-tab')[1]);
+        if (tab === 'clientes')  switchTab('clientes',  document.querySelectorAll('.section-tab')[2]);
+        if (tab === 'servicios') switchTab('servicios', document.querySelectorAll('.section-tab')[3]);
     });
 </script>
 

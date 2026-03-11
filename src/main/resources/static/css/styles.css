@@ -1559,26 +1559,86 @@ textarea {
 }
 
 .svc-page-main {
-    max-width: 1200px;
-    margin: -60px auto 80px;
-    padding: 0 1.5rem;
+    max-width: 1300px;
+    margin: -60px auto 0;
+    padding: 0 2rem 80px;
     position: relative;
     z-index: 3;
 }
 
+.svc-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px 30px 50px;
+    background: none;
+}
+
+.svc-filter-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 13px 30px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(145deg, #e8ecf1, #d5dbe3);
+    color: #2c3e50;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.08), -2px -2px 8px rgba(255,255,255,0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+.svc-filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.svc-filter-btn:hover::before {
+    left: 100%;
+}
+
+.svc-filter-btn:hover {
+    background: linear-gradient(145deg, #0d1b2e, #1a3a5c);
+    color: #D4AF37;
+    box-shadow: 0 6px 20px rgba(10,22,40,0.3);
+    transform: translateY(-3px) scale(1.03);
+}
+
+.svc-filter-btn.svc-filter-active {
+    background: linear-gradient(145deg, #0A1628, #162d4a);
+    color: #D4AF37;
+    box-shadow: 0 6px 25px rgba(10,22,40,0.35), inset 0 1px 0 rgba(212,175,55,0.2);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.svc-filter-btn.svc-filter-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 20%; right: 20%; height: 3px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    border-radius: 3px;
+}
+
 .svc-page-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
 }
 
 .svc-page-card {
-    background: var(--white);
+    background: linear-gradient(145deg, #0d1b2e, #162d4a);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.04);
-    transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.45s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border: 1px solid rgba(212,175,55,0.1);
     opacity: 0;
     transform: translateY(30px);
     transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.45s ease, opacity 0.6s ease;
@@ -1636,24 +1696,25 @@ textarea {
 .svc-page-card-name {
     font-family: var(--font-display);
     font-size: 1.4rem;
-    color: var(--navy-principal);
+    color: #fff;
     margin: 0 0 0.5rem;
 }
 
 .svc-page-card-desc {
     font-family: var(--font-body);
     font-size: 0.9rem;
-    color: var(--taupe);
+    color: rgba(255,255,255,0.6);
     line-height: 1.6;
     margin: 0 0 1.2rem;
 }
 
 .svc-page-card-footer {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 12px;
     padding-top: 1rem;
-    border-top: 1px solid rgba(0,0,0,0.06);
+    border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .svc-page-card-price {
@@ -1667,17 +1728,20 @@ textarea {
     font-family: var(--font-body);
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--navy-principal);
+    color: #D4AF37;
     text-decoration: none;
-    padding: 0.5rem 1.2rem;
-    border: 1px solid var(--navy-principal);
+    padding: 0.6rem 1.5rem;
+    border: 1px solid rgba(212,175,55,0.4);
     border-radius: 50px;
     transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
 }
 
 .svc-page-card-btn:hover {
-    background: var(--navy-principal);
-    color: #fff;
+    background: #D4AF37;
+    color: #0A1628;
+    border-color: #D4AF37;
 }
 
 
@@ -1894,12 +1958,18 @@ textarea {
         grid-template-columns: 1fr;
     }
     .svc-page-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
     .svc-det-bottom {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .svc-page-grid {
+        grid-template-columns: 1fr;
     }
 }
 

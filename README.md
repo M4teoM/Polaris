@@ -1,6 +1,8 @@
 Polaris 🌟
+<img width="500" height="500" alt="polaris_transparent-" src="https://github.com/user-attachments/assets/51efa03b-3ba3-45e6-b3fe-e8d424030e41" />
 Hotel Polaris es un sistema web para la gestión de un hotel. Permite administrar los tipos de habitaciones disponibles, las habitaciones físicas del hotel, los clientes registrados y los servicios que ofrece el establecimiento.
 El proyecto fue desarrollado como parte de un ejercicio académico usando Spring Boot y Thymeleaf, con persistencia en memoria.
+
 
 ¿Qué puede hacer el sistema?
 Habitaciones

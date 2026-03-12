@@ -1,5 +1,6 @@
 package com.polaris.service;
 
+import com.polaris.errors.ErrorServiceNotFoundException;
 import com.polaris.model.Servicio;
 import com.polaris.repository.IServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class ServicioService implements IServicioService {
 
     @Override
     public Servicio obtenerPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new ErrorServiceNotFoundException(id));
     }
 
     @Override

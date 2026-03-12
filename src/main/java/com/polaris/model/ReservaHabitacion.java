@@ -5,6 +5,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "reserva_habitacion")
 public class ReservaHabitacion {
@@ -25,27 +29,13 @@ public class ReservaHabitacion {
     @Column(nullable = false)
     private int numeroHuespedes;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "cliente_id", nullable = false, unique = true)
     private Cliente cliente;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "habitacion_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "habitacion_id", nullable = false, unique = true)
     private Habitacion habitacion;
-
-    public ReservaHabitacion() {}
-
-    public ReservaHabitacion(Long id, LocalDate fechaCheckIn, LocalDate fechaCheckOut,
-                             String estado, int numeroHuespedes,
-                             Cliente cliente, Habitacion habitacion) {
-        this.id = id;
-        this.fechaCheckIn = fechaCheckIn;
-        this.fechaCheckOut = fechaCheckOut;
-        this.estado = estado;
-        this.numeroHuespedes = numeroHuespedes;
-        this.cliente = cliente;
-        this.habitacion = habitacion;
-    }
 
     public ReservaHabitacion(LocalDate fechaCheckIn, LocalDate fechaCheckOut,
                              String estado, int numeroHuespedes,
@@ -58,24 +48,5 @@ public class ReservaHabitacion {
         this.habitacion = habitacion;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public LocalDate getFechaCheckIn() { return fechaCheckIn; }
-    public void setFechaCheckIn(LocalDate fechaCheckIn) { this.fechaCheckIn = fechaCheckIn; }
-
-    public LocalDate getFechaCheckOut() { return fechaCheckOut; }
-    public void setFechaCheckOut(LocalDate fechaCheckOut) { this.fechaCheckOut = fechaCheckOut; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-
-    public int getNumeroHuespedes() { return numeroHuespedes; }
-    public void setNumeroHuespedes(int numeroHuespedes) { this.numeroHuespedes = numeroHuespedes; }
-
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-
-    public Habitacion getHabitacion() { return habitacion; }
-    public void setHabitacion(Habitacion habitacion) { this.habitacion = habitacion; }
+   
 }

@@ -1,5 +1,6 @@
 package com.polaris.service;
 
+import com.polaris.errors.ErrorRoomNotFoundException;
 import com.polaris.model.Habitacion;
 import com.polaris.model.TipoHabitacion;
 import com.polaris.repository.IHabitacionRepository;
@@ -25,7 +26,8 @@ public class HabitacionService implements IHabitacionService {
 
     @Override
     public Habitacion obtenerPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new ErrorRoomNotFoundException(id));
     }
 
     @Override
@@ -44,7 +46,8 @@ public class HabitacionService implements IHabitacionService {
     }
 
     public void crearConTipo(Habitacion habitacion, Long tipoId) {
-        TipoHabitacion tipo = tipoRepo.findById(tipoId).orElseThrow();
+        TipoHabitacion tipo = tipoRepo.findById(tipoId)
+                .orElseThrow(() -> new ErrorRoomNotFoundException(tipoId));
         habitacion.setTipoHabitacion(tipo);
         repository.save(habitacion);
     }

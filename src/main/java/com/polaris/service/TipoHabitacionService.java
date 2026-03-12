@@ -1,5 +1,6 @@
 package com.polaris.service;
 
+import com.polaris.errors.ErrorRoomNotFoundException;
 import com.polaris.model.TipoHabitacion;
 import com.polaris.repository.ITipoHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class TipoHabitacionService implements ITipoHabitacionService {
 
     @Override
     public TipoHabitacion obtenerPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new ErrorRoomNotFoundException(id));
     }
 
     @Override

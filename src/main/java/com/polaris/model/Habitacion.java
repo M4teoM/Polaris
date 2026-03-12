@@ -1,8 +1,13 @@
 package com.polaris.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "habitacion")
 public class Habitacion {
@@ -24,15 +29,7 @@ public class Habitacion {
     @JoinColumn(name = "tipo_habitacion_id", nullable = false)
     private TipoHabitacion tipoHabitacion;
 
-    public Habitacion() {}
 
-    public Habitacion(Long id, String numero, int piso, String estado, TipoHabitacion tipoHabitacion) {
-        this.id = id;
-        this.numero = numero;
-        this.piso = piso;
-        this.estado = estado;
-        this.tipoHabitacion = tipoHabitacion;
-    }
 
     public Habitacion(String numero, int piso, String estado, TipoHabitacion tipoHabitacion) {
         this.numero = numero;
@@ -41,21 +38,7 @@ public class Habitacion {
         this.tipoHabitacion = tipoHabitacion;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getNumero() { return numero; }
-    public void setNumero(String numero) { this.numero = numero; }
-
-    public int getPiso() { return piso; }
-    public void setPiso(int piso) { this.piso = piso; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-
-    public TipoHabitacion getTipoHabitacion() { return tipoHabitacion; }
-    public void setTipoHabitacion(TipoHabitacion tipoHabitacion) { this.tipoHabitacion = tipoHabitacion; }
-
+   
     // Helper para formularios
     public Long getTipoHabitacionId() {
         return tipoHabitacion != null ? tipoHabitacion.getId() : null;

@@ -1,7 +1,6 @@
 package com.polaris.controller;
 
 import com.polaris.model.Habitacion;
-import com.polaris.model.TipoHabitacion;
 import com.polaris.service.IHabitacionService;
 import com.polaris.service.ITipoHabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,7 @@ public class HabitacionController {
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
-        Habitacion h = habitacionService.obtenerPorId(id);
-        if (h == null) return "redirect:/rooms";
-        model.addAttribute("room", h);
+        model.addAttribute("room", habitacionService.obtenerPorId(id));
         return "rooms/detalle";
     }
 
@@ -49,17 +46,14 @@ public class HabitacionController {
     @PostMapping("/nueva")
     public String nuevaGuardar(@ModelAttribute Habitacion habitacion,
                                @RequestParam Long tipoHabitacionId) {
-        TipoHabitacion tipo = tipoHabitacionService.obtenerPorId(tipoHabitacionId);
-        habitacion.setTipoHabitacion(tipo);
+        habitacion.setTipoHabitacion(tipoHabitacionService.obtenerPorId(tipoHabitacionId));
         habitacionService.crear(habitacion);
         return "redirect:/rooms/admin";
     }
 
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
-        Habitacion h = habitacionService.obtenerPorId(id);
-        if (h == null) return "redirect:/rooms/admin";
-        model.addAttribute("room", h);
+        model.addAttribute("room", habitacionService.obtenerPorId(id));
         model.addAttribute("tipos", tipoHabitacionService.obtenerTodos());
         return "rooms/formulario";
     }
@@ -68,9 +62,8 @@ public class HabitacionController {
     public String editarGuardar(@PathVariable Long id,
                                 @ModelAttribute Habitacion habitacion,
                                 @RequestParam Long tipoHabitacionId) {
-        TipoHabitacion tipo = tipoHabitacionService.obtenerPorId(tipoHabitacionId);
         habitacion.setId(id);
-        habitacion.setTipoHabitacion(tipo);
+        habitacion.setTipoHabitacion(tipoHabitacionService.obtenerPorId(tipoHabitacionId));
         habitacionService.actualizar(habitacion);
         return "redirect:/rooms/admin";
     }

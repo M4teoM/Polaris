@@ -23,7 +23,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        // Solo insertar si la BD está vacía
         if (tipoRepo.count() > 0) return;
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
@@ -60,29 +59,24 @@ public class DataInitializer implements CommandLineRunner {
         // ── 50 Habitaciones ───────────────────────────────────────────────
         String[] estados = {"Disponible", "Ocupada", "Mantenimiento"};
 
-        // Piso 1: 101-110 (Estándar)
         for (int i = 1; i <= 10; i++)
             habitacionRepo.save(new Habitacion("10" + i, 1, estados[i % 3], estandar));
 
-        // Piso 2: 201-205 (Estándar) 206-210 (Ejecutiva)
         for (int i = 1; i <= 5; i++)
             habitacionRepo.save(new Habitacion("20" + i, 2, estados[i % 3], estandar));
         for (int i = 6; i <= 10; i++)
             habitacionRepo.save(new Habitacion("20" + i, 2, estados[i % 3], ejecutiva));
 
-        // Piso 3: 301-305 (Ejecutiva) 306-310 (VIP)
         for (int i = 1; i <= 5; i++)
             habitacionRepo.save(new Habitacion("30" + i, 3, estados[i % 3], ejecutiva));
         for (int i = 6; i <= 10; i++)
             habitacionRepo.save(new Habitacion("30" + i, 3, estados[i % 3], vip));
 
-        // Piso 4: 401-405 (VIP) 406-410 (Familiar)
         for (int i = 1; i <= 5; i++)
             habitacionRepo.save(new Habitacion("40" + i, 4, estados[i % 3], vip));
         for (int i = 6; i <= 10; i++)
             habitacionRepo.save(new Habitacion("40" + i, 4, estados[i % 3], familiar));
 
-        // Piso 5: 501-508 (Familiar) 509-510 (Penthouse)
         for (int i = 1; i <= 8; i++)
             habitacionRepo.save(new Habitacion("50" + i, 5, estados[i % 3], familiar));
         habitacionRepo.save(new Habitacion("509", 5, "Disponible", penthouse));
@@ -100,166 +94,266 @@ public class DataInitializer implements CommandLineRunner {
         clienteRepo.save(new Cliente("Sofia",     "Ramírez",    "sofia.ramirez@email.com",     "sof222"));
         clienteRepo.save(new Cliente("Juliana",   "Vargas",     "juli.vargas@email.com",       "jul333"));
 
-        // ── Servicios (20) ─────────────────────────────────────────────
-        servicioRepo.save(new Servicio(
-            "Spa Premium", "Experiencia completa de relajación",
-            "Nuestro Spa Premium ofrece una experiencia de relajación total. Incluye masajes terapéuticos, tratamientos faciales con productos de alta gama, aromaterapia, sauna finlandesa y jacuzzi privado. Nuestros terapeutas certificados le brindarán atención personalizada de puro bienestar.",
-            180000.0, "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80", "Bienestar",
-            "2 horas", "Todos los días de 8:00 AM a 8:00 PM",
-            "Masaje terapéutico de cuerpo completo|Tratamiento facial premium|Aromaterapia personalizada|Acceso a sauna finlandesa|Jacuzzi privado|Bata y sandalias de cortesía|Infusiones y snacks saludables",
-            "Terapeutas certificados internacionalmente|Productos orgánicos de alta gama|Ambiente de tranquilidad absoluta|Reserva privada garantizada"));
+        // ── 20 Servicios ──────────────────────────────────────────────────
+        Servicio s1 = new Servicio();
+        s1.setNombre("Spa Premium");
+        s1.setDescripcion("Experiencia completa de relajación");
+        s1.setDescripcionDetallada("Nuestro Spa Premium ofrece una experiencia de relajación total. Incluye masajes terapéuticos, tratamientos faciales con productos de alta gama, aromaterapia, sauna finlandesa y jacuzzi privado.");
+        s1.setPrecio(180000.0);
+        s1.setImagenUrl("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80");
+        s1.setCategoria("Bienestar");
+        s1.setDuracion("2 horas");
+        s1.setHorario("Todos los días de 8:00 AM a 8:00 PM");
+        s1.setIncluye("Masaje terapéutico de cuerpo completo|Tratamiento facial premium|Aromaterapia personalizada|Acceso a sauna finlandesa|Jacuzzi privado|Bata y sandalias de cortesía|Infusiones y snacks saludables");
+        s1.setDestacados("Terapeutas certificados internacionalmente|Productos orgánicos de alta gama|Ambiente de tranquilidad absoluta|Reserva privada garantizada");
+        servicioRepo.save(s1);
 
-        servicioRepo.save(new Servicio(
-            "Tour Histórico", "Recorrido guiado por la ciudad",
-            "Un recorrido exclusivo por los lugares más emblemáticos e históricos de la ciudad. Nuestro guía bilingüe certificado le llevará a monumentos, museos y barrios históricos con anécdotas únicas.",
-            95000.0, "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80", "Turismo",
-            "4 horas", "Lunes a sábado, salidas a las 9:00 AM y 2:00 PM",
-            "Guía bilingüe certificado|Transporte privado con aire acondicionado|Refrigerios gourmet durante el recorrido|Acceso a zonas restringidas|Seguro de viajero incluido|Fotografías del recorrido",
-            "Recorrido por monumentos emblemáticos|Anécdotas históricas exclusivas|Grupos reducidos máx. 8 personas|Cancelación gratuita hasta 24h antes"));
+        Servicio s2 = new Servicio();
+        s2.setNombre("Tour Histórico");
+        s2.setDescripcion("Recorrido guiado por la ciudad");
+        s2.setDescripcionDetallada("Un recorrido exclusivo por los lugares más emblemáticos e históricos de la ciudad. Nuestro guía bilingüe certificado le llevará a monumentos, museos y barrios históricos con anécdotas únicas.");
+        s2.setPrecio(95000.0);
+        s2.setImagenUrl("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80");
+        s2.setCategoria("Turismo");
+        s2.setDuracion("4 horas");
+        s2.setHorario("Lunes a sábado, salidas a las 9:00 AM y 2:00 PM");
+        s2.setIncluye("Guía bilingüe certificado|Transporte privado con aire acondicionado|Refrigerios gourmet|Acceso a zonas restringidas|Seguro de viajero incluido|Fotografías del recorrido");
+        s2.setDestacados("Recorrido por monumentos emblemáticos|Anécdotas históricas exclusivas|Grupos reducidos máx. 8 personas|Cancelación gratuita hasta 24h antes");
+        servicioRepo.save(s2);
 
-        servicioRepo.save(new Servicio(
-            "Cena Gourmet", "Menú degustación de cinco tiempos",
-            "Una experiencia gastronómica de alto nivel diseñada por nuestro chef ejecutivo con formación internacional. El menú de degustación de 5 tiempos fusiona lo mejor de la cocina local con técnicas de vanguardia.",
-            220000.0, "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&q=80", "Gastronomía",
-            "2.5 horas", "Jueves a domingo, de 7:00 PM a 11:00 PM",
-            "Menú degustación de 5 tiempos|Maridaje con vinos internacionales|Mesa privada con vista panorámica|Servicio de sommelier personalizado|Amuse-bouche de bienvenida|Petit fours de despedida",
-            "Chef con formación internacional|Ingredientes de temporada y locales|Cocina de vanguardia y técnicas moleculares|Ambiente íntimo y exclusivo"));
+        Servicio s3 = new Servicio();
+        s3.setNombre("Cena Gourmet");
+        s3.setDescripcion("Menú degustación de cinco tiempos");
+        s3.setDescripcionDetallada("Una experiencia gastronómica de alto nivel diseñada por nuestro chef ejecutivo con formación internacional. El menú de degustación de 5 tiempos fusiona lo mejor de la cocina local con técnicas de vanguardia.");
+        s3.setPrecio(220000.0);
+        s3.setImagenUrl("https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&q=80");
+        s3.setCategoria("Gastronomía");
+        s3.setDuracion("2.5 horas");
+        s3.setHorario("Jueves a domingo, de 7:00 PM a 11:00 PM");
+        s3.setIncluye("Menú degustación de 5 tiempos|Maridaje con vinos internacionales|Mesa privada con vista panorámica|Servicio de sommelier personalizado|Amuse-bouche de bienvenida|Petit fours de despedida");
+        s3.setDestacados("Chef con formación internacional|Ingredientes de temporada y locales|Cocina de vanguardia|Ambiente íntimo y exclusivo");
+        servicioRepo.save(s3);
 
-        servicioRepo.save(new Servicio(
-            "Aventura en Helicóptero", "Vuelo panorámico sobre la ciudad",
-            "Disfrute de una experiencia exclusiva sobrevolando los principales paisajes urbanos y naturales de la región. Un recorrido aéreo con vistas que cortarán el aliento y momentos que perdurarán para siempre.",
-            450000.0, "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?w=800&q=80", "Aventura",
-            "45 minutos", "Viernes a domingo, de 10:00 AM a 4:00 PM (sujeto a clima)",
-            "Vuelo panorámico en helicóptero privado|Piloto certificado con experiencia|Audioguía personalizada del recorrido|Brindis premium al aterrizar|Seguro de vuelo completo|Video del vuelo en alta definición",
-            "Vistas aéreas impresionantes|Experiencia VIP exclusiva|Seguridad certificada|Recuerdo en video incluido"));
+        Servicio s4 = new Servicio();
+        s4.setNombre("Aventura en Helicóptero");
+        s4.setDescripcion("Vuelo panorámico sobre la ciudad");
+        s4.setDescripcionDetallada("Disfrute de una experiencia exclusiva sobrevolando los principales paisajes urbanos y naturales de la región. Un recorrido aéreo con vistas que cortarán el aliento.");
+        s4.setPrecio(450000.0);
+        s4.setImagenUrl("https://images.unsplash.com/photo-1508615070457-7baeba4003ab?w=800&q=80");
+        s4.setCategoria("Aventura");
+        s4.setDuracion("45 minutos");
+        s4.setHorario("Viernes a domingo, de 10:00 AM a 4:00 PM (sujeto a clima)");
+        s4.setIncluye("Vuelo panorámico en helicóptero privado|Piloto certificado|Audioguía personalizada|Brindis premium al aterrizar|Seguro de vuelo completo|Video del vuelo en alta definición");
+        s4.setDestacados("Vistas aéreas impresionantes|Experiencia VIP exclusiva|Seguridad certificada|Recuerdo en video incluido");
+        servicioRepo.save(s4);
 
-        servicioRepo.save(new Servicio(
-            "Sesión Fotográfica Profesional", "Captura momentos inolvidables",
-            "Sesión fotográfica profesional en locaciones icónicas del hotel y sus alrededores. Nuestro fotógrafo experto capturará los mejores momentos con técnicas de iluminación profesional y composición artística.",
-            320000.0, "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80", "Experiencias",
-            "1.5 horas", "Todos los días, previa reserva con 24h de anticipación",
-            "Fotógrafo profesional con portafolio premium|25 fotografías en alta resolución editadas|Sesión en múltiples locaciones|Cambio de vestuario incluido|Galería digital privada|Impresión de foto favorita en canvas",
-            "Portafolio de excelencia artística|Edición digital avanzada|Locaciones exclusivas del hotel|Entrega digital en 48 horas"));
+        Servicio s5 = new Servicio();
+        s5.setNombre("Sesión Fotográfica Profesional");
+        s5.setDescripcion("Captura momentos inolvidables");
+        s5.setDescripcionDetallada("Sesión fotográfica profesional en locaciones icónicas del hotel y sus alrededores. Nuestro fotógrafo experto capturará los mejores momentos con técnicas de iluminación profesional.");
+        s5.setPrecio(320000.0);
+        s5.setImagenUrl("https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80");
+        s5.setCategoria("Experiencias");
+        s5.setDuracion("1.5 horas");
+        s5.setHorario("Todos los días, previa reserva con 24h de anticipación");
+        s5.setIncluye("Fotógrafo profesional|25 fotografías editadas en alta resolución|Sesión en múltiples locaciones|Cambio de vestuario incluido|Galería digital privada|Impresión de foto favorita en canvas");
+        s5.setDestacados("Portafolio de excelencia artística|Edición digital avanzada|Locaciones exclusivas del hotel|Entrega digital en 48 horas");
+        servicioRepo.save(s5);
 
-        servicioRepo.save(new Servicio(
-            "Clase Privada de Cocina", "Aprende con nuestro chef ejecutivo",
-            "Clase exclusiva donde aprenderá técnicas gourmet junto a nuestro chef ejecutivo. Una inmersión total en el arte culinario con ingredientes selectos y secretos profesionales.",
-            210000.0, "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80", "Gastronomía",
-            "3 horas", "Martes, jueves y sábado, de 10:00 AM a 1:00 PM",
-            "Clase con chef ejecutivo del hotel|Ingredientes premium importados|Preparación de 3 platos gourmet|Degustación final con maridaje|Recetario exclusivo digital|Delantal de cortesía personalizado",
-            "Aprendizaje práctico con expertos|Ingredientes de primera calidad|Recetas exclusivas del hotel|Experiencia gastronómica interactiva"));
+        Servicio s6 = new Servicio();
+        s6.setNombre("Clase Privada de Cocina");
+        s6.setDescripcion("Aprende con nuestro chef ejecutivo");
+        s6.setDescripcionDetallada("Clase exclusiva donde aprenderá técnicas gourmet junto a nuestro chef ejecutivo. Una inmersión total en el arte culinario con ingredientes selectos y secretos profesionales.");
+        s6.setPrecio(210000.0);
+        s6.setImagenUrl("https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80");
+        s6.setCategoria("Gastronomía");
+        s6.setDuracion("3 horas");
+        s6.setHorario("Martes, jueves y sábado, de 10:00 AM a 1:00 PM");
+        s6.setIncluye("Clase con chef ejecutivo|Ingredientes premium importados|Preparación de 3 platos gourmet|Degustación final con maridaje|Recetario exclusivo digital|Delantal de cortesía personalizado");
+        s6.setDestacados("Aprendizaje práctico con expertos|Ingredientes de primera calidad|Recetas exclusivas del hotel|Experiencia gastronómica interactiva");
+        servicioRepo.save(s6);
 
-        servicioRepo.save(new Servicio(
-            "Noche Romántica Deluxe", "Decoración especial y amenidades premium",
-            "Transforme su estancia con una ambientación romántica inolvidable. Cada detalle ha sido cuidadosamente diseñado para crear una atmósfera mágica que celebre el amor y la conexión especial.",
-            280000.0, "https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&q=80", "Romántico",
-            "Toda la noche", "Disponible todos los días, preparación a partir de las 4:00 PM",
-            "Decoración floral con pétalos de rosa|Velas aromáticas artesanales|Botella de champagne Moët & Chandon|Fresas cubiertas de chocolate belga|Desayuno especial en la habitación|Música ambiental personalizada|Late checkout hasta las 2:00 PM",
-            "Ambientación personalizada|Productos premium seleccionados|Atención al detalle impecable|Momento inolvidable garantizado"));
+        Servicio s7 = new Servicio();
+        s7.setNombre("Noche Romántica Deluxe");
+        s7.setDescripcion("Decoración especial y amenidades premium");
+        s7.setDescripcionDetallada("Transforme su estancia con una ambientación romántica inolvidable. Cada detalle ha sido cuidadosamente diseñado para crear una atmósfera mágica que celebre el amor.");
+        s7.setPrecio(280000.0);
+        s7.setImagenUrl("https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&q=80");
+        s7.setCategoria("Romántico");
+        s7.setDuracion("Toda la noche");
+        s7.setHorario("Disponible todos los días, preparación a partir de las 4:00 PM");
+        s7.setIncluye("Decoración floral con pétalos de rosa|Velas aromáticas artesanales|Botella de champagne Moët & Chandon|Fresas cubiertas de chocolate belga|Desayuno especial en la habitación|Late checkout hasta las 2:00 PM");
+        s7.setDestacados("Ambientación personalizada|Productos premium seleccionados|Atención al detalle impecable|Momento inolvidable garantizado");
+        servicioRepo.save(s7);
 
-        servicioRepo.save(new Servicio(
-            "Ruta en Yate Privado", "Experiencia náutica exclusiva",
-            "Navegue en un yate privado con tripulación certificada y servicio premium a bordo. Una experiencia náutica que combina la serenidad del mar con el lujo más exquisito.",
-            520000.0, "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&q=80", "Lujo",
-            "3 horas", "Miércoles a domingo, salida a las 10:00 AM o 3:00 PM",
-            "Yate privado con tripulación certificada|Servicio de bebidas premium ilimitadas|Snacks gourmet y tabla de mariscos|Equipo de snorkel incluido|Sistema de sonido Bluetooth|Parada para baño en cala privada|Seguro marítimo completo",
-            "Tripulación profesional y certificada|Servicio todo incluido|Paisajes costeros exclusivos|Ideal para celebraciones VIP"));
+        Servicio s8 = new Servicio();
+        s8.setNombre("Ruta en Yate Privado");
+        s8.setDescripcion("Experiencia náutica exclusiva");
+        s8.setDescripcionDetallada("Navegue en un yate privado con tripulación certificada y servicio premium a bordo. Una experiencia náutica que combina la serenidad del mar con el lujo más exquisito.");
+        s8.setPrecio(520000.0);
+        s8.setImagenUrl("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&q=80");
+        s8.setCategoria("Lujo");
+        s8.setDuracion("3 horas");
+        s8.setHorario("Miércoles a domingo, salida a las 10:00 AM o 3:00 PM");
+        s8.setIncluye("Yate privado con tripulación certificada|Bebidas premium ilimitadas|Snacks gourmet y tabla de mariscos|Equipo de snorkel incluido|Sistema de sonido Bluetooth|Seguro marítimo completo");
+        s8.setDestacados("Tripulación profesional y certificada|Servicio todo incluido|Paisajes costeros exclusivos|Ideal para celebraciones VIP");
+        servicioRepo.save(s8);
 
-        servicioRepo.save(new Servicio(
-            "Sesión de Yoga al Amanecer", "Bienestar con vista panorámica",
-            "Clase privada de yoga guiada por instructor certificado en nuestra terraza panorámica. Una experiencia que armoniza cuerpo, mente y espíritu mientras contempla el amanecer más hermoso.",
-            120000.0, "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80", "Bienestar",
-            "90 minutos", "Todos los días, inicio a las 5:30 AM",
-            "Clase privada con instructor certificado|Mat de yoga premium|Kit de bienestar aromático|Hidratación natural con agua infusionada|Desayuno saludable post-sesión|Meditación guiada al amanecer",
-            "Vista panorámica del amanecer|Instructor con certificación internacional|Experiencia integral cuerpo-mente|Ambiente de paz absoluta"));
+        Servicio s9 = new Servicio();
+        s9.setNombre("Sesión de Yoga al Amanecer");
+        s9.setDescripcion("Bienestar con vista panorámica");
+        s9.setDescripcionDetallada("Clase privada de yoga guiada por instructor certificado en nuestra terraza panorámica. Una experiencia que armoniza cuerpo, mente y espíritu mientras contempla el amanecer más hermoso.");
+        s9.setPrecio(120000.0);
+        s9.setImagenUrl("https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80");
+        s9.setCategoria("Bienestar");
+        s9.setDuracion("90 minutos");
+        s9.setHorario("Todos los días, inicio a las 5:30 AM");
+        s9.setIncluye("Clase privada con instructor certificado|Mat de yoga premium|Kit de bienestar aromático|Hidratación natural con agua infusionada|Desayuno saludable post-sesión|Meditación guiada al amanecer");
+        s9.setDestacados("Vista panorámica del amanecer|Instructor con certificación internacional|Experiencia integral cuerpo-mente|Ambiente de paz absoluta");
+        servicioRepo.save(s9);
 
-        servicioRepo.save(new Servicio(
-            "Experiencia Sommelier", "Cata exclusiva de vinos internacionales",
-            "Degustación privada dirigida por sommelier profesional con selección de vinos internacionales premium. Un viaje sensorial a través de las mejores regiones vinícolas del mundo.",
-            260000.0, "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=800&q=80", "Gastronomía",
-            "2 horas", "Viernes y sábados, de 6:00 PM a 8:00 PM",
-            "Cata de 8 vinos internacionales premium|Tabla de quesos artesanales seleccionados|Explicación técnica de cada etiqueta|Copa de cristal de cortesía|Libreta de cata personalizada|Descuento en compra de botellas",
-            "Sommelier con certificación WSET|Vinos de 5 regiones del mundo|Maridaje artesanal de alta cocina|Experiencia educativa y sensorial"));
+        Servicio s10 = new Servicio();
+        s10.setNombre("Experiencia Sommelier");
+        s10.setDescripcion("Cata exclusiva de vinos internacionales");
+        s10.setDescripcionDetallada("Degustación privada dirigida por sommelier profesional con selección de vinos internacionales premium. Un viaje sensorial a través de las mejores regiones vinícolas del mundo.");
+        s10.setPrecio(260000.0);
+        s10.setImagenUrl("https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=800&q=80");
+        s10.setCategoria("Gastronomía");
+        s10.setDuracion("2 horas");
+        s10.setHorario("Viernes y sábados, de 6:00 PM a 8:00 PM");
+        s10.setIncluye("Cata de 8 vinos internacionales premium|Tabla de quesos artesanales|Explicación técnica de cada etiqueta|Copa de cristal de cortesía|Libreta de cata personalizada|Descuento en compra de botellas");
+        s10.setDestacados("Sommelier con certificación WSET|Vinos de 5 regiones del mundo|Maridaje artesanal de alta cocina|Experiencia educativa y sensorial");
+        servicioRepo.save(s10);
 
-        servicioRepo.save(new Servicio(
-            "Masaje de Piedras Calientes", "Terapia ancestral de relajación profunda",
-            "Descubra el poder sanador de las piedras volcánicas calientes en una sesión que combina técnicas milenarias con la relajación más profunda, liberando tensiones y restaurando el equilibrio natural.",
-            150000.0, "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&q=80", "Bienestar",
-            "75 minutos", "Todos los días de 9:00 AM a 7:00 PM",
-            "Masaje con piedras volcánicas naturales|Aceites esenciales orgánicos|Música de relajación personalizada|Infusión detox post-sesión|Acceso a zona de relajación 30 min extra",
-            "Técnica terapéutica milenaria|Piedras volcánicas de origen certificado|Terapeuta especializado en técnicas orientales|Liberación profunda de tensiones"));
+        Servicio s11 = new Servicio();
+        s11.setNombre("Masaje de Piedras Calientes");
+        s11.setDescripcion("Terapia ancestral de relajación profunda");
+        s11.setDescripcionDetallada("Descubra el poder sanador de las piedras volcánicas calientes en una sesión que combina técnicas milenarias con la relajación más profunda, liberando tensiones y restaurando el equilibrio natural.");
+        s11.setPrecio(150000.0);
+        s11.setImagenUrl("https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&q=80");
+        s11.setCategoria("Bienestar");
+        s11.setDuracion("75 minutos");
+        s11.setHorario("Todos los días de 9:00 AM a 7:00 PM");
+        s11.setIncluye("Masaje con piedras volcánicas naturales|Aceites esenciales orgánicos|Música de relajación personalizada|Infusión detox post-sesión|Acceso a zona de relajación 30 min extra");
+        s11.setDestacados("Técnica terapéutica milenaria|Piedras volcánicas de origen certificado|Terapeuta especializado en técnicas orientales|Liberación profunda de tensiones");
+        servicioRepo.save(s11);
 
-        servicioRepo.save(new Servicio(
-            "Excursión de Buceo", "Descubre el mundo submarino",
-            "Sumérjase en una aventura submarina guiada por instructores PADI certificados. Explore arrecifes de coral vibrantes y nade junto a peces tropicales en una experiencia inolvidable.",
-            380000.0, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80", "Aventura",
-            "4 horas", "Martes, jueves y sábado, salida a las 8:00 AM",
-            "Instructor PADI certificado|Equipo completo de buceo profesional|Dos inmersiones en arrecifes distintos|Transporte marítimo ida y vuelta|Snacks y bebidas a bordo|Fotografías submarinas incluidas|Seguro de buceo completo",
-            "Arrecifes de coral prístinos|Apto para todos los niveles|Equipo de última generación|Máximo 6 personas por grupo"));
+        Servicio s12 = new Servicio();
+        s12.setNombre("Excursión de Buceo");
+        s12.setDescripcion("Descubre el mundo submarino");
+        s12.setDescripcionDetallada("Sumérjase en una aventura submarina guiada por instructores PADI certificados. Explore arrecifes de coral vibrantes y nade junto a peces tropicales en una experiencia inolvidable.");
+        s12.setPrecio(380000.0);
+        s12.setImagenUrl("https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80");
+        s12.setCategoria("Aventura");
+        s12.setDuracion("4 horas");
+        s12.setHorario("Martes, jueves y sábado, salida a las 8:00 AM");
+        s12.setIncluye("Instructor PADI certificado|Equipo completo de buceo profesional|Dos inmersiones en arrecifes distintos|Transporte marítimo ida y vuelta|Snacks y bebidas a bordo|Fotografías submarinas incluidas|Seguro de buceo completo");
+        s12.setDestacados("Arrecifes de coral prístinos|Apto para todos los niveles|Equipo de última generación|Máximo 6 personas por grupo");
+        servicioRepo.save(s12);
 
-        servicioRepo.save(new Servicio(
-            "Servicio de Limusina", "Transporte de lujo premium",
-            "Viaje con la máxima distinción en nuestra flota de limusinas de última generación. Servicio ejecutivo con chofer profesional para traslados, eventos especiales o recorridos nocturnos.",
-            350000.0, "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80", "Lujo",
-            "Hasta 5 horas", "Disponible 24/7, reserva con 12h de anticipación",
-            "Limusina de última generación|Chofer profesional bilingüe|Bebidas premium a bordo|WiFi y sistema multimedia|Periódicos y revistas internacionales|Climatización personalizada",
-            "Disponibilidad 24/7|Flota impecable y moderna|Chofer profesional uniformado|Máxima puntualidad garantizada"));
+        Servicio s13 = new Servicio();
+        s13.setNombre("Servicio de Limusina");
+        s13.setDescripcion("Transporte de lujo premium");
+        s13.setDescripcionDetallada("Viaje con la máxima distinción en nuestra flota de limusinas de última generación. Servicio ejecutivo con chofer profesional para traslados, eventos especiales o recorridos nocturnos.");
+        s13.setPrecio(350000.0);
+        s13.setImagenUrl("https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80");
+        s13.setCategoria("Lujo");
+        s13.setDuracion("Hasta 5 horas");
+        s13.setHorario("Disponible 24/7, reserva con 12h de anticipación");
+        s13.setIncluye("Limusina de última generación|Chofer profesional bilingüe|Bebidas premium a bordo|WiFi y sistema multimedia|Periódicos y revistas internacionales|Climatización personalizada");
+        s13.setDestacados("Disponibilidad 24/7|Flota impecable y moderna|Chofer profesional uniformado|Máxima puntualidad garantizada");
+        servicioRepo.save(s13);
 
-        servicioRepo.save(new Servicio(
-            "Taller de Mixología", "Crea cócteles como un experto",
-            "Aprenda el arte de la coctelería de la mano de nuestro bartender premiado. Desde los clásicos atemporales hasta creaciones de autor, dominará técnicas profesionales de mezcla y presentación.",
-            175000.0, "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80", "Gastronomía",
-            "2 horas", "Miércoles y viernes, de 5:00 PM a 7:00 PM",
-            "Clase con bartender premiado internacionalmente|Preparación de 5 cócteles diferentes|Ingredientes premium importados|Kit de coctelería de cortesía|Recetario digital exclusivo|Degustación de creaciones propias",
-            "Bartender con premios internacionales|Técnicas profesionales de barra|Ingredientes y licores premium|Experiencia divertida y educativa"));
+        Servicio s14 = new Servicio();
+        s14.setNombre("Taller de Mixología");
+        s14.setDescripcion("Crea cócteles como un experto");
+        s14.setDescripcionDetallada("Aprenda el arte de la coctelería de la mano de nuestro bartender premiado. Desde los clásicos atemporales hasta creaciones de autor, dominará técnicas profesionales de mezcla y presentación.");
+        s14.setPrecio(175000.0);
+        s14.setImagenUrl("https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80");
+        s14.setCategoria("Gastronomía");
+        s14.setDuracion("2 horas");
+        s14.setHorario("Miércoles y viernes, de 5:00 PM a 7:00 PM");
+        s14.setIncluye("Clase con bartender premiado internacionalmente|Preparación de 5 cócteles diferentes|Ingredientes premium importados|Kit de coctelería de cortesía|Recetario digital exclusivo|Degustación de creaciones propias");
+        s14.setDestacados("Bartender con premios internacionales|Técnicas profesionales de barra|Ingredientes y licores premium|Experiencia divertida y educativa");
+        servicioRepo.save(s14);
 
-        servicioRepo.save(new Servicio(
-            "Observación de Estrellas", "Astronomía bajo el cielo nocturno",
-            "Una experiencia celestial única en nuestra terraza astronómica equipada con telescopios profesionales. Guiado por un astrónomo experto, descubra constelaciones, planetas y nebulosas.",
-            140000.0, "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80", "Experiencias",
-            "2 horas", "Noches despejadas, de 8:00 PM a 10:00 PM",
-            "Telescopio profesional Celestron|Guía astrónomo certificado|Mapa estelar personalizado|Chocolate caliente gourmet y snacks|Mantas y sillas reclinables|Fotografía astral de recuerdo",
-            "Terraza astronómica exclusiva|Cielo con mínima contaminación lumínica|Guía experto en astronomía|Experiencia mágica e irrepetible"));
+        Servicio s15 = new Servicio();
+        s15.setNombre("Observación de Estrellas");
+        s15.setDescripcion("Astronomía bajo el cielo nocturno");
+        s15.setDescripcionDetallada("Una experiencia celestial única en nuestra terraza astronómica equipada con telescopios profesionales. Guiado por un astrónomo experto, descubra constelaciones, planetas y nebulosas.");
+        s15.setPrecio(140000.0);
+        s15.setImagenUrl("https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80");
+        s15.setCategoria("Experiencias");
+        s15.setDuracion("2 horas");
+        s15.setHorario("Noches despejadas, de 8:00 PM a 10:00 PM");
+        s15.setIncluye("Telescopio profesional Celestron|Guía astrónomo certificado|Mapa estelar personalizado|Chocolate caliente gourmet y snacks|Mantas y sillas reclinables|Fotografía astral de recuerdo");
+        s15.setDestacados("Terraza astronómica exclusiva|Cielo con mínima contaminación lumínica|Guía experto en astronomía|Experiencia mágica e irrepetible");
+        servicioRepo.save(s15);
 
-        servicioRepo.save(new Servicio(
-            "Golf Premium", "Experiencia de golf de clase mundial",
-            "Disfrute de una jornada de golf en un campo de campeonato de 18 hoyos diseñado por arquitectos de renombre mundial. Fairways impecables, greens de competición y vistas espectaculares.",
-            290000.0, "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80", "Deportes",
-            "5 horas", "Todos los días de 6:00 AM a 6:00 PM",
-            "Green fee para 18 hoyos de campeonato|Carrito de golf eléctrico|Caddie profesional bilingüe|Set de palos premium disponibles|Almuerzo en el clubhouse|Clase introductoria para principiantes|Acceso a driving range",
-            "Campo diseñado por arquitecto de renombre|Greens de competición profesional|Vistas panorámicas espectaculares|Clubhouse con todas las comodidades"));
+        Servicio s16 = new Servicio();
+        s16.setNombre("Golf Premium");
+        s16.setDescripcion("Experiencia de golf de clase mundial");
+        s16.setDescripcionDetallada("Disfrute de una jornada de golf en un campo de campeonato de 18 hoyos diseñado por arquitectos de renombre mundial. Fairways impecables, greens de competición y vistas espectaculares.");
+        s16.setPrecio(290000.0);
+        s16.setImagenUrl("https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80");
+        s16.setCategoria("Deportes");
+        s16.setDuracion("5 horas");
+        s16.setHorario("Todos los días de 6:00 AM a 6:00 PM");
+        s16.setIncluye("Green fee para 18 hoyos de campeonato|Carrito de golf eléctrico|Caddie profesional bilingüe|Set de palos premium disponibles|Almuerzo en el clubhouse|Clase introductoria para principiantes|Acceso a driving range");
+        s16.setDestacados("Campo diseñado por arquitecto de renombre|Greens de competición profesional|Vistas panorámicas espectaculares|Clubhouse con todas las comodidades");
+        servicioRepo.save(s16);
 
-        servicioRepo.save(new Servicio(
-            "Tratamiento Facial Deluxe", "Rejuvenecimiento facial avanzado",
-            "Tratamiento facial de última generación que combina tecnología de punta con ingredientes naturales premium. Protocolo único que hidrata, ilumina y rejuvenece visiblemente.",
-            200000.0, "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80", "Bienestar",
-            "90 minutos", "Todos los días de 9:00 AM a 6:00 PM",
-            "Análisis de piel con tecnología avanzada|Limpieza profunda con ultrasonido|Mascarilla de oro 24K|Sérum de ácido hialurónico puro|Masaje facial lifting|Protector solar premium SPF50|Crema hidratante de regalo",
-            "Tecnología dermocosmética de vanguardia|Productos con oro 24K|Protocolo personalizado por especialista|Resultados visibles inmediatos"));
+        Servicio s17 = new Servicio();
+        s17.setNombre("Tratamiento Facial Deluxe");
+        s17.setDescripcion("Rejuvenecimiento facial avanzado");
+        s17.setDescripcionDetallada("Tratamiento facial de última generación que combina tecnología de punta con ingredientes naturales premium. Protocolo único que hidrata, ilumina y rejuvenece visiblemente.");
+        s17.setPrecio(200000.0);
+        s17.setImagenUrl("https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80");
+        s17.setCategoria("Bienestar");
+        s17.setDuracion("90 minutos");
+        s17.setHorario("Todos los días de 9:00 AM a 6:00 PM");
+        s17.setIncluye("Análisis de piel con tecnología avanzada|Limpieza profunda con ultrasonido|Mascarilla de oro 24K|Sérum de ácido hialurónico puro|Masaje facial lifting|Protector solar premium SPF50|Crema hidratante de regalo");
+        s17.setDestacados("Tecnología dermocosmética de vanguardia|Productos con oro 24K|Protocolo personalizado por especialista|Resultados visibles inmediatos");
+        servicioRepo.save(s17);
 
-        servicioRepo.save(new Servicio(
-            "Tour Gastronómico", "Sabores auténticos de la región",
-            "Un recorrido culinario por los mercados, restaurantes y puestos más auténticos de la ciudad. Descubra la gastronomía local degustando platos típicos e ingredientes exóticos.",
-            160000.0, "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80", "Gastronomía",
-            "3.5 horas", "Lunes, miércoles y viernes, salida a las 10:00 AM",
-            "Guía foodie experto local|Degustación en 6 paradas gastronómicas|Mercado tradicional con ingredientes exóticos|Bebidas locales artesanales|Transporte entre paradas|Mapa gastronómico personalizado",
-            "Experiencia auténtica y local|Sabores que no encontrarás en restaurantes|Grupos íntimos máx. 10 personas|Historia y cultura a través de la comida"));
+        Servicio s18 = new Servicio();
+        s18.setNombre("Tour Gastronómico");
+        s18.setDescripcion("Sabores auténticos de la región");
+        s18.setDescripcionDetallada("Un recorrido culinario por los mercados, restaurantes y puestos más auténticos de la ciudad. Descubra la gastronomía local degustando platos típicos e ingredientes exóticos.");
+        s18.setPrecio(160000.0);
+        s18.setImagenUrl("https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80");
+        s18.setCategoria("Gastronomía");
+        s18.setDuracion("3.5 horas");
+        s18.setHorario("Lunes, miércoles y viernes, salida a las 10:00 AM");
+        s18.setIncluye("Guía foodie experto local|Degustación en 6 paradas gastronómicas|Mercado tradicional con ingredientes exóticos|Bebidas locales artesanales|Transporte entre paradas|Mapa gastronómico personalizado");
+        s18.setDestacados("Experiencia auténtica y local|Sabores que no encontrarás en restaurantes|Grupos íntimos máx. 10 personas|Historia y cultura a través de la comida");
+        servicioRepo.save(s18);
 
-        servicioRepo.save(new Servicio(
-            "Safari Fotográfico", "Aventura visual en la naturaleza",
-            "Expedición fotográfica guiada por escenarios naturales impresionantes. Acompañado por un fotógrafo de naturaleza profesional, aprenderá técnicas de composición y captura de fauna y flora.",
-            250000.0, "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80", "Aventura",
-            "5 horas", "Martes y sábado, salida a las 6:00 AM",
-            "Fotógrafo de naturaleza profesional|Transporte 4x4 todoterreno|Equipo fotográfico disponible|Desayuno de campo gourmet|Guía de fauna y flora local|10 fotografías editadas profesionalmente|Chaleco y sombrero safari de cortesía",
-            "Escenarios naturales vírgenes|Guía fotógrafo galardonado|Avistamiento de fauna silvestre|Aventura y aprendizaje artístico"));
+        Servicio s19 = new Servicio();
+        s19.setNombre("Safari Fotográfico");
+        s19.setDescripcion("Aventura visual en la naturaleza");
+        s19.setDescripcionDetallada("Expedición fotográfica guiada por escenarios naturales impresionantes. Acompañado por un fotógrafo de naturaleza profesional, aprenderá técnicas de composición y captura de fauna y flora.");
+        s19.setPrecio(250000.0);
+        s19.setImagenUrl("https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80");
+        s19.setCategoria("Aventura");
+        s19.setDuracion("5 horas");
+        s19.setHorario("Martes y sábado, salida a las 6:00 AM");
+        s19.setIncluye("Fotógrafo de naturaleza profesional|Transporte 4x4 todoterreno|Equipo fotográfico disponible|Desayuno de campo gourmet|Guía de fauna y flora local|10 fotografías editadas profesionalmente|Chaleco y sombrero safari de cortesía");
+        s19.setDestacados("Escenarios naturales vírgenes|Guía fotógrafo galardonado|Avistamiento de fauna silvestre|Aventura y aprendizaje artístico");
+        servicioRepo.save(s19);
 
-        servicioRepo.save(new Servicio(
-            "Meditación y Mindfulness", "Paz interior y conexión profunda",
-            "Retiro de meditación guiada en nuestro jardín zen privado. Nuestro maestro con más de 20 años de experiencia le guiará a través de técnicas de respiración, visualización y mindfulness.",
-            130000.0, "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?w=800&q=80", "Bienestar",
-            "2 horas", "Todos los días, sesiones a las 7:00 AM y 5:00 PM",
-            "Sesión guiada por maestro certificado|Jardín zen privado exclusivo|Técnicas de respiración profunda|Meditación guiada con visualización|Kit de aromaterapia|Té ceremonial japonés|Guía de meditación digital para continuar en casa",
-            "Maestro con 20+ años de experiencia|Jardín zen diseñado para la paz|Técnicas ancestrales y modernas|Transformación interior duradera"));
+        Servicio s20 = new Servicio();
+        s20.setNombre("Meditación y Mindfulness");
+        s20.setDescripcion("Paz interior y conexión profunda");
+        s20.setDescripcionDetallada("Retiro de meditación guiada en nuestro jardín zen privado. Nuestro maestro con más de 20 años de experiencia le guiará a través de técnicas de respiración, visualización y mindfulness.");
+        s20.setPrecio(130000.0);
+        s20.setImagenUrl("https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?w=800&q=80");
+        s20.setCategoria("Bienestar");
+        s20.setDuracion("2 horas");
+        s20.setHorario("Todos los días, sesiones a las 7:00 AM y 5:00 PM");
+        s20.setIncluye("Sesión guiada por maestro certificado|Jardín zen privado exclusivo|Técnicas de respiración profunda|Meditación guiada con visualización|Kit de aromaterapia|Té ceremonial japonés|Guía de meditación digital para continuar en casa");
+        s20.setDestacados("Maestro con 20+ años de experiencia|Jardín zen diseñado para la paz|Técnicas ancestrales y modernas|Transformación interior duradera");
+        servicioRepo.save(s20);
 
         System.out.println("✅ Datos insertados: 5 tipos, 50 habitaciones, 10 clientes, 20 servicios");
     }

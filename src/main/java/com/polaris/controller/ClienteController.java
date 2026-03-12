@@ -1,18 +1,12 @@
 package com.polaris.controller;
 
+import com.polaris.model.Cliente;
+import com.polaris.service.IClienteService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.polaris.model.Cliente;
-import com.polaris.service.IClienteService;
-
-import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/clientes")
@@ -29,9 +23,7 @@ public class ClienteController {
 
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable Long id, Model model) {
-        Cliente cliente = clienteService.obtenerPorId(id);
-        if (cliente == null) return "redirect:/habitaciones/admin?tab=clientes";
-        model.addAttribute("cliente", cliente);
+        model.addAttribute("cliente", clienteService.obtenerPorId(id));
         return "clientes/perfil";
     }
 
@@ -42,17 +34,20 @@ public class ClienteController {
     }
 
     @PostMapping("/nuevo")
-    public String nuevoGuardar(@ModelAttribute Cliente cliente, HttpSession session) {
-        clienteService.crear(cliente);
-        session.setAttribute("clienteActivo", cliente);
-        return "redirect:/clientes/ver/" + cliente.getId();
+    public String nuevoGuardar(@ModelAttribute Cliente cliente, Model model) {
+        try {
+            clienteService.crear(cliente);
+            return "redirect:/clientes/ver/" + cliente.getId();
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("cliente", cliente);
+            model.addAttribute("errorCorreo", e.getMessage());
+            return "clientes/formulario";
+        }
     }
 
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
-        Cliente cliente = clienteService.obtenerPorId(id);
-        if (cliente == null) return "redirect:/habitaciones/admin?tab=clientes";
-        model.addAttribute("cliente", cliente);
+        model.addAttribute("cliente", clienteService.obtenerPorId(id));
         return "clientes/formulario";
     }
 

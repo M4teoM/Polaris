@@ -1,4 +1,4 @@
-package com.polaris.config;
+package com.polaris;
 
 import com.polaris.model.Cliente;
 import com.polaris.model.Habitacion;

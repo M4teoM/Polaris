@@ -3,6 +3,7 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/51efa03b-3ba3-45e6-b3fe-e8d424030e41" width="350" alt="Hotel Polaris Logo">
 </p>
+<img width="960" height="234" alt="Captura de pantalla 2026-03-12 a la(s) 10 28 48 a m" src="https://github.com/user-attachments/assets/2726c765-5ae2-4f38-98d4-58826acc0f0c" />
 
 > **Sistema web integral para la gestión hotelera.**
 > Optimiza la administración de habitaciones, clientes y servicios desde una interfaz intuitiva y moderna.

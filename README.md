@@ -1,33 +1,53 @@
-Polaris 🌟
-<img width="500" height="500" alt="polaris_transparent-" src="https://github.com/user-attachments/assets/51efa03b-3ba3-45e6-b3fe-e8d424030e41" />
-Hotel Polaris es un sistema web para la gestión de un hotel. Permite administrar los tipos de habitaciones disponibles, las habitaciones físicas del hotel, los clientes registrados y los servicios que ofrece el establecimiento.
-El proyecto fue desarrollado como parte de un ejercicio académico usando Spring Boot y Thymeleaf, con persistencia en memoria.
+# 🌟 Hotel Polaris
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/51efa03b-3ba3-45e6-b3fe-e8d424030e41" width="350" alt="Hotel Polaris Logo">
+</p>
 
-¿Qué puede hacer el sistema?
-Habitaciones
-El hotel maneja dos conceptos separados:
+> **Sistema web integral para la gestión hotelera.**
+> Optimiza la administración de habitaciones, clientes y servicios desde una interfaz intuitiva y moderna.
 
-Tipos de habitación: definen las características generales de una categoría (nombre, descripción, precio por noche, área, capacidad y tipo de cama). Por ejemplo: Habitación Estándar, Suite Ejecutiva, Penthouse.
-Habitaciones físicas: son las habitaciones reales del hotel, con número, piso y estado (Disponible, Ocupada o en Mantenimiento). Cada habitación física pertenece a un tipo.
+---
 
-Desde el panel de administración se pueden crear, editar y eliminar tanto los tipos como las habitaciones físicas.
-Clientes
-El sistema permite registrar clientes con su nombre, apellido y correo. Los clientes pueden iniciar sesión y ver su perfil.
-Servicios
-El hotel ofrece servicios adicionales que se pueden consultar desde la página principal.
+## 📖 Descripción
+**Hotel Polaris** es una plataforma desarrollada como proyecto académico para facilitar la gestión operativa de un establecimiento hotelero. El sistema separa de forma lógica las categorías de alojamiento de las unidades físicas, permitiendo un control detallado sobre la disponibilidad y el inventario del hotel.
 
-¿Cómo correr el proyecto?
-Se necesita tener instalado Java 17 y Maven.
-bashgit clone https://github.com/M4teoM/Polaris.git
-cd Polaris
-./mvnw spring-boot:run
-Luego abrir el navegador en http://localhost:8080.
+### ✨ Características Principales
 
-Autores
-Desarrollado por estudiantes de ingeniería de sistemas como proyecto académico.
+#### 🛌 Gestión de Habitaciones
+El sistema implementa un modelo de jerarquía para el control de inventario:
+* **Tipos de Habitación:** Configuración de categorías (Estándar, Suite, Penthouse) definiendo precio, capacidad, tipo de cama y dimensiones.
+* **Unidades Físicas:** Gestión de habitaciones reales asignadas a un número y piso, con estados en tiempo real (*Disponible, Ocupada, Mantenimiento*).
 
-M4teoM
-Santiagom27
-Dasuniel
-Samt81
+#### 👥 Módulo de Clientes
+* Registro y autenticación de usuarios.
+* Gestión de perfiles personales para consulta de información.
+
+#### 🛠️ Servicios Adicionales
+* Catálogo visual de servicios ofrecidos por el hotel accesible desde la página principal.
+
+---
+
+## 🛠️ Stack Tecnológico
+El proyecto utiliza tecnologías robustas para garantizar un desarrollo ágil y escalable:
+
+* **Framework:** [Spring Boot](https://spring.io/projects/spring-boot)
+* **Motor de Plantillas:** [Thymeleaf](https://www.thymeleaf.org/)
+* **Persistencia:** H2 Database / En memoria
+* **Lenguaje:** Java 17
+
+---
+
+## 🚀 Instalación y Uso
+
+Sigue estos pasos para desplegar el proyecto localmente:
+
+### Requisitos previos
+* Java 17 o superior.
+* Maven 3.6+.
+
+### Pasos de ejecución
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/M4teoM/Polaris.git](https://github.com/M4teoM/Polaris.git)
+   cd Polaris

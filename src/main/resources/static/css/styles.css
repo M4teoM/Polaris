@@ -505,7 +505,7 @@ textarea {
 }
 
 .header.scrolled {
-    background-color: var(--navy-claro);
+    background-color: var(--navy-principal);
     box-shadow: var(--shadow-md);
 }
 
@@ -707,7 +707,7 @@ textarea {
 /* ===== HERO SECTION ===== */
 .hero {
     position: relative;
-    min-height: 90vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -739,7 +739,7 @@ textarea {
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-md);
     /* mover contenido hacia arriba dentro del hero */
-    top: -4rem;
+    top: -1rem;
 }
 
 .hero-title {
@@ -773,8 +773,8 @@ textarea {
 }
 
 .mouse {
-    width: 26px;
-    height: 40px;
+    width: 2px;
+    height: 4px;
     border: 2px solid var(--color-aguamarina);
     border-radius: 20px;
     position: relative;
@@ -809,7 +809,7 @@ textarea {
     position: relative;
     padding: 0;
     background: transparent;
-    margin-top: -9rem;
+    margin-top: -5rem;
     z-index: 10;
 }
 
@@ -1026,6 +1026,18 @@ textarea {
     justify-content: center;
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--color-silver);
+}
+
+.room-actions .btn-text {
+    background-color: transparent;
+    border: 2px solid var(--navy-principal);
+    color: var(--navy-principal);
+}
+
+.room-actions .btn-text:hover {
+    background-color: var(--color-aguamarina);
+    border-color: var(--color-aguamarina);
+    color: var(--white);
 }
 
 /* ===== EXPLORE SECTION ===== */
@@ -1978,7 +1990,7 @@ textarea {
 
 /* ===== TESTIMONIALS SECTION ===== */
 .testimonials-section {
-    padding: var(--spacing-3xl) 0;
+    padding-top: var(--spacing-3xl);
     background: linear-gradient(160deg, var(--color-primary-deep) 0%, #0a1f1e 50%, var(--midnight) 100%);
     position: relative;
 }
@@ -2003,11 +2015,12 @@ textarea {
     position: relative;
     overflow: hidden;
     padding: var(--spacing-lg) 0 var(--spacing-2xl);
+    max-width: 720px;
+    margin: 0 auto;
 }
 
 .testimonial-track {
     display: flex;
-    gap: var(--spacing-xl);
     transition: transform var(--transition-slow);
     width: 100%;
 }
@@ -2135,8 +2148,7 @@ textarea {
 .footer {
     background-color: var(--midnight);
     color: var(--taupe-claro);
-    padding: 30px 0;
-    margin-top: 80px;
+    padding: var(--spacing-xl) 0 30px;
 }
 
 .footer-container {
@@ -2266,7 +2278,6 @@ textarea {
         gap: var(--spacing-md);
     }
 
-    /* En móvil el parallax fijo no funciona bien */
     .hero,
     .explore-section {
         background-attachment: scroll;

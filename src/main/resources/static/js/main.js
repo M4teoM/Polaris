@@ -197,8 +197,7 @@ function initTestimonialsSlider() {
 
   // Actualizar el slider
   function updateSlider() {
-    const count = testimonials.length;
-    const offsetPercent = count > 0 ? -currentTestimonial * (100 / count) : 0;
+    const offsetPercent = -currentTestimonial * 100;
     track.style.transform = `translateX(${offsetPercent}%)`;
 
     // Actualizar dots

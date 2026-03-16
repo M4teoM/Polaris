@@ -7,24 +7,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-
 </head>
 <body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
     <div class="login-page">
         <div class="login-card">
             <div class="login-card-header">
                 <h1>Hotel Polaris</h1>
-                <p>Inicia sesi&#243;n en tu cuenta</p>
+                <p>Inicia sesión en tu cuenta</p>
             </div>
             <div class="login-card-body">
                 <div class="error-msg" th:if="${error}" th:text="${error}"></div>
                 <form th:action="@{/login}" method="post">
                     <div class="form-field">
-                        <label for="correo">Correo electr&#243;nico</label>
+                        <label for="correo">Correo electrónico</label>
                         <input type="email" id="correo" name="correo" placeholder="usuario@correo.com" required>
                     </div>
                     <div class="form-field">
-                        <label for="contrasena">Contrase&#241;a</label>
+                        <label for="contrasena">Contraseña</label>
                         <input type="password" id="contrasena" name="contrasena" placeholder="••••••••" required>
                     </div>
                     <button type="submit" class="btn-login">Ingresar</button>

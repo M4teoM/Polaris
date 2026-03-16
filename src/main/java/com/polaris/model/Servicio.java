@@ -45,4 +45,16 @@ public class Servicio {
 
     @Column(length = 1000)
     private String destacados;
+
+    @Transient
+    public String[] getIncluyeLista() {
+        if (incluye == null || incluye.isBlank()) return new String[0];
+        return incluye.split("\\|");
+    }
+
+    @Transient
+    public String[] getDestacadosLista() {
+        if (destacados == null || destacados.isBlank()) return new String[0];
+        return destacados.split("\\|");
+    }
 }

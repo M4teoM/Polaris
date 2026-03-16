@@ -2923,8 +2923,22 @@ textarea {
 }
 
 
-.form-page { min-height: 100vh; background: #f4f7fb; padding: 120px 0 80px; }
+.form-page {
+            min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80') center/cover no-repeat fixed;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+        .form-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10,22,40,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
         .form-card {
+            position: relative; z-index: 2;
             max-width: 620px; margin: 0 auto;
             background: #fff; border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.09); overflow: hidden;
@@ -3281,10 +3295,12 @@ textarea {
 
                 .form-page {
             min-height: 100vh;
-            background: #f4f7fb;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80') center/cover no-repeat fixed;
             padding: 120px 0 80px;
+            position: relative;
         }
         .form-card {
+            position: relative; z-index: 2;
             max-width: 720px; margin: 0 auto;
             background: #fff; border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.09);
@@ -3484,10 +3500,12 @@ textarea {
 
                 .form-page {
             min-height: 100vh;
-            background: #f4f7fb;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80') center/cover no-repeat fixed;
             padding: 120px 0 80px;
+            position: relative;
         }
         .form-card {
+            position: relative; z-index: 2;
             max-width: 780px; margin: 0 auto;
             background: #fff; border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.09);
@@ -3626,12 +3644,23 @@ textarea {
         }
         .btn-outline:hover { background: #1a1a2e; color: white; }
 
-                .login-page {
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80') center/cover no-repeat fixed;
             display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .login-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10,22,40,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         .login-card {
+            position: relative; z-index: 2;
             background: #fff; border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden; width: 100%; max-width: 420px;
@@ -3712,6 +3741,7 @@ textarea {
             transition: background 0.3s;
         }
         .btn-lista-clientes:hover { background: #e0e6f0; }
+
 
                 .perfil-page {
             min-height: 100vh;

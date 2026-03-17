@@ -7,7 +7,9 @@
     <title>Servicios | Hotel Polaris</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
@@ -21,8 +23,8 @@
         <div class="svc-page-hero-overlay"></div>
         <div class="svc-page-hero-content">
             <span class="svc-page-hero-badge">&#10022; Experiencias Premium</span>
-            <h1 class="svc-page-hero-title">Servicios Excepcionales</h1>
-            <p class="svc-page-hero-sub">Cada detalle diseñado a la perfección para una experiencia inolvidable</p>
+            <h1 class="svc-page-hero-title">Nuestros Servicios</h1>
+            <p class="svc-page-hero-sub">Experiencias personalizadas para elevar cada momento de su estad&#237;a</p>
         </div>
     </section>
 
@@ -32,63 +34,171 @@
         <!-- FILTRO POR CATEGORÍA -->
         <div class="svc-filter-bar">
             <button class="svc-filter-btn svc-filter-active" data-filter="all">Todos</button>
-            <button class="svc-filter-btn" th:each="cat : ${categorias}" th:data-filter="${cat}" th:text="${cat}">Categoría</button>
+            <button class="svc-filter-btn" th:each="cat : ${categorias}" th:data-filter="${cat}"
+                th:text="${cat}">Categoría</button>
         </div>
 
         <div class="svc-page-grid">
 
             <article class="svc-page-card svc-reveal" th:each="servicio, iterStat : ${servicios}"
-                     th:data-categoria="${servicio.categoria}"
-                     th:styleappend="'--delay:' + ${iterStat.index * 100} + 'ms'">
+                th:data-categoria="${servicio.categoria}" th:styleappend="'--delay:' + ${iterStat.index * 100} + 'ms'">
                 <div class="svc-page-card-img">
                     <img th:src="${servicio.imagenUrl}" th:alt="${servicio.nombre}" loading="lazy">
-                    <div class="svc-page-card-cat" th:text="${servicio.categoria}">Categoría</div>
+                    <div class="svc-page-card-cat" th:text="${servicio.categoria}">INCLUIDO</div>
                 </div>
                 <div class="svc-page-card-body">
+                    <div class="svc-page-card-meta">
+                        <span th:if="${servicio.duracion != null and !servicio.duracion.isEmpty()}">
+                            <span aria-hidden="true">&#x23F1;</span>
+                            <span th:text="${servicio.duracion}">2 horas</span>
+                        </span>
+                        <span th:if="${servicio.horario != null and !servicio.horario.isEmpty()}">
+                            <span aria-hidden="true">&#9675;</span>
+                            <span th:text="${servicio.horario}">8:00 - 18:00</span>
+                        </span>
+                    </div>
                     <h3 class="svc-page-card-name" th:text="${servicio.nombre}">Nombre</h3>
                     <p class="svc-page-card-desc" th:text="${servicio.descripcion}">Descripción</p>
                     <div class="svc-page-card-footer">
-                        <span class="svc-page-card-price" th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</span>
-                        <a class="svc-page-card-btn" th:href="@{/servicios/{id}(id=${servicio.id})}">Ver Detalle &#8594;</a>
+                        <span class="svc-page-card-price"
+                            th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</span>
+                        <a class="svc-page-card-btn" th:href="@{/servicios/{id}(id=${servicio.id})}">
+                            <span>Ver Detalle</span>
+                        </a>
                     </div>
                 </div>
             </article>
 
         </div>
+
+        <section class="svc-role-tables">
+            <div class="svc-role-header">
+                <h2>Tablas por rol</h2>
+                <p>Consulta r&#225;pida para administraci&#243;n y operaci&#243;n.</p>
+            </div>
+
+            <div class="svc-role-switch">
+                <button type="button" class="svc-role-btn active" data-panel="admin">Administrador</button>
+                <button type="button" class="svc-role-btn" data-panel="operador">Operador</button>
+            </div>
+
+            <div id="svc-panel-admin" class="svc-role-panel active">
+                <div class="svc-role-table-wrap">
+                    <table class="svc-role-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Categor&#237;a</th>
+                                <th>Precio</th>
+                                <th>Duraci&#243;n</th>
+                                <th>Horario</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="servicio : ${servicios}">
+                                <td th:text="${servicio.id}">1</td>
+                                <td th:text="${servicio.nombre}">Servicio</td>
+                                <td><span class="svc-role-chip" th:text="${servicio.categoria}">Categor&#237;a</span>
+                                </td>
+                                <td class="svc-role-price"
+                                    th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</td>
+                                <td th:text="${servicio.duracion != null ? servicio.duracion : '—'}">—</td>
+                                <td th:text="${servicio.horario != null ? servicio.horario : '—'}">—</td>
+                                <td>
+                                    <div class="svc-role-actions">
+                                        <a class="svc-role-action view"
+                                            th:href="@{/servicios/{id}(id=${servicio.id})}">Ver</a>
+                                        <a class="svc-role-action edit"
+                                            th:href="@{/servicios/editar/{id}(id=${servicio.id})}">Editar</a>
+                                        <form th:action="@{/servicios/eliminar/{id}(id=${servicio.id})}" method="post">
+                                            <button type="submit" class="svc-role-action delete"
+                                                onclick="return confirm('&#191;Eliminar este servicio?')">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="svc-panel-operador" class="svc-role-panel">
+                <div class="svc-role-table-wrap">
+                    <table class="svc-role-table">
+                        <thead>
+                            <tr>
+                                <th>Servicio</th>
+                                <th>Categor&#237;a</th>
+                                <th>Duraci&#243;n</th>
+                                <th>Horario</th>
+                                <th>Precio</th>
+                                <th>Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="servicio : ${servicios}">
+                                <td th:text="${servicio.nombre}">Servicio</td>
+                                <td><span class="svc-role-chip" th:text="${servicio.categoria}">Categor&#237;a</span>
+                                </td>
+                                <td th:text="${servicio.duracion != null ? servicio.duracion : '—'}">—</td>
+                                <td th:text="${servicio.horario != null ? servicio.horario : '—'}">—</td>
+                                <td class="svc-role-price"
+                                    th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</td>
+                                <td><a class="svc-role-action view"
+                                        th:href="@{/servicios/{id}(id=${servicio.id})}">Ver</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Scroll reveal
-        const cards = document.querySelectorAll('.svc-reveal');
-        const obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting) { e.target.classList.add('svc-visible'); obs.unobserve(e.target); }
-            });
-        }, { threshold: 0.1 });
-        cards.forEach(function(c) { obs.observe(c); });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Scroll reveal
+            const cards = document.querySelectorAll('.svc-reveal');
+            const obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) { e.target.classList.add('svc-visible'); obs.unobserve(e.target); }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach(function (c) { obs.observe(c); });
 
-        // Filtro por categoría
-        const filterBtns = document.querySelectorAll('.svc-filter-btn');
-        filterBtns.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(function(b) { b.classList.remove('svc-filter-active'); });
-                btn.classList.add('svc-filter-active');
-                var filter = btn.getAttribute('data-filter');
-                cards.forEach(function(card) {
-                    var cat = card.getAttribute('data-categoria');
-                    if (filter === 'all' || cat === filter) {
-                        card.style.display = '';
-                        card.classList.add('svc-visible');
-                    } else {
-                        card.style.display = 'none';
-                    }
+            // Filtro por categoría
+            const filterBtns = document.querySelectorAll('.svc-filter-btn');
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(function (b) { b.classList.remove('svc-filter-active'); });
+                    btn.classList.add('svc-filter-active');
+                    var filter = btn.getAttribute('data-filter');
+                    cards.forEach(function (card) {
+                        var cat = card.getAttribute('data-categoria');
+                        if (filter === 'all' || cat === filter) {
+                            card.style.display = '';
+                            card.classList.add('svc-visible');
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            const roleBtns = document.querySelectorAll('.svc-role-btn');
+            roleBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    roleBtns.forEach(function (b) { b.classList.remove('active'); });
+                    document.querySelectorAll('.svc-role-panel').forEach(function (p) { p.classList.remove('active'); });
+                    btn.classList.add('active');
+                    const panel = btn.getAttribute('data-panel');
+                    document.getElementById('svc-panel-' + panel).classList.add('active');
                 });
             });
         });
-    });
     </script>
 
 </body>

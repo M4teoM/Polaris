@@ -2,17 +2,18 @@ package com.polaris;
 
 import com.polaris.model.Cliente;
 import com.polaris.model.Habitacion;
+import com.polaris.model.ReservaHabitacion;
 import com.polaris.model.Servicio;
 import com.polaris.model.TipoHabitacion;
 import com.polaris.repository.IClienteRepository;
 import com.polaris.repository.IHabitacionRepository;
+import com.polaris.repository.IReservaHabitacionRepository;
 import com.polaris.repository.IServicioRepository;
 import com.polaris.repository.ITipoHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.polaris.model.ReservaHabitacion;
-import com.polaris.repository.IReservaHabitacionRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired private IReservaHabitacionRepository reservaRepo;
 
     @Override
+    @Transactional
     public void run(String... args) {
 
         boolean datosMinimosCargados = tipoRepo.count() >= 5
@@ -36,6 +38,7 @@ public class DataInitializer implements CommandLineRunner {
                 && reservaRepo.count() >= 5;
 
         if (datosMinimosCargados) {
+            imprimirResumen();
             return;
         }
 
@@ -414,6 +417,26 @@ public class DataInitializer implements CommandLineRunner {
             LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 10),
             "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
 
-        System.out.println("✅ Datos insertados: 5 tipos, 50 habitaciones, 10 clientes, 20 servicios, 8 reservas");
+        imprimirResumen();
+    }
+
+    private void imprimirResumen() {
+        String sep = "═".repeat(50);
+        System.out.println("\n" + sep);
+        System.out.println("  INICIALIZACIÓN DE DATOS — POLARIS HOTEL");
+        System.out.println(sep);
+        System.out.printf("  %-30s %s%n", "REPOSITORIO", "FILAS EN BD");
+        System.out.println("  " + "─".repeat(46));
+        System.out.printf("  %-30s %d%n", "ITipoHabitacionRepository",  tipoRepo.count());
+        System.out.printf("  %-30s %d%n", "IHabitacionRepository",       habitacionRepo.count());
+        System.out.printf("  %-30s %d%n", "IClienteRepository",          clienteRepo.count());
+        System.out.printf("  %-30s %d%n", "IServicioRepository",         servicioRepo.count());
+        System.out.printf("  %-30s %d%n", "IReservaHabitacionRepository", reservaRepo.count());
+        System.out.println("  " + "─".repeat(46));
+        boolean ok = tipoRepo.count() >= 5 && habitacionRepo.count() >= 5
+                  && clienteRepo.count() >= 5 && servicioRepo.count() >= 5
+                  && reservaRepo.count() >= 5;
+        System.out.println("  MÍNIMO 5 ROWS POR TABLA: " + (ok ? "✅ CUMPLIDO" : "❌ NO CUMPLIDO"));
+        System.out.println(sep + "\n");
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import com.polaris.repository.IReservaHabitacionRepository;
 
 @Service
 public class HabitacionService implements IHabitacionService {
@@ -18,6 +19,9 @@ public class HabitacionService implements IHabitacionService {
 
     @Autowired
     private ITipoHabitacionRepository tipoRepo;
+
+    @Autowired
+    private IReservaHabitacionRepository reservaRepo;
 
     @Override
     public List<Habitacion> obtenerTodos() {
@@ -42,6 +46,12 @@ public class HabitacionService implements IHabitacionService {
 
     @Override
     public void eliminar(Long id) {
+        long reservas = reservaRepo.countByHabitacionId(id);
+        if (reservas > 0) {
+            throw new IllegalStateException(
+                "No se puede eliminar la habitación porque tiene " + reservas + " reserva(s) asociada(s). " +
+                "Elimine primero las reservas asociadas.");
+        }
         repository.deleteById(id);
     }
 

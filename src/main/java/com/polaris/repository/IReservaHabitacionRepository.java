@@ -8,6 +8,12 @@ import java.util.List;
 
 @Repository
 public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabitacion, Long> {
+
     List<ReservaHabitacion> findByClienteId(Long clienteId);
+
     List<ReservaHabitacion> findByHabitacionId(Long habitacionId);
+
+    long countByClienteId(Long clienteId);
+
+    long countByHabitacionId(Long habitacionId);
 }

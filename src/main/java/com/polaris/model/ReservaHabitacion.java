@@ -1,12 +1,13 @@
 package com.polaris.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
 
-import lombok.AllArgsConstructor;
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,12 +30,14 @@ public class ReservaHabitacion {
     @Column(nullable = false)
     private int numeroHuespedes;
 
-    @OneToOne
-    @JoinColumn(name = "cliente_id", nullable = false, unique = true)
+    // Un cliente puede tener múltiples reservas a lo largo del tiempo
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @OneToOne
-    @JoinColumn(name = "habitacion_id", nullable = false, unique = true)
+    // Una habitación puede ser reservada múltiples veces en distintas fechas
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habitacion_id", nullable = false)
     private Habitacion habitacion;
 
     public ReservaHabitacion(LocalDate fechaCheckIn, LocalDate fechaCheckOut,
@@ -47,6 +50,4 @@ public class ReservaHabitacion {
         this.cliente = cliente;
         this.habitacion = habitacion;
     }
-
-   
 }

@@ -11,6 +11,11 @@ import com.polaris.repository.ITipoHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import com.polaris.model.ReservaHabitacion;
+import com.polaris.repository.IReservaHabitacionRepository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -19,11 +24,20 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired private IHabitacionRepository habitacionRepo;
     @Autowired private IClienteRepository clienteRepo;
     @Autowired private IServicioRepository servicioRepo;
+    @Autowired private IReservaHabitacionRepository reservaRepo;
 
     @Override
     public void run(String... args) {
 
-        if (tipoRepo.count() > 0) return;
+        boolean datosMinimosCargados = tipoRepo.count() >= 5
+                && habitacionRepo.count() >= 5
+                && clienteRepo.count() >= 5
+                && servicioRepo.count() >= 5
+                && reservaRepo.count() >= 5;
+
+        if (datosMinimosCargados) {
+            return;
+        }
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
         TipoHabitacion estandar = tipoRepo.save(new TipoHabitacion(
@@ -355,6 +369,51 @@ public class DataInitializer implements CommandLineRunner {
         s20.setDestacados("Maestro con 20+ años de experiencia|Jardín zen diseñado para la paz|Técnicas ancestrales y modernas|Transformación interior duradera");
         servicioRepo.save(s20);
 
-        System.out.println("✅ Datos insertados: 5 tipos, 50 habitaciones, 10 clientes, 20 servicios");
+        // ── 8 Reservas de Habitación ──────────────────────────────────────
+        // Se recuperan los clientes y habitaciones ya persistidos
+        List<Cliente> clientes = clienteRepo.findAll();
+        List<Habitacion> habitaciones = habitacionRepo.findAll();
+
+        // Reserva 1 – Confirmada (cliente 0, habitación 0)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 4, 1), LocalDate.of(2026, 4, 5),
+            "Confirmada", 2, clientes.get(0), habitaciones.get(0)));
+
+        // Reserva 2 – Confirmada (cliente 1, habitación 1)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 4, 10), LocalDate.of(2026, 4, 14),
+            "Confirmada", 1, clientes.get(1), habitaciones.get(1)));
+
+        // Reserva 3 – Pendiente (cliente 2, habitación 2)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 5, 1), LocalDate.of(2026, 5, 7),
+            "Pendiente", 3, clientes.get(2), habitaciones.get(2)));
+
+        // Reserva 4 – Finalizada (cliente 3, habitación 3)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 4),
+            "Finalizada", 2, clientes.get(3), habitaciones.get(3)));
+
+        // Reserva 5 – Cancelada (cliente 4, habitación 4)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 3, 10), LocalDate.of(2026, 3, 12),
+            "Cancelada", 1, clientes.get(4), habitaciones.get(4)));
+
+        // Reserva 6 – Segunda reserva del cliente 0 en distinta habitación (relación ManyToOne)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 6, 15), LocalDate.of(2026, 6, 20),
+            "Confirmada", 2, clientes.get(0), habitaciones.get(10)));
+
+        // Reserva 7 – Mismo cliente 1, otra habitación (verifica ManyToOne)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 7, 1), LocalDate.of(2026, 7, 3),
+            "Pendiente", 1, clientes.get(1), habitaciones.get(15)));
+
+        // Reserva 8 – Misma habitación reservada en fecha distinta (verifica ManyToOne)
+        reservaRepo.save(new ReservaHabitacion(
+            LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 10),
+            "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
+
+        System.out.println("✅ Datos insertados: 5 tipos, 50 habitaciones, 10 clientes, 20 servicios, 8 reservas");
     }
 }

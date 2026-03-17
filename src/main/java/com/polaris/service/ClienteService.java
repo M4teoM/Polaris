@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import com.polaris.repository.IReservaHabitacionRepository;
 
 @Service
 public class ClienteService implements IClienteService {
 
     @Autowired
     private IClienteRepository repository;
+
+    @Autowired
+    private IReservaHabitacionRepository reservaRepo;
 
     @Override
     public List<Cliente> obtenerTodos() {
@@ -46,6 +50,12 @@ public class ClienteService implements IClienteService {
 
     @Override
     public void eliminar(Long id) {
+        long reservas = reservaRepo.countByClienteId(id);
+        if (reservas > 0) {
+            throw new IllegalStateException(
+                "No se puede eliminar el cliente porque tiene " + reservas + " reserva(s) activa(s). " +
+                "Elimine primero las reservas asociadas.");
+        }
         repository.deleteById(id);
     }
 }

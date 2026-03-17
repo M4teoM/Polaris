@@ -2,6 +2,7 @@ package com.polaris.service;
 
 import com.polaris.errors.ErrorRoomNotFoundException;
 import com.polaris.model.TipoHabitacion;
+import com.polaris.repository.IHabitacionRepository;
 import com.polaris.repository.ITipoHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ public class TipoHabitacionService implements ITipoHabitacionService {
 
     @Autowired
     private ITipoHabitacionRepository repository;
+
+    @Autowired
+    private IHabitacionRepository habitacionRepository;
 
     @Override
     public List<TipoHabitacion> obtenerTodos() {
@@ -37,6 +41,11 @@ public class TipoHabitacionService implements ITipoHabitacionService {
 
     @Override
     public void eliminar(Long id) {
+        long habitacionesAsociadas = habitacionRepository.countByTipoHabitacion_Id(id);
+        if (habitacionesAsociadas > 0) {
+            throw new IllegalStateException("No se puede eliminar este tipo porque esta asociado a "
+                    + habitacionesAsociadas + " habitacion(es).");
+        }
         repository.deleteById(id);
     }
 }

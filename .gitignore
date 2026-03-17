@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### H2 local database ###
+mydatabase.mv.db
+mydatabase.trace.db

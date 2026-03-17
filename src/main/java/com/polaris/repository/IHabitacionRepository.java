@@ -10,4 +10,6 @@ import com.polaris.model.Habitacion;
 @Repository
 public interface IHabitacionRepository extends JpaRepository<Habitacion, Long> {
     List<Habitacion> findByTipoHabitacion_Id(Long tipoId);
+
+    long countByTipoHabitacion_Id(Long tipoId);
 }

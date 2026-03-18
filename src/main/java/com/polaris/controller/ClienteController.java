@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.polaris.service.IReservaHabitacionService;
 
 @Controller
 @RequestMapping("/clientes")
@@ -14,6 +15,8 @@ public class ClienteController {
 
     @Autowired
     private IClienteService clienteService;
+    @Autowired
+    private IReservaHabitacionService reservaService;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -24,6 +27,7 @@ public class ClienteController {
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable Long id, Model model) {
         model.addAttribute("cliente", clienteService.obtenerPorId(id));
+        model.addAttribute("reservas", reservaService.obtenerPorCliente(id));
         return "clientes/perfil";
     }
 

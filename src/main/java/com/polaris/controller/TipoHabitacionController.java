@@ -2,10 +2,7 @@ package com.polaris.controller;
 
 import com.polaris.model.Habitacion;
 import com.polaris.model.TipoHabitacion;
-import com.polaris.service.IClienteService;
-import com.polaris.service.IHabitacionService;
-import com.polaris.service.IServicioService;
-import com.polaris.service.ITipoHabitacionService;
+import com.polaris.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +19,7 @@ public class TipoHabitacionController {
     @Autowired private IHabitacionService habitacionService;
     @Autowired private IClienteService clienteService;
     @Autowired private IServicioService servicioService;
+    @Autowired private IReservaHabitacionService reservaService;
 
     @GetMapping
     public String listar(Model model) {
@@ -41,12 +39,16 @@ public class TipoHabitacionController {
         model.addAttribute("rooms", rooms);
         model.addAttribute("clientes", clienteService.obtenerTodos());
         model.addAttribute("servicios", servicioService.obtenerTodos());
+        model.addAttribute("reservas", reservaService.obtenerTodos());
         return "habitaciones/lista-admin";
     }
 
     @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
+    public String detalle(@PathVariable Long id,
+                          @RequestParam(required = false) Long clienteId,
+                          Model model) {
         model.addAttribute("habitacion", tipoHabitacionService.obtenerPorId(id));
+        model.addAttribute("clienteId", clienteId);
         return "habitaciones/detalle";
     }
 

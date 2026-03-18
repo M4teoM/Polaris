@@ -7,9 +7,7 @@
     <title>Admin Habitaciones | Hotel Polaris</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
         /* ===== HERO ===== */
@@ -278,7 +276,7 @@
             border-radius: 14px;
             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
             border: 1px solid #eef0f5;
-            overflow: hidden;
+            overflow-x: auto;
             margin-bottom: 60px;
         }
 
@@ -353,6 +351,12 @@
             background: #fef3e2;
             color: #b8780a;
         }
+
+        /* Estados de reserva reutilizando los pills */
+        .reserva-Confirmada  { background: #e6faf8; color: #1a9e94; }
+        .reserva-Cancelada   { background: #fdecea; color: #c0392b; }
+        .reserva-Pendiente   { background: #fef3e2; color: #b8780a; }
+        .reserva-Finalizada  { background: #f0f3f9; color: #555; }
 
         .tipo-chip {
             display: inline-block;
@@ -462,252 +466,310 @@
 </head>
 
 <body>
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="admin-hero">
-        <div class="admin-hero-content">
-            <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
-            <h1>Gesti&#243;n de datos</h1>
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <span class="admin-hero-badge">&#9881; Panel Administrativo</span>
+        <h1>Gesti&#243;n de datos</h1>
+    </div>
+</div>
+
+<div class="container">
+    <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
+
+    <div th:if="${errorMessage}"   class="flash-message flash-error"   th:text="${errorMessage}">Error</div>
+    <div th:if="${successMessage}" class="flash-message flash-success" th:text="${successMessage}">Exito</div>
+
+    <!-- Tabs de navegación -->
+    <div class="section-tabs">
+        <button class="section-tab active" onclick="switchTab('tipos',     this)">Tipos de Habitaci&#243;n</button>
+        <button class="section-tab"        onclick="switchTab('rooms',     this)">Habitaciones F&#237;sicas</button>
+        <button class="section-tab"        onclick="switchTab('clientes',  this)">Clientes</button>
+        <button class="section-tab"        onclick="switchTab('servicios', this)">Servicios</button>
+        <button class="section-tab"        onclick="switchTab('reservas',  this)">Reservas</button>
+    </div>
+
+    <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
+    <div id="panel-tipos" class="section-panel active">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Tipos de Habitaci&#243;n</h2>
+                <span th:text="${#lists.size(habitaciones)} + ' tipos registrados'">0 tipos</span>
+            </div>
+            <a th:href="@{/habitaciones/nueva}" class="btn-nueva">+ Nuevo Tipo</a>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-card" th:each="habitacion : ${habitaciones}">
+                <div class="admin-card-img">
+                    <img th:src="${habitacion.imagenUrl}" th:alt="${habitacion.nombre}">
+                    <span class="admin-card-id" th:text="'ID: ' + ${habitacion.id}">ID: 1</span>
+                </div>
+                <div class="admin-card-body">
+                    <div class="admin-card-meta">
+                        <span th:text="${habitacion.metrosCuadrados} + ' m²'">30 m²</span>
+                        <span th:text="${habitacion.tipoCama}">Cama King</span>
+                        <span th:text="${habitacion.capacidad} + ' personas'">2</span>
+                    </div>
+                    <h3 th:text="${habitacion.nombre}">Nombre</h3>
+                    <p class="admin-card-price">
+                        <strong th:text="'$' + ${#numbers.formatInteger(habitacion.precioPorNoche, 0, 'COMMA')}">$0</strong>/noche
+                    </p>
+                    <div class="admin-card-actions">
+                        <a class="btn-ver-admin" th:href="@{/habitaciones/{id}(id=${habitacion.id})}">Ver</a>
+                        <a class="btn-editar"    th:href="@{/habitaciones/editar/{id}(id=${habitacion.id})}">Editar</a>
+                        <form th:action="@{/habitaciones/eliminar/{id}(id=${habitacion.id})}" method="post" style="flex:1; margin:0;">
+                            <button type="submit" class="btn-eliminar" style="width:100%;"
+                                    onclick="return confirm('&#191;Eliminar este tipo?')">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <a th:href="@{/habitaciones}" class="btn-volver">&#8592; Volver a vista p&#250;blica</a>
-
-        <div th:if="${errorMessage}" class="flash-message flash-error" th:text="${errorMessage}">Error</div>
-        <div th:if="${successMessage}" class="flash-message flash-success" th:text="${successMessage}">Exito</div>
-
-        <!-- Tabs de navegación -->
-        <div class="section-tabs">
-            <button class="section-tab active" onclick="switchTab('tipos', this)">Tipos de Habitaci&#243;n</button>
-            <button class="section-tab" onclick="switchTab('rooms', this)">Habitaciones F&#237;sicas</button>
-            <button class="section-tab" onclick="switchTab('clientes', this)">Clientes</button>
-            <button class="section-tab" onclick="switchTab('servicios', this)">Servicios</button>
+    <!-- ══ PANEL: HABITACIONES FÍSICAS ══ -->
+    <div id="panel-rooms" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Habitaciones F&#237;sicas</h2>
+                <span th:text="${#lists.size(rooms)} + ' habitaciones registradas'">0 habitaciones</span>
+            </div>
+            <a th:href="@{/rooms/nueva}" class="btn-nueva">+ Nueva Habitaci&#243;n</a>
         </div>
 
-        <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
-        <div id="panel-tipos" class="section-panel active">
-            <div class="admin-toolbar">
-                <div>
-                    <h2>Tipos de Habitaci&#243;n</h2>
-                    <span th:text="${#lists.size(habitaciones)} + ' tipos registrados'">0 tipos</span>
-                </div>
-                <a th:href="@{/habitaciones/nueva}" class="btn-nueva">+ Nuevo Tipo</a>
-            </div>
-
-            <div class="admin-grid">
-                <div class="admin-card" th:each="habitacion : ${habitaciones}">
-                    <div class="admin-card-img">
-                        <img th:src="${habitacion.imagenUrl}" th:alt="${habitacion.nombre}">
-                        <span class="admin-card-id" th:text="'ID: ' + ${habitacion.id}">ID: 1</span>
-                    </div>
-                    <div class="admin-card-body">
-                        <div class="admin-card-meta">
-                            <span th:text="${habitacion.metrosCuadrados} + ' m²'">30 m²</span>
-                            <span th:text="${habitacion.tipoCama}">Cama King</span>
-                            <span th:text="${habitacion.capacidad} + ' personas'">2</span>
-                        </div>
-                        <h3 th:text="${habitacion.nombre}">Nombre</h3>
-                        <p class="admin-card-price">
-                            <strong
-                                th:text="'$' + ${#numbers.formatInteger(habitacion.precioPorNoche, 0, 'COMMA')}">$0</strong>/noche
-                        </p>
-                        <div class="admin-card-actions">
-                            <a class="btn-ver-admin" th:href="@{/habitaciones/{id}(id=${habitacion.id})}">Ver</a>
-                            <a class="btn-editar" th:href="@{/habitaciones/editar/{id}(id=${habitacion.id})}">Editar</a>
-                            <form th:action="@{/habitaciones/eliminar/{id}(id=${habitacion.id})}" method="post"
-                                style="flex:1; margin:0;">
-                                <button type="submit" class="btn-eliminar" style="width:100%;"
-                                    onclick="return confirm('&#191;Eliminar este tipo?')">Eliminar</button>
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                <tr>
+                    <th>N&#250;m.</th>
+                    <th>Piso</th>
+                    <th>Tipo</th>
+                    <th>Cama</th>
+                    <th>Capacidad</th>
+                    <th>Precio/noche</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room : ${rooms}">
+                    <td class="num" th:text="${room.numero}">101</td>
+                    <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
+                    <td>
+                                <span class="tipo-chip"
+                                      th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
+                    </td>
+                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
+                    <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">—</td>
+                    <td th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">—</td>
+                    <td>
+                                <span class="estado-pill" th:classappend="'estado-' + ${room.estado}"
+                                      th:text="${room.estado}">Estado</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver"  th:href="@{/rooms/{id}(id=${room.id})}">Ver</a>
+                            <a class="btn-tbl-edit" th:href="@{/rooms/editar/{id}(id=${room.id})}">Editar</a>
+                            <form th:action="@{/rooms/eliminar/{id}(id=${room.id})}" method="post" style="margin:0;">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
                             </form>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-
-        <!-- ══ PANEL: HABITACIONES FÍSICAS ══ -->
-        <div id="panel-rooms" class="section-panel">
-            <div class="admin-toolbar">
-                <div>
-                    <h2>Habitaciones F&#237;sicas</h2>
-                    <span th:text="${#lists.size(rooms)} + ' habitaciones registradas'">0 habitaciones</span>
-                </div>
-                <a th:href="@{/rooms/nueva}" class="btn-nueva">+ Nueva Habitaci&#243;n</a>
-            </div>
-
-            <div class="rooms-table-wrap">
-                <table class="rooms-table">
-                    <thead>
-                        <tr>
-                            <th>N&#250;m.</th>
-                            <th>Piso</th>
-                            <th>Tipo</th>
-                            <th>Cama</th>
-                            <th>Capacidad</th>
-                            <th>Precio/noche</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="room : ${rooms}">
-                            <td class="num" th:text="${room.numero}">101</td>
-                            <td th:text="'Piso ' + ${room.piso}">Piso 1</td>
-                            <td>
-                                <span class="tipo-chip"
-                                    th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.nombre : '—'}">—</span>
-                            </td>
-                            <td th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.tipoCama : '—'}">—</td>
-                            <td
-                                th:text="${room.tipoHabitacion != null ? room.tipoHabitacion.capacidad + ' pers.' : '—'}">
-                                —</td>
-                            <td
-                                th:text="${room.tipoHabitacion != null ? '$' + #numbers.formatInteger(room.tipoHabitacion.precioPorNoche, 0, 'COMMA') : '—'}">
-                                —</td>
-                            <td>
-                                <span class="estado-pill" th:classappend="'estado-' + ${room.estado}"
-                                    th:text="${room.estado}">Estado</span>
-                            </td>
-                            <td>
-                                <div class="table-actions">
-                                    <a class="btn-tbl-ver" th:href="@{/rooms/{id}(id=${room.id})}">Ver</a>
-                                    <a class="btn-tbl-edit" th:href="@{/rooms/editar/{id}(id=${room.id})}">Editar</a>
-                                    <form th:action="@{/rooms/eliminar/{id}(id=${room.id})}" method="post"
-                                        style="margin:0;">
-                                        <button type="submit" class="btn-tbl-del"
-                                            onclick="return confirm('&#191;Eliminar esta habitaci&#243;n?')">Eliminar</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ══ PANEL: CLIENTES ══ -->
-        <div id="panel-clientes" class="section-panel">
-            <div class="admin-toolbar">
-                <div>
-                    <h2>Clientes Registrados</h2>
-                    <span th:text="${#lists.size(clientes)} + ' clientes registrados'">0 clientes</span>
-                </div>
-                <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
-            </div>
-
-            <div class="rooms-table-wrap">
-                <table class="rooms-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Correo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="cliente : ${clientes}">
-                            <td class="num" th:text="${cliente.id}">1</td>
-                            <td th:text="${cliente.nombre}">Nombre</td>
-                            <td th:text="${cliente.apellido}">Apellido</td>
-                            <td th:text="${cliente.correo}">correo@mail.com</td>
-                            <td>
-                                <div class="table-actions">
-                                    <a class="btn-tbl-ver" th:href="@{/clientes/ver/{id}(id=${cliente.id})}">Ver</a>
-                                    <a class="btn-tbl-edit"
-                                        th:href="@{/clientes/editar/{id}(id=${cliente.id})}">Editar</a>
-                                    <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post"
-                                        style="margin:0;">
-                                        <button type="submit" class="btn-tbl-del"
-                                            onclick="return confirm('&#191;Eliminar este cliente?')">Eliminar</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ══ PANEL: SERVICIOS ══ -->
-        <div id="panel-servicios" class="section-panel">
-            <div class="admin-toolbar">
-                <div>
-                    <h2>Servicios</h2>
-                    <span th:text="${#lists.size(servicios)} + ' servicios registrados'">0 servicios</span>
-                </div>
-                <a th:href="@{/servicios/nuevo}" class="btn-nueva">+ Nuevo Servicio</a>
-            </div>
-
-            <div class="rooms-table-wrap">
-                <table class="rooms-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Categor&#237;a</th>
-                            <th>Descripci&#243;n</th>
-                            <th>Precio</th>
-                            <th>Duraci&#243;n</th>
-                            <th>Horario</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="servicio : ${servicios}">
-                            <td class="num" th:text="${servicio.id}">1</td>
-                            <td th:text="${servicio.nombre}">Nombre</td>
-                            <td>
-                                <span class="tipo-chip" th:text="${servicio.categoria}">Categor&#237;a</span>
-                            </td>
-                            <td style="max-width: 250px;">
-                                <span
-                                    style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:0.82rem; color:#666;"
-                                    th:text="${servicio.descripcion}">Descripci&#243;n</span>
-                            </td>
-                            <td th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</td>
-                            <td th:text="${servicio.duracion != null ? servicio.duracion : '—'}">—</td>
-                            <td style="max-width: 180px; font-size:0.8rem;"
-                                th:text="${servicio.horario != null ? servicio.horario : '—'}">—</td>
-                            <td>
-                                <div class="table-actions">
-                                    <a class="btn-tbl-ver" th:href="@{/servicios/{id}(id=${servicio.id})}">Ver</a>
-                                    <a class="btn-tbl-edit"
-                                        th:href="@{/servicios/editar/{id}(id=${servicio.id})}">Editar</a>
-                                    <form th:action="@{/servicios/eliminar/{id}(id=${servicio.id})}" method="post"
-                                        style="margin:0;">
-                                        <button type="submit" class="btn-tbl-del"
-                                            onclick="return confirm('&#191;Eliminar este servicio?')">Eliminar</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        function switchTab(panel, btn) {
-            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.section-tab').forEach(b => b.classList.remove('active'));
-            document.getElementById('panel-' + panel).classList.add('active');
-            btn.classList.add('active');
-        }
+    <!-- ══ PANEL: CLIENTES ══ -->
+    <div id="panel-clientes" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Clientes Registrados</h2>
+                <span th:text="${#lists.size(clientes)} + ' clientes registrados'">0 clientes</span>
+            </div>
+            <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
+        </div>
 
-        window.addEventListener('load', function () {
-            const tab = new URLSearchParams(window.location.search).get('tab');
-            if (tab === 'rooms') switchTab('rooms', document.querySelectorAll('.section-tab')[1]);
-            if (tab === 'clientes') switchTab('clientes', document.querySelectorAll('.section-tab')[2]);
-            if (tab === 'servicios') switchTab('servicios', document.querySelectorAll('.section-tab')[3]);
-        });
-    </script>
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td class="num" th:text="${cliente.id}">1</td>
+                    <td th:text="${cliente.nombre}">Nombre</td>
+                    <td th:text="${cliente.apellido}">Apellido</td>
+                    <td th:text="${cliente.correo}">correo@mail.com</td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver"  th:href="@{/clientes/ver/{id}(id=${cliente.id})}">Ver</a>
+                            <a class="btn-tbl-edit" th:href="@{/clientes/editar/{id}(id=${cliente.id})}">Editar</a>
+                            <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post" style="margin:0;">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Eliminar este cliente?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <!-- ══ PANEL: SERVICIOS ══ -->
+    <div id="panel-servicios" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Servicios</h2>
+                <span th:text="${#lists.size(servicios)} + ' servicios registrados'">0 servicios</span>
+            </div>
+            <a th:href="@{/servicios/nuevo}" class="btn-nueva">+ Nuevo Servicio</a>
+        </div>
+
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categor&#237;a</th>
+                    <th>Descripci&#243;n</th>
+                    <th>Precio</th>
+                    <th>Duraci&#243;n</th>
+                    <th>Horario</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="servicio : ${servicios}">
+                    <td class="num" th:text="${servicio.id}">1</td>
+                    <td th:text="${servicio.nombre}">Nombre</td>
+                    <td>
+                        <span class="tipo-chip" th:text="${servicio.categoria}">Categor&#237;a</span>
+                    </td>
+                    <td style="max-width:250px;">
+                                <span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:0.82rem;color:#666;"
+                                      th:text="${servicio.descripcion}">Descripci&#243;n</span>
+                    </td>
+                    <td th:text="'$' + ${#numbers.formatInteger(servicio.precio, 0, 'COMMA')}">$0</td>
+                    <td th:text="${servicio.duracion != null ? servicio.duracion : '—'}">—</td>
+                    <td style="max-width:180px;font-size:0.8rem;"
+                        th:text="${servicio.horario != null ? servicio.horario : '—'}">—</td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver"  th:href="@{/servicios/{id}(id=${servicio.id})}">Ver</a>
+                            <a class="btn-tbl-edit" th:href="@{/servicios/editar/{id}(id=${servicio.id})}">Editar</a>
+                            <form th:action="@{/servicios/eliminar/{id}(id=${servicio.id})}" method="post" style="margin:0;">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Eliminar este servicio?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ══ PANEL: RESERVAS ══ -->
+    <div id="panel-reservas" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Reservas de Habitaciones</h2>
+                <span th:text="${#lists.size(reservas)} + ' reservas registradas'">0 reservas</span>
+            </div>
+        </div>
+
+        <div class="rooms-table-wrap">
+            <table class="rooms-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Habitaci&#243;n</th>
+                    <th>Tipo</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Hu&#233;spedes</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reserva : ${reservas}">
+                    <td class="num" th:text="${reserva.id}">1</td>
+                    <td>
+                        <div style="font-weight:600;color:#0a1628;"
+                             th:text="${reserva.cliente.nombre + ' ' + reserva.cliente.apellido}">Nombre</div>
+                        <div style="font-size:0.75rem;color:#999;"
+                             th:text="${reserva.cliente.correo}">correo</div>
+                    </td>
+                    <td class="num" th:text="'Hab. ' + ${reserva.habitacion.numero}">101</td>
+                    <td>
+                                <span class="tipo-chip"
+                                      th:text="${reserva.habitacion.tipoHabitacion.nombre}">Tipo</span>
+                    </td>
+                    <td th:text="${#temporals.format(reserva.fechaCheckIn,  'dd/MM/yyyy')}">—</td>
+                    <td th:text="${#temporals.format(reserva.fechaCheckOut, 'dd/MM/yyyy')}">—</td>
+                    <td th:text="${reserva.numeroHuespedes} + ' pers.'">—</td>
+                    <td>
+                                <span class="estado-pill"
+                                      th:classappend="'reserva-' + ${reserva.estado}"
+                                      th:text="${reserva.estado}">Estado</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <a class="btn-tbl-ver"
+                               th:href="@{/clientes/ver/{id}(id=${reserva.cliente.id})}">Ver cliente</a>
+                            <form th:if="${reserva.estado != 'Cancelada'}"
+                                  th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post"
+                                  style="margin:0;">
+                                <input type="hidden" name="clienteId" th:value="${reserva.cliente.id}">
+                                <input type="hidden" name="redirect"  value="admin">
+                                <button type="submit" class="btn-tbl-del"
+                                        onclick="return confirm('&#191;Cancelar esta reserva?')">Cancelar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(panel, btn) {
+        document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.section-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + panel).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    window.addEventListener('load', function () {
+        const tab = new URLSearchParams(window.location.search).get('tab');
+        if (tab === 'rooms')    switchTab('rooms',    document.querySelectorAll('.section-tab')[1]);
+        if (tab === 'clientes') switchTab('clientes', document.querySelectorAll('.section-tab')[2]);
+        if (tab === 'servicios')switchTab('servicios',document.querySelectorAll('.section-tab')[3]);
+        if (tab === 'reservas') switchTab('reservas', document.querySelectorAll('.section-tab')[4]);
+    });
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
+
+</html>
 
 </html>

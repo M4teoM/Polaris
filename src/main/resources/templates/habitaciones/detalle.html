@@ -151,7 +151,13 @@
                     <li>Servicio de limpieza diario</li>
                     <li>Acceso a instalaciones</li>
                 </ul>
-                <a href="#" class="btn-reservar">Reservar Ahora</a>
+                <a th:if="${clienteId != null}"
+                   th:href="@{/reservas/nueva(tipoHabitacionId=${habitacion.id}, clienteId=${clienteId})}"
+                   class="btn-reservar">Reservar Ahora</a>
+
+                <a th:if="${clienteId == null}"
+                   th:href="@{/login}"
+                   class="btn-reservar">Inicia sesi&#243;n para reservar</a>
             </div>
         </div>
     </div>

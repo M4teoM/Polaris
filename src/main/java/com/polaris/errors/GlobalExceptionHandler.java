@@ -37,6 +37,16 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
+    @ExceptionHandler(ErrorReservaException.class)
+    public String handleReserva(ErrorReservaException ex, Model model) {
+        model.addAttribute("icono", "📅");
+        model.addAttribute("codigo", 409);
+        model.addAttribute("titulo", "No se pudo completar la reserva");
+        model.addAttribute("descripcion", ex.getMessage());
+        model.addAttribute("uri", "");
+        return "error";
+    }
+
     @ExceptionHandler(Exception.class)
     public String handleGeneral(Exception ex, Model model) {
         model.addAttribute("icono", "⚠️");

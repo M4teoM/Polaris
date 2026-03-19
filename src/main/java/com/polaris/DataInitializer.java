@@ -38,7 +38,6 @@ public class DataInitializer implements CommandLineRunner {
                 && reservaRepo.count() >= 5;
 
         if (datosMinimosCargados) {
-            imprimirResumen();
             return;
         }
 
@@ -417,26 +416,5 @@ public class DataInitializer implements CommandLineRunner {
             LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 10),
             "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
 
-        imprimirResumen();
-    }
-
-    private void imprimirResumen() {
-        String sep = "═".repeat(50);
-        System.out.println("\n" + sep);
-        System.out.println("  INICIALIZACIÓN DE DATOS — POLARIS HOTEL");
-        System.out.println(sep);
-        System.out.printf("  %-30s %s%n", "REPOSITORIO", "FILAS EN BD");
-        System.out.println("  " + "─".repeat(46));
-        System.out.printf("  %-30s %d%n", "ITipoHabitacionRepository",  tipoRepo.count());
-        System.out.printf("  %-30s %d%n", "IHabitacionRepository",       habitacionRepo.count());
-        System.out.printf("  %-30s %d%n", "IClienteRepository",          clienteRepo.count());
-        System.out.printf("  %-30s %d%n", "IServicioRepository",         servicioRepo.count());
-        System.out.printf("  %-30s %d%n", "IReservaHabitacionRepository", reservaRepo.count());
-        System.out.println("  " + "─".repeat(46));
-        boolean ok = tipoRepo.count() >= 5 && habitacionRepo.count() >= 5
-                  && clienteRepo.count() >= 5 && servicioRepo.count() >= 5
-                  && reservaRepo.count() >= 5;
-        System.out.println("  MÍNIMO 5 ROWS POR TABLA: " + (ok ? "✅ CUMPLIDO" : "❌ NO CUMPLIDO"));
-        System.out.println(sep + "\n");
     }
 }

@@ -35,3 +35,4 @@ build/
 ### H2 local database ###
 mydatabase.mv.db
 mydatabase.trace.db
+mydatabase.lock.db

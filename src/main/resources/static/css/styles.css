@@ -3554,21 +3554,27 @@ textarea {
     padding: 24px 32px;
     background: #fafbff;
     display: flex;
-    gap: 12px;
+    gap: 16px;
     justify-content: flex-end;
+    align-items: center;
     border-top: 1px solid #f0f2f8;
 }
 
 .btn-volver {
     background: #f0f4ff;
     color: #0a1628;
-    padding: 11px 28px;
+    padding: 0 28px;
     border-radius: 10px;
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 0.88rem;
     text-decoration: none;
     transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    line-height: 1;
 }
 
 .btn-volver:hover {
@@ -3578,13 +3584,17 @@ textarea {
 .btn-editar-perfil {
     background: var(--color-aguamarina);
     color: #0a1628;
-    padding: 11px 28px;
+    padding: 0 28px;
     border-radius: 10px;
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 0.88rem;
     text-decoration: none;
     transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
 }
 
 .btn-editar-perfil:hover {
@@ -3594,7 +3604,7 @@ textarea {
 .btn-eliminar-perfil {
     background: #fff0f0;
     color: #c0392b;
-    padding: 11px 28px;
+    padding: 0 28px;
     border-radius: 10px;
     font-family: var(--font-body);
     font-weight: 700;
@@ -3602,6 +3612,10 @@ textarea {
     border: none;
     cursor: pointer;
     transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
 }
 
 .btn-eliminar-perfil:hover {
@@ -3609,6 +3623,10 @@ textarea {
     color: #fff;
 }
 
+.perfil-actions form {
+    display: flex;
+    margin: 0;
+}
 
 .det-hero {
     height: 460px;

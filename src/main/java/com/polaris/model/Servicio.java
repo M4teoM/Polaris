@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -45,6 +49,15 @@ public class Servicio {
 
     @Column(length = 1000)
     private String destacados;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_admin")
+    private Administrador administrador;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY)
+    private List<ItemCuenta> itemsCuenta;
 
     @Transient
     public String[] getIncluyeLista() {

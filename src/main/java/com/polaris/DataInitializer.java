@@ -1,12 +1,20 @@
 package com.polaris;
 
 import com.polaris.model.Cliente;
+import com.polaris.model.Cuenta;
 import com.polaris.model.Habitacion;
+import com.polaris.model.ItemCuenta;
+import com.polaris.model.Operario;
 import com.polaris.model.ReservaHabitacion;
 import com.polaris.model.Servicio;
 import com.polaris.model.TipoHabitacion;
+import com.polaris.model.Administrador;
+import com.polaris.repository.IAdministradorRepository;
 import com.polaris.repository.IClienteRepository;
+import com.polaris.repository.ICuentaRepository;
 import com.polaris.repository.IHabitacionRepository;
+import com.polaris.repository.IItemCuentaRepository;
+import com.polaris.repository.IOperarioRepository;
 import com.polaris.repository.IReservaHabitacionRepository;
 import com.polaris.repository.IServicioRepository;
 import com.polaris.repository.ITipoHabitacionRepository;
@@ -26,20 +34,43 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired private IClienteRepository clienteRepo;
     @Autowired private IServicioRepository servicioRepo;
     @Autowired private IReservaHabitacionRepository reservaRepo;
+    @Autowired private IAdministradorRepository administradorRepo;
+    @Autowired private IOperarioRepository operarioRepo;
+    @Autowired private ICuentaRepository cuentaRepo;
+    @Autowired private IItemCuentaRepository itemCuentaRepo;
 
     @Override
     @Transactional
     public void run(String... args) {
 
-        boolean datosMinimosCargados = tipoRepo.count() >= 5
+        boolean datosBaseCargados = tipoRepo.count() >= 5
                 && habitacionRepo.count() >= 5
                 && clienteRepo.count() >= 5
                 && servicioRepo.count() >= 5
-                && reservaRepo.count() >= 5;
+            && reservaRepo.count() >= 5;
 
-        if (datosMinimosCargados) {
+        if (datosBaseCargados) {
+            completarModeloER();
             return;
         }
+
+        Administrador admin = administradorRepo.save(new Administrador(
+            null,
+            "admin@polaris.com",
+            "admin123",
+            null,
+            null,
+            null
+        ));
+
+        Operario operario = operarioRepo.save(new Operario(
+            null,
+            "operario@polaris.com",
+            "operario123",
+            "Operario Principal",
+            admin,
+            null
+        ));
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
         TipoHabitacion estandar = tipoRepo.save(new TipoHabitacion(
@@ -97,6 +128,10 @@ public class DataInitializer implements CommandLineRunner {
             habitacionRepo.save(new Habitacion("50" + i, 5, estados[i % 3], familiar));
         habitacionRepo.save(new Habitacion("509", 5, "Disponible", penthouse));
         habitacionRepo.save(new Habitacion("510", 5, "Disponible", penthouse));
+
+        List<Habitacion> habitacionesGuardadas = habitacionRepo.findAll();
+        habitacionesGuardadas.forEach(h -> h.setAdministrador(admin));
+        habitacionRepo.saveAll(habitacionesGuardadas);
 
         // ── 10 Clientes ───────────────────────────────────────────────────
         clienteRepo.save(new Cliente("Samuel",    "Tovar",      "samutovar10@gmail.com",      "8888"));
@@ -371,6 +406,10 @@ public class DataInitializer implements CommandLineRunner {
         s20.setDestacados("Maestro con 20+ años de experiencia|Jardín zen diseñado para la paz|Técnicas ancestrales y modernas|Transformación interior duradera");
         servicioRepo.save(s20);
 
+        List<Servicio> serviciosGuardados = servicioRepo.findAll();
+        serviciosGuardados.forEach(s -> s.setAdministrador(admin));
+        servicioRepo.saveAll(serviciosGuardados);
+
         // ── 8 Reservas de Habitación ──────────────────────────────────────
         // Se recuperan los clientes y habitaciones ya persistidos
         List<Cliente> clientes = clienteRepo.findAll();
@@ -416,5 +455,113 @@ public class DataInitializer implements CommandLineRunner {
             LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 10),
             "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
 
+        List<ReservaHabitacion> reservasGuardadas = reservaRepo.findAll();
+        reservasGuardadas.forEach(r -> r.setOperario(operario));
+        reservaRepo.saveAll(reservasGuardadas);
+
+        precargarCuentaEItemCuenta();
+
+    }
+
+    private void completarModeloER() {
+        Administrador admin = administradorRepo.findByCorreo("admin@polaris.com")
+            .orElseGet(() -> administradorRepo.save(new Administrador(
+                null,
+                "admin@polaris.com",
+                "admin123",
+                null,
+                null,
+                null
+            )));
+
+        Operario operario = operarioRepo.findByCorreo("operario@polaris.com")
+            .orElseGet(() -> operarioRepo.save(new Operario(
+                null,
+                "operario@polaris.com",
+                "operario123",
+                "Operario Principal",
+                admin,
+                null
+            )));
+
+        List<Habitacion> habitaciones = habitacionRepo.findAll();
+        boolean habitacionesActualizadas = false;
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getAdministrador() == null) {
+                habitacion.setAdministrador(admin);
+                habitacionesActualizadas = true;
+            }
+        }
+        if (habitacionesActualizadas) {
+            habitacionRepo.saveAll(habitaciones);
+        }
+
+        List<Servicio> servicios = servicioRepo.findAll();
+        boolean serviciosActualizados = false;
+        for (Servicio servicio : servicios) {
+            if (servicio.getAdministrador() == null) {
+                servicio.setAdministrador(admin);
+                serviciosActualizados = true;
+            }
+        }
+        if (serviciosActualizados) {
+            servicioRepo.saveAll(servicios);
+        }
+
+        List<ReservaHabitacion> reservas = reservaRepo.findAll();
+        boolean reservasActualizadas = false;
+        for (ReservaHabitacion reserva : reservas) {
+            if (reserva.getOperario() == null) {
+                reserva.setOperario(operario);
+                reservasActualizadas = true;
+            }
+        }
+        if (reservasActualizadas) {
+            reservaRepo.saveAll(reservas);
+        }
+
+        precargarCuentaEItemCuenta();
+    }
+
+    private void precargarCuentaEItemCuenta() {
+        List<ReservaHabitacion> reservas = reservaRepo.findAll();
+        List<Servicio> servicios = servicioRepo.findAll();
+
+        if (reservas.isEmpty() || servicios.isEmpty()) {
+            return;
+        }
+
+        int totalServicios = servicios.size();
+
+        for (ReservaHabitacion reserva : reservas) {
+            Cuenta cuenta = cuentaRepo.findByReservaId(reserva.getId())
+                .orElseGet(() -> {
+                    Cuenta nuevaCuenta = new Cuenta();
+                    nuevaCuenta.setReserva(reserva);
+                    nuevaCuenta.setPagada(Boolean.FALSE);
+                    return cuentaRepo.save(nuevaCuenta);
+                });
+
+            if (itemCuentaRepo.countByCuentaId(cuenta.getId()) > 0) {
+                continue;
+            }
+
+            int idx1 = Math.floorMod(reserva.getId().intValue(), totalServicios);
+            int idx2 = (idx1 + 1) % totalServicios;
+
+            ItemCuenta itemPrincipal = new ItemCuenta();
+            itemPrincipal.setCuenta(cuenta);
+            itemPrincipal.setServicio(servicios.get(idx1));
+            itemPrincipal.setFechaConsumo(reserva.getFechaCheckIn().plusDays(1));
+            itemCuentaRepo.save(itemPrincipal);
+
+            if (!"Cancelada".equalsIgnoreCase(reserva.getEstado())) {
+                ItemCuenta itemSecundario = new ItemCuenta();
+                itemSecundario.setCuenta(cuenta);
+                itemSecundario.setServicio(servicios.get(idx2));
+                itemSecundario.setFechaConsumo(reserva.getFechaCheckIn().plusDays(2));
+                itemCuentaRepo.save(itemSecundario);
+            }
+        }
     }
 }

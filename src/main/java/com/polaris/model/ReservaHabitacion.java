@@ -40,6 +40,13 @@ public class ReservaHabitacion {
     @JoinColumn(name = "habitacion_id", nullable = false)
     private Habitacion habitacion;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_operario")
+    private Operario operario;
+
+    @OneToOne(mappedBy = "reserva", fetch = FetchType.LAZY)
+    private Cuenta cuenta;
+
     public ReservaHabitacion(LocalDate fechaCheckIn, LocalDate fechaCheckOut,
                              String estado, int numeroHuespedes,
                              Cliente cliente, Habitacion habitacion) {

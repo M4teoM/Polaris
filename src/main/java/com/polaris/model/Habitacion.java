@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +32,15 @@ public class Habitacion {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_habitacion_id", nullable = false)
     private TipoHabitacion tipoHabitacion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_admin")
+    private Administrador administrador;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "habitacion", fetch = FetchType.LAZY)
+    private List<ReservaHabitacion> reservas;
 
 
 

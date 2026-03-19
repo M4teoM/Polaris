@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +31,17 @@ public class Cliente {
 
     @Column(length = 100, nullable = false)
     private String contrasena;
+
+    @Column(length = 20, unique = true)
+    private String cedula;
+
+    @Column(length = 20)
+    private String telefono;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<ReservaHabitacion> reservas;
 
     public Cliente(String nombre, String apellido, String correo, String contrasena) {
         this.nombre = nombre;

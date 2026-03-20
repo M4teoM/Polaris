@@ -1,0 +1,24 @@
+<header class="header" [class.scrolled]="isScrolled">
+  <nav class="navbar container">
+    <div class="nav-logo">
+      <a routerLink="/" class="nav-logo-link" style="text-decoration:none; display:flex; align-items:center;">
+        <img src="assets/images/polaris-logo.png" alt="Polaris" class="nav-logo-img" style="height:36px; width:auto;">
+      </a>
+    </div>
+
+    <ul class="nav-menu" [class.active]="isMenuOpen">
+      <li><a routerLink="/" fragment="inicio" class="nav-link" (click)="closeMenu()">Inicio</a></li>
+      <li><a routerLink="/habitaciones" class="nav-link" (click)="closeMenu()">Habitaciones</a></li>
+      <li><a routerLink="/servicios" class="nav-link" (click)="closeMenu()">Servicios</a></li>
+      <li><a routerLink="/" fragment="testimonios" class="nav-link" (click)="closeMenu()">Testimonios</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn btn-primary">Usuario</a>
+    </div>
+
+    <button class="nav-toggle" (click)="toggleMenu()" aria-label="Toggle navigation">
+      <span class="hamburger" [class.active]="isMenuOpen"></span>
+    </button>
+  </nav>
+</header>

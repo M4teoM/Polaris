@@ -1,0 +1,30 @@
+<!-- Hero -->
+<section class="svc-page-hero">
+  <div class="svc-page-hero-bg"></div>
+  <div class="svc-page-hero-overlay"></div>
+  <div class="svc-page-hero-content">
+    <span class="svc-page-hero-badge">✦ Experiencias Premium</span>
+    <h1 class="svc-page-hero-title">Nuestros Servicios</h1>
+    <p class="svc-page-hero-sub">Experiencias personalizadas para elevar cada momento de su estadía</p>
+  </div>
+</section>
+
+<!-- Tarjetas -->
+<main class="svc-page-main">
+  <div class="svc-page-grid">
+    <article class="svc-page-card" *ngFor="let servicio of serviciosFiltrados">
+      <div class="svc-page-card-img">
+        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" loading="lazy">
+      </div>
+      <div class="svc-page-card-body">
+        <h3 class="svc-page-card-name">{{ servicio.nombre }}</h3>
+        <p class="svc-page-card-desc">{{ servicio.descripcion }}</p>
+        <div class="svc-page-card-footer">
+          <a class="svc-page-card-btn" [routerLink]="['/servicios', servicio.id]">
+            <span>Ver Detalle</span>
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>

@@ -1,0 +1,150 @@
+/* ===== ROOMS SECTION ===== */
+:host {
+    display: block;
+}
+
+.rooms-section {
+    padding: var(--spacing-3xl) 0;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.room-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+}
+
+.room-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.room-image {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.room-card:hover .room-image img {
+    transform: scale(1.1);
+}
+
+.availability-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.availability-badge.available {
+    background: var(--color-success);
+    color: var(--color-white);
+}
+
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 22, 40, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.room-card:hover .room-overlay {
+    opacity: 1;
+}
+
+.room-content {
+    padding: var(--spacing-lg);
+}
+
+.room-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.room-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.room-price {
+    font-size: 0.95rem;
+    color: var(--color-taupe);
+}
+
+.price-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-aguamarina);
+}
+
+.room-description {
+    font-size: 0.95rem;
+    color: var(--color-charcoal);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+}
+
+.room-amenities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    list-style: none;
+    margin-bottom: var(--spacing-md);
+    padding: 0;
+}
+
+.amenity {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.9rem;
+    color: var(--color-taupe);
+}
+
+.amenity svg {
+    flex-shrink: 0;
+    color: var(--color-aguamarina);
+}
+
+.room-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-silver);
+}
+
+.room-actions .btn-text {
+    background-color: transparent;
+    border: 2px solid var(--navy-principal);
+    color: var(--navy-principal);
+}
+
+.room-actions .btn-text:hover {
+    background-color: var(--color-aguamarina);
+    border-color: var(--color-aguamarina);
+    color: var(--white);
+}

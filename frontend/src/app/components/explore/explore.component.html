@@ -1,0 +1,38 @@
+<section class="explore-section">
+  <div class="explore-bg">
+    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80" alt="Hotel Polaris" class="explore-bg-img">
+    <div class="explore-overlay"></div>
+  </div>
+  <div class="container">
+    <div class="explore-card" #exploreCard [class.in-view]="isInView">
+      <div class="explore-badge">✦ Sin Restricciones</div>
+      <h2 class="explore-title">Explore Sin Límites</h2>
+      <div class="explore-divider"></div>
+      <p class="explore-text">Descubra todos los detalles, amenidades, galerías completas y precios transparentes de cada habitación sin necesidad de registrarse. Solo necesita iniciar sesión cuando esté listo para reservar.</p>
+      <div class="explore-features">
+        <div class="explore-feature">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#2ec4b6" stroke-width="2"/>
+            <path d="M8 12l3 3 5-5" stroke="#2ec4b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Galerías completas</span>
+        </div>
+        <div class="explore-feature">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#2ec4b6" stroke-width="2"/>
+            <path d="M8 12l3 3 5-5" stroke="#2ec4b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Precios transparentes</span>
+        </div>
+        <div class="explore-feature">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#2ec4b6" stroke-width="2"/>
+            <path d="M8 12l3 3 5-5" stroke="#2ec4b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Sin registro previo</span>
+        </div>
+      </div>
+      <a routerLink="/habitaciones" class="btn btn-explore">Explorar Habitaciones</a>
+    </div>
+  </div>
+</section>

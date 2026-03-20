@@ -1,0 +1,35 @@
+<section class="services-section-v2" id="servicios">
+  <div class="services-v2-bg"></div>
+  <div class="container" style="position:relative; z-index:2;">
+    <div class="section-header">
+      <h2 class="section-title" style="color:#fff;">Servicios Excepcionales</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,0.7);">Cada detalle diseñado a la perfección para una experiencia inolvidable</p>
+    </div>
+    <div class="services-grid-v2">
+      <article class="svc-card-v2" *ngFor="let servicio of servicios; let i = index">
+        <div class="svc-card-v2-img">
+          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" loading="lazy">
+          <div class="svc-card-v2-shine"></div>
+        </div>
+        <div class="svc-card-v2-body">
+          <div class="svc-card-v2-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#D4AF37" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="svc-card-v2-name">{{ servicio.nombre }}</h3>
+          <p class="svc-card-v2-desc">{{ servicio.descripcion }}</p>
+          <a href="#" class="svc-card-v2-link" (click)="toggleDetail(i, $event)">
+            {{ expandedIndex === i ? 'Cerrar ←' : 'Descubrir más →' }}
+          </a>
+        </div>
+        <div class="svc-card-v2-detail" [class.active]="expandedIndex === i">
+          <p>{{ servicio.descripcionDetallada }}</p>
+        </div>
+      </article>
+    </div>
+    <div style="text-align:center; margin-top:3rem;">
+      <a routerLink="/servicios" class="svc-v2-view-all">Ver Todos los Servicios →</a>
+    </div>
+  </div>
+</section>

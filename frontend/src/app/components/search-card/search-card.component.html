@@ -1,0 +1,43 @@
+<section class="search-section" id="buscar">
+  <div class="container">
+    <div class="search-card">
+      <h2 class="search-title">Encuentre su Habitación Perfecta</h2>
+      <form class="search-form" (ngSubmit)="onSearch()">
+        <div class="form-group">
+          <label for="checkIn" class="form-label">Entrada</label>
+          <input type="date" id="checkIn" class="form-input" [(ngModel)]="checkIn" name="checkIn" [min]="minDate" required>
+        </div>
+        <div class="form-group">
+          <label for="checkOut" class="form-label">Salida</label>
+          <input type="date" id="checkOut" class="form-input" [(ngModel)]="checkOut" name="checkOut" [min]="checkIn" required>
+        </div>
+        <div class="form-group">
+          <label for="guests" class="form-label">Huéspedes</label>
+          <select id="guests" class="form-input" [(ngModel)]="guests" name="guests">
+            <option value="1">1 Huésped</option>
+            <option value="2">2 Huéspedes</option>
+            <option value="3">3 Huéspedes</option>
+            <option value="4">4+ Huéspedes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="roomType" class="form-label">Tipo</label>
+          <select id="roomType" class="form-input" [(ngModel)]="roomType" name="roomType">
+            <option value="todas">Todas</option>
+            <option value="estandar">Estándar</option>
+            <option value="ejecutiva">Ejecutiva</option>
+            <option value="vip">VIP</option>
+            <option value="lujo">Suite de Lujo</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Buscar
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

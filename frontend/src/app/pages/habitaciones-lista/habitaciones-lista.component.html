@@ -1,0 +1,32 @@
+<!-- Hero -->
+<div class="hab-hero">
+  <div class="hab-hero-content">
+    <span class="hab-hero-badge">✦ Hotel Polaris</span>
+    <h1>Nuestras Habitaciones</h1>
+    <p>Encuentre el santuario perfecto para su estadía</p>
+  </div>
+</div>
+
+<!-- Lista de habitaciones -->
+<div class="container">
+  <div class="hab-list">
+    <div class="hab-card" *ngFor="let habitacion of habitaciones">
+      <div class="hab-card-img">
+        <img [src]="habitacion.imagenUrl" [alt]="habitacion.nombre">
+        <span class="hab-card-badge">{{ habitacion.tipoCama }}</span>
+      </div>
+      <div class="hab-card-body">
+        <div class="hab-card-meta">
+          <span>{{ habitacion.metrosCuadrados }} m²</span>
+          <span>{{ habitacion.capacidad }} personas</span>
+        </div>
+        <h3>{{ habitacion.nombre }}</h3>
+        <p>{{ habitacion.descripcion }}</p>
+        <p class="hab-card-price">
+          Desde <strong>{{ formatPrice(habitacion.precioPorNoche) }}</strong>/noche
+        </p>
+        <a class="btn-ver" [routerLink]="['/habitaciones', habitacion.id]">Ver Detalle</a>
+      </div>
+    </div>
+  </div>
+</div>

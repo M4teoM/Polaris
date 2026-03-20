@@ -1,0 +1,41 @@
+<section class="testimonials-section" id="testimonios">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Experiencias de Nuestros Huéspedes</h2>
+      <p class="section-subtitle">Descubra por qué viajeros exigentes eligen Hotel Polaris</p>
+    </div>
+    <div class="testimonials-slider">
+      <div class="testimonial-track" [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+        <article class="testimonial-card" *ngFor="let testimonio of testimonios">
+          <div class="stars">
+            <svg *ngFor="let star of getStars(testimonio.estrellas)" width="20" height="20" viewBox="0 0 24 24" fill="#D4AF37">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+            </svg>
+          </div>
+          <p class="testimonial-text">"{{ testimonio.texto }}"</p>
+          <div class="testimonial-author">
+            <p class="author-name">{{ testimonio.autorNombre }}</p>
+            <p class="author-location">{{ testimonio.autorUbicacion }}</p>
+          </div>
+        </article>
+      </div>
+      <div class="slider-controls">
+        <button class="slider-btn prev" (click)="prevSlide()" aria-label="Anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="slider-dots">
+          <span class="dot" *ngFor="let t of testimonios; let i = index" 
+                [class.active]="i === currentSlide" 
+                (click)="goToSlide(i)"></span>
+        </div>
+        <button class="slider-btn next" (click)="nextSlide()" aria-label="Siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

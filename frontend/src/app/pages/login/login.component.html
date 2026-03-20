@@ -1,0 +1,26 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-card-header">
+      <h1>Hotel Polaris</h1>
+      <p>Inicia sesión en tu cuenta</p>
+    </div>
+    <div class="login-card-body">
+      <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <form (ngSubmit)="onLogin()">
+        <div class="form-field">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" [(ngModel)]="correo" name="correo" placeholder="usuario@correo.com" required>
+        </div>
+        <div class="form-field">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" [(ngModel)]="contrasena" name="contrasena" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-login">Ingresar</button>
+      </form>
+      <div class="login-register">
+        <span>¿No tienes cuenta?</span>
+        <a routerLink="/registro">Regístrate aquí</a>
+      </div>
+    </div>
+  </div>
+</div>

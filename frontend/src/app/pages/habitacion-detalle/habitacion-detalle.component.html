@@ -1,0 +1,57 @@
+<div *ngIf="habitacion">
+  <!-- Hero con imagen -->
+  <div class="det-hero">
+    <img [src]="habitacion.imagenUrl" [alt]="habitacion.nombre">
+    <div class="det-hero-overlay"></div>
+    <div class="det-hero-text">
+      <p>✦ Hotel Polaris</p>
+      <h1>{{ habitacion.nombre }}</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="det-grid">
+      <!-- Columna izquierda: descripción -->
+      <div class="det-desc">
+        <a routerLink="/habitaciones" class="btn-volver">← Volver a Habitaciones</a>
+        <h2>Acerca de esta habitación</h2>
+        <p>{{ habitacion.descripcion }}</p>
+
+        <div class="det-specs">
+          <div class="det-spec">
+            <div class="det-spec-label">Área</div>
+            <div class="det-spec-value">{{ habitacion.metrosCuadrados }} m²</div>
+          </div>
+          <div class="det-spec">
+            <div class="det-spec-label">Capacidad</div>
+            <div class="det-spec-value">{{ habitacion.capacidad }} huéspedes</div>
+          </div>
+          <div class="det-spec">
+            <div class="det-spec-label">Tipo de cama</div>
+            <div class="det-spec-value">{{ habitacion.tipoCama }}</div>
+          </div>
+          <div class="det-spec">
+            <div class="det-spec-label">Precio/noche</div>
+            <div class="det-spec-value">{{ formatPrice(habitacion.precioPorNoche) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: precio y reservar -->
+      <div class="det-price-card">
+        <h3>Precio por noche</h3>
+        <div class="det-price-amount">{{ formatPrice(habitacion.precioPorNoche) }}</div>
+        <div class="det-price-unit">por noche / por habitación</div>
+        <ul class="det-price-features">
+          <li>WiFi de alta velocidad</li>
+          <li>Desayuno incluido</li>
+          <li>{{ habitacion.tipoCama }}</li>
+          <li>{{ habitacion.metrosCuadrados }} m² de espacio</li>
+          <li>Servicio de limpieza diario</li>
+          <li>Acceso a instalaciones</li>
+        </ul>
+        <a routerLink="/login" class="btn-reservar">Inicia sesión para reservar</a>
+      </div>
+    </div>
+  </div>
+</div>

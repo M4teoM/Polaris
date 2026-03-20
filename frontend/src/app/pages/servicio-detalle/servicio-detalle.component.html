@@ -1,0 +1,65 @@
+<div *ngIf="servicio">
+  <!-- Hero con imagen de fondo -->
+  <section class="sdet-hero" [style.background-image]="'url(' + servicio.imagenUrl + ')'">
+    <div class="sdet-hero-overlay"></div>
+    <div class="sdet-hero-content">
+      <span class="sdet-hero-badge">✦ Premium</span>
+      <h1 class="sdet-hero-title">{{ servicio.nombre }}</h1>
+      <p class="sdet-hero-subtitle">{{ servicio.descripcion }}</p>
+    </div>
+  </section>
+
+  <!-- Sección principal -->
+  <section class="sdet-main">
+    <div class="sdet-container">
+      
+      <!-- Tarjeta de descripción -->
+      <div class="sdet-description-card">
+        <div class="sdet-desc-img-wrap">
+          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" class="sdet-desc-img">
+        </div>
+        <div class="sdet-desc-body">
+          <a routerLink="/servicios" class="sdet-btn-volver">← Volver a Servicios</a>
+          <h2 class="sdet-desc-title">Acerca de este servicio</h2>
+          <p class="sdet-desc-text">{{ servicio.descripcionDetallada }}</p>
+        </div>
+      </div>
+
+      <!-- Banner CTA -->
+      <div class="sdet-cta-banner">
+        <div class="sdet-cta-left">
+          <h3>¿Listo para disfrutar?</h3>
+          <p>Nuestro equipo está disponible 24/7 para atenderle</p>
+        </div>
+        <div class="sdet-cta-right">
+          <a routerLink="/login" class="sdet-cta-btn">
+            <span>Reservar Ahora</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="sdet-features">
+        <div class="sdet-feature">
+          <div class="sdet-feature-icon">✓</div>
+          <h4>Calidad Premium</h4>
+          <p>Solo los mejores estándares</p>
+        </div>
+        <div class="sdet-feature">
+          <div class="sdet-feature-icon">★</div>
+          <h4>Personal Experto</h4>
+          <p>Profesionales certificados</p>
+        </div>
+        <div class="sdet-feature">
+          <div class="sdet-feature-icon">♦</div>
+          <h4>Disponible 24/7</h4>
+          <p>Cuando usted lo necesite</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

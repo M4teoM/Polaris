@@ -538,9 +538,15 @@ public class DataInitializer implements CommandLineRunner {
                 .orElseGet(() -> {
                     Cuenta nuevaCuenta = new Cuenta();
                     nuevaCuenta.setReserva(reserva);
+                    nuevaCuenta.setCliente(reserva.getCliente());
                     nuevaCuenta.setPagada(Boolean.FALSE);
                     return cuentaRepo.save(nuevaCuenta);
                 });
+
+            if (cuenta.getCliente() == null) {
+                cuenta.setCliente(reserva.getCliente());
+                cuentaRepo.save(cuenta);
+            }
 
             if (itemCuentaRepo.countByCuentaId(cuenta.getId()) > 0) {
                 continue;

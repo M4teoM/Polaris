@@ -1,148 +1,178 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Perfil Cliente | Hotel Polaris</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
 
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="perfil-hero">
-    <div class="perfil-hero-content">
-        <span class="perfil-badge">&#9733; Cliente Polaris</span>
-        <div class="perfil-avatar"
-             th:text="${#strings.toUpperCase(#strings.substring(cliente.nombre, 0, 1))}">
-            U
+    <div class="perfil-hero">
+        <div class="perfil-hero-content">
+            <span class="perfil-badge">&#9733; Cliente Polaris</span>
+            <div class="perfil-avatar" th:text="${#strings.toUpperCase(#strings.substring(cliente.nombre, 0, 1))}">
+                U
+            </div>
+            <h1 th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre Apellido</h1>
+            <p th:text="${cliente.correo}">correo@mail.com</p>
         </div>
-        <h1 th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre Apellido</h1>
-        <p th:text="${cliente.correo}">correo@mail.com</p>
     </div>
-</div>
 
-<div class="perfil-container">
+    <div class="perfil-container">
 
-    <!-- Card de datos de la cuenta -->
-    <div class="perfil-card">
-        <div class="perfil-card-header">
-            <h2>Datos de la cuenta</h2>
-            <span th:text="'ID: ' + ${cliente.id}">#1</span>
+        <div th:if="${aviso}"
+            style="margin-bottom:18px;padding:12px 14px;border:1px solid #f5b7b1;background:#fdecea;color:#c62828;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.9rem;font-weight:600;text-align:center;">
+            <span th:text="${aviso}"></span>
         </div>
-        <div class="perfil-card-body">
 
-            <div class="perfil-field">
-                <div class="perfil-field-icon">&#128100;</div>
-                <div class="perfil-field-info">
-                    <div class="perfil-field-label">Nombre</div>
-                    <div class="perfil-field-value" th:text="${cliente.nombre}">Nombre</div>
-                </div>
+        <!-- Card de datos de la cuenta -->
+        <div class="perfil-card">
+            <div class="perfil-card-header">
+                <h2>Datos de la cuenta</h2>
+                <span th:text="'ID: ' + ${cliente.id}">#1</span>
             </div>
+            <div class="perfil-card-body">
 
-            <div class="perfil-field">
-                <div class="perfil-field-icon">&#128101;</div>
-                <div class="perfil-field-info">
-                    <div class="perfil-field-label">Apellido</div>
-                    <div class="perfil-field-value" th:text="${cliente.apellido}">Apellido</div>
+                <div class="perfil-field">
+                    <div class="perfil-field-icon">&#128100;</div>
+                    <div class="perfil-field-info">
+                        <div class="perfil-field-label">Nombre</div>
+                        <div class="perfil-field-value" th:text="${cliente.nombre}">Nombre</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="perfil-field">
-                <div class="perfil-field-icon">&#9993;</div>
-                <div class="perfil-field-info">
-                    <div class="perfil-field-label">Correo electr&#243;nico</div>
-                    <div class="perfil-field-value" th:text="${cliente.correo}">correo@mail.com</div>
+                <div class="perfil-field">
+                    <div class="perfil-field-icon">&#128101;</div>
+                    <div class="perfil-field-info">
+                        <div class="perfil-field-label">Apellido</div>
+                        <div class="perfil-field-value" th:text="${cliente.apellido}">Apellido</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="perfil-field">
-                <div class="perfil-field-icon">&#128274;</div>
-                <div class="perfil-field-info">
-                    <div class="perfil-field-label">Contrase&#241;a</div>
-                    <div class="perfil-field-value">••••••••</div>
+                <div class="perfil-field">
+                    <div class="perfil-field-icon">&#9993;</div>
+                    <div class="perfil-field-info">
+                        <div class="perfil-field-label">Correo electr&#243;nico</div>
+                        <div class="perfil-field-value" th:text="${cliente.correo}">correo@mail.com</div>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <div class="perfil-actions">
-            <a th:href="@{/}" class="btn-volver">&#8592; Volver al inicio</a>
-            <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn-editar-perfil">Editar</a>
-            <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post" style="margin:0;">
-                <button type="submit" class="btn-eliminar-perfil"
+                <div class="perfil-field">
+                    <div class="perfil-field-icon">&#128274;</div>
+                    <div class="perfil-field-info">
+                        <div class="perfil-field-label">Contrase&#241;a</div>
+                        <div class="perfil-field-value">••••••••</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="perfil-actions">
+                <a th:href="@{/}" class="btn-volver">&#8592; Volver al inicio</a>
+                <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn-editar-perfil">Editar</a>
+                <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post" style="margin:0;">
+                    <button type="submit" class="btn-eliminar-perfil"
                         onclick="return confirm('&#191;Eliminar esta cuenta?')">Eliminar cuenta</button>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <!-- Card de reservas — con datos -->
-    <div class="perfil-card" style="margin-top:24px;" th:if="${not #lists.isEmpty(reservas)}">
-        <div class="perfil-card-header">
-            <h2>Mis Reservas</h2>
-            <span th:text="${#lists.size(reservas)} + ' reserva(s)'"></span>
-        </div>
-        <div class="perfil-card-body" style="padding:0; overflow-x: auto;">
-            <table style="width:100%;border-collapse:collapse;font-family:'Montserrat',sans-serif;font-size:0.85rem;">
-                <thead>
-                <tr style="background:#f8faff;border-bottom:2px solid #eef0f5;">
-                    <th style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Habitaci&#243;n</th>
-                    <th style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Tipo</th>
-                    <th style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Entrada</th>
-                    <th style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Salida</th>
-                    <th style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Estado</th>
-                    <th style="padding:12px 20px;"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="reserva : ${reservas}" style="border-bottom:1px solid #f0f3f9;">
-                    <td style="padding:14px 20px;font-weight:600;color:#0a1628;"
-                        th:text="'Hab. ' + ${reserva.habitacion.numero}"></td>
-                    <td style="padding:14px 20px;color:#555;"
-                        th:text="${reserva.habitacion.tipoHabitacion.nombre}"></td>
-                    <td style="padding:14px 20px;color:#555;"
-                        th:text="${#temporals.format(reserva.fechaCheckIn, 'dd/MM/yyyy')}"></td>
-                    <td style="padding:14px 20px;color:#555;"
-                        th:text="${#temporals.format(reserva.fechaCheckOut, 'dd/MM/yyyy')}"></td>
-                    <td style="padding:14px 20px;">
+        <!-- Card de reservas — con datos -->
+        <div class="perfil-card" style="margin-top:24px;" th:if="${not #lists.isEmpty(reservas)}">
+            <div class="perfil-card-header">
+                <h2>Mis Reservas</h2>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span th:text="${#lists.size(reservas)} + ' reserva(s)'"></span>
+                    <a th:href="@{/habitaciones(clienteId=${cliente.id})}"
+                        style="background:#0a1628;color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;white-space:nowrap;">
+                        + Agregar reserva
+                    </a>
+                </div>
+            </div>
+            <div class="perfil-card-body" style="padding:0; overflow-x: auto;">
+                <table
+                    style="width:100%;border-collapse:collapse;font-family:'Montserrat',sans-serif;font-size:0.85rem;">
+                    <thead>
+                        <tr style="background:#f8faff;border-bottom:2px solid #eef0f5;">
+                            <th
+                                style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">
+                                Habitaci&#243;n</th>
+                            <th
+                                style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">
+                                Tipo</th>
+                            <th
+                                style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">
+                                Entrada</th>
+                            <th
+                                style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">
+                                Salida</th>
+                            <th
+                                style="padding:12px 20px;text-align:left;font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;">
+                                Estado</th>
+                            <th style="padding:12px 20px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reserva : ${reservas}" style="border-bottom:1px solid #f0f3f9;">
+                            <td style="padding:14px 20px;font-weight:600;color:#0a1628;"
+                                th:text="'Hab. ' + ${reserva.habitacion.numero}"></td>
+                            <td style="padding:14px 20px;color:#555;"
+                                th:text="${reserva.habitacion.tipoHabitacion.nombre}"></td>
+                            <td style="padding:14px 20px;color:#555;"
+                                th:text="${#temporals.format(reserva.fechaCheckIn, 'dd/MM/yyyy')}"></td>
+                            <td style="padding:14px 20px;color:#555;"
+                                th:text="${#temporals.format(reserva.fechaCheckOut, 'dd/MM/yyyy')}"></td>
+                            <td style="padding:14px 20px;">
                                 <span th:text="${reserva.estado}"
-                                      th:style="${reserva.estado == 'Confirmada'} ?
+                                    th:style="${reserva.estado == 'Confirmada'} ?
                                         'background:#e6faf8;color:#1a9e94;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;' :
                                         'background:#fdecea;color:#c0392b;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;'">
                                 </span>
-                    </td>
-                    <td style="padding:14px 20px;">
-                        <form th:if="${reserva.estado != 'Cancelada'}"
-                              th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post">
-                            <input type="hidden" name="clienteId" th:value="${cliente.id}">
-                            <button type="submit"
-                                    style="background:#fff0f0;color:#c0392b;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;"
-                                    onclick="return confirm('¿Cancelar esta reserva?')">Cancelar</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                            </td>
+                            <td style="padding:14px 20px;">
+                                <form th:if="${reserva.estado != 'Cancelada'}"
+                                    th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post">
+                                    <input type="hidden" name="clienteId" th:value="${cliente.id}">
+                                    <button type="submit"
+                                        style="background:#fff0f0;color:#c0392b;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;"
+                                        onclick="return confirm('¿Cancelar esta reserva?')">Cancelar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <!-- Card de reservas — sin datos -->
+        <div class="perfil-card" style="margin-top:24px;" th:if="${#lists.isEmpty(reservas)}">
+            <div class="perfil-card-body" style="text-align:center; padding:40px;">
+                <p style="font-family:'Montserrat',sans-serif;color:#aaa;margin-bottom:16px;">
+                    A&#250;n no tienes reservas activas.
+                </p>
+                <a th:href="@{/habitaciones}"
+                    style="background:#0a1628;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.88rem;font-weight:600;">
+                    Ver Habitaciones
+                </a>
+                <a th:href="@{/habitaciones(clienteId=${cliente.id})}"
+                    style="background:#2ec4b6;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.88rem;font-weight:600;margin-left:10px;display:inline-block;">
+                    + Agregar reserva
+                </a>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Card de reservas — sin datos -->
-    <div class="perfil-card" style="margin-top:24px;" th:if="${#lists.isEmpty(reservas)}">
-        <div class="perfil-card-body" style="text-align:center; padding:40px;">
-            <p style="font-family:'Montserrat',sans-serif;color:#aaa;margin-bottom:16px;">
-                A&#250;n no tienes reservas activas.
-            </p>
-            <a th:href="@{/habitaciones}"
-               style="background:#0a1628;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.88rem;font-weight:600;">
-                Ver Habitaciones
-            </a>
-        </div>
-    </div>
-
-</div>
-
-<div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
+
 </html>

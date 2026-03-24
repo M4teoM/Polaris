@@ -2,9 +2,13 @@ package com.polaris.service;
 
 import com.polaris.errors.ErrorUserNotFoundException;
 import com.polaris.model.Cliente;
+import com.polaris.model.Cuenta;
+import com.polaris.model.ReservaHabitacion;
 import com.polaris.repository.IClienteRepository;
+import com.polaris.repository.ICuentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,9 @@ public class ClienteService implements IClienteService {
 
     @Autowired
     private IReservaHabitacionRepository reservaRepo;
+
+    @Autowired
+    private ICuentaRepository cuentaRepo;
 
     @Override
     public List<Cliente> obtenerTodos() {
@@ -49,13 +56,26 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
+    @Transactional
     public void eliminar(Long id) {
-        long reservas = reservaRepo.countByClienteId(id);
+        Cliente cliente = obtenerPorId(id);
+        long reservas = reservaRepo.countReservasActivasByClienteId(id);
         if (reservas > 0) {
             throw new IllegalStateException(
-                "No se puede eliminar el cliente porque tiene " + reservas + " reserva(s) activa(s). " +
-                "Elimine primero las reservas asociadas.");
+                "El cliente \"" + cliente.getNombre() + " " + cliente.getApellido() +
+                "\" no se puede eliminar porque cuenta con " + reservas + " reserva(s) activas.");
         }
+
+        List<Cuenta> cuentasCliente = cuentaRepo.findByClienteId(id);
+        if (!cuentasCliente.isEmpty()) {
+            cuentaRepo.deleteAll(cuentasCliente);
+        }
+
+        List<ReservaHabitacion> reservasCliente = reservaRepo.findByClienteId(id);
+        if (!reservasCliente.isEmpty()) {
+            reservaRepo.deleteAll(reservasCliente);
+        }
+
         repository.deleteById(id);
     }
 }

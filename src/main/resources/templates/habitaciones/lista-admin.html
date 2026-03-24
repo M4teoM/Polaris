@@ -719,6 +719,7 @@
                     <h2>Reservas de Habitaciones</h2>
                     <span th:text="${#lists.size(reservas)} + ' reservas registradas'">0 reservas</span>
                 </div>
+                <a th:href="@{/reservas/nueva/admin}" class="btn-nueva">+ A&#241;adir Reserva</a>
             </div>
 
             <div class="rooms-table-wrap">

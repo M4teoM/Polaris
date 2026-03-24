@@ -43,6 +43,11 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<ReservaHabitacion> reservas;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<Cuenta> cuentas;
+
     public Cliente(String nombre, String apellido, String correo, String contrasena) {
         this.nombre = nombre;
         this.apellido = apellido;

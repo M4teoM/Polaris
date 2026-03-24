@@ -18,6 +18,11 @@ public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabit
 
     long countByClienteId(Long clienteId);
 
+    @Query("SELECT COUNT(r) FROM ReservaHabitacion r " +
+            "WHERE r.cliente.id = :clienteId " +
+            "AND LOWER(r.estado) <> 'cancelada'")
+    long countReservasActivasByClienteId(@Param("clienteId") Long clienteId);
+
     long countByHabitacionId(Long habitacionId);
 
     // IDs de habitaciones ocupadas en un rango de fechas (excluyendo canceladas)

@@ -1,6 +1,7 @@
 package com.polaris.controller;
 
 import com.polaris.service.IReservaHabitacionService;
+import com.polaris.service.IClienteService;
 import com.polaris.service.ITipoHabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class ReservaController {
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
 
+    @Autowired
+    private IClienteService clienteService;
+
     // Formulario — llega desde "Reservar Ahora" en habitaciones/detalle.html
     @GetMapping("/nueva")
     public String nuevaForm(@RequestParam Long tipoHabitacionId,
@@ -28,6 +32,14 @@ public class ReservaController {
         model.addAttribute("clienteId", clienteId);
         model.addAttribute("hoy", LocalDate.now().toString());
         return "reservas/formulario";
+    }
+
+    @GetMapping("/nueva/admin")
+    public String nuevaFormAdmin(Model model) {
+        model.addAttribute("tipos", tipoHabitacionService.obtenerTodos());
+        model.addAttribute("clientes", clienteService.obtenerTodos());
+        model.addAttribute("hoy", LocalDate.now().toString());
+        return "reservas/formulario-admin";
     }
 
     // Confirmar reserva
@@ -46,6 +58,23 @@ public class ReservaController {
                 numeroHuespedes);
 
         return "redirect:/clientes/ver/" + clienteId;
+    }
+
+    @PostMapping("/nueva/admin")
+    public String nuevaGuardarAdmin(@RequestParam Long tipoHabitacionId,
+                                    @RequestParam Long clienteId,
+                                    @RequestParam String fechaCheckIn,
+                                    @RequestParam String fechaCheckOut,
+                                    @RequestParam int numeroHuespedes) {
+
+        reservaService.crearDesdeDetalle(
+                clienteId,
+                tipoHabitacionId,
+                LocalDate.parse(fechaCheckIn),
+                LocalDate.parse(fechaCheckOut),
+                numeroHuespedes);
+
+        return "redirect:/habitaciones/admin?tab=reservas";
     }
 
     // Cancelar

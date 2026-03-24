@@ -22,8 +22,9 @@ public class TipoHabitacionController {
     @Autowired private IReservaHabitacionService reservaService;
 
     @GetMapping
-    public String listar(Model model) {
+    public String listar(@RequestParam(required = false) Long clienteId, Model model) {
         model.addAttribute("habitaciones", tipoHabitacionService.obtenerTodos());
+        model.addAttribute("clienteId", clienteId);
         return "habitaciones/lista";
     }
 

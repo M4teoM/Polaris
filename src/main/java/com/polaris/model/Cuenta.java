@@ -24,6 +24,12 @@ public class Cuenta {
     @JoinColumn(name = "id_reserva", nullable = false, unique = true)
     private ReservaHabitacion reserva;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
+
     @Column(nullable = false)
     private Boolean pagada = false;
 

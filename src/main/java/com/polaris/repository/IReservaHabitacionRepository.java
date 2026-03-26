@@ -32,4 +32,11 @@ public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabit
             "AND r.fechaCheckOut > :checkIn")
     List<Long> findHabitacionesOcupadasEnRango(@Param("checkIn") LocalDate checkIn,
                                                @Param("checkOut") LocalDate checkOut);
+
+    // ── NUEVA: carga cliente y habitación en una sola query para el panel admin ──
+    @Query("SELECT r FROM ReservaHabitacion r " +
+            "JOIN FETCH r.cliente " +
+            "JOIN FETCH r.habitacion h " +
+            "JOIN FETCH h.tipoHabitacion")
+    List<ReservaHabitacion> findAllConDetalle();
 }

@@ -29,7 +29,8 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
 
     @Override
     public List<ReservaHabitacion> obtenerTodos() {
-        return repository.findAll();
+        // JOIN FETCH para evitar LazyInitializationException en Thymeleaf
+        return repository.findAllConDetalle();
     }
 
     @Override

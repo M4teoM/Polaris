@@ -501,11 +501,11 @@
 
         <!-- Tabs de navegación -->
         <div class="section-tabs">
-            <button class="section-tab active" onclick="switchTab('tipos',     this)">Tipos de Habitaci&#243;n</button>
-            <button class="section-tab" onclick="switchTab('rooms',     this)">Habitaciones F&#237;sicas</button>
-            <button class="section-tab" onclick="switchTab('clientes',  this)">Clientes</button>
-            <button class="section-tab" onclick="switchTab('servicios', this)">Servicios</button>
-            <button class="section-tab" onclick="switchTab('reservas',  this)">Reservas</button>
+            <button type="button" class="section-tab active" data-tab="tipos">Tipos de Habitaci&#243;n</button>
+            <button type="button" class="section-tab" data-tab="rooms">Habitaciones F&#237;sicas</button>
+            <button type="button" class="section-tab" data-tab="clientes">Clientes</button>
+            <button type="button" class="section-tab" data-tab="servicios">Servicios</button>
+            <button type="button" class="section-tab" data-tab="reservas">Reservas</button>
         </div>
 
         <!-- ══ PANEL: TIPOS DE HABITACIÓN ══ -->
@@ -781,25 +781,33 @@
     </div>
 
     <script>
-        function switchTab(panel, btn) {
+        function switchTab(panel) {
+            const targetPanel = document.getElementById('panel-' + panel);
+            const targetButton = document.querySelector('.section-tab[data-tab="' + panel + '"]');
+            if (!targetPanel || !targetButton) return;
+
             document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.section-tab').forEach(b => b.classList.remove('active'));
-            document.getElementById('panel-' + panel).classList.add('active');
-            btn.classList.add('active');
+            targetPanel.classList.add('active');
+            targetButton.classList.add('active');
         }
 
-        window.addEventListener('load', function () {
+        window.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.section-tab').forEach((btn) => {
+                btn.addEventListener('click', function () {
+                    const panel = this.dataset.tab;
+                    if (panel) switchTab(panel);
+                });
+            });
+
             const tab = new URLSearchParams(window.location.search).get('tab');
-            if (tab === 'rooms') switchTab('rooms', document.querySelectorAll('.section-tab')[1]);
-            if (tab === 'clientes') switchTab('clientes', document.querySelectorAll('.section-tab')[2]);
-            if (tab === 'servicios') switchTab('servicios', document.querySelectorAll('.section-tab')[3]);
-            if (tab === 'reservas') switchTab('reservas', document.querySelectorAll('.section-tab')[4]);
+            if (tab) {
+                switchTab(tab);
+            }
         });
     </script>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
-
-</html>
 
 </html>

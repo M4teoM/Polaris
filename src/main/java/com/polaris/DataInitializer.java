@@ -63,14 +63,7 @@ public class DataInitializer implements CommandLineRunner {
             null
         ));
 
-        Operario operario = operarioRepo.save(new Operario(
-            null,
-            "operario@polaris.com",
-            "operario123",
-            "Operario Principal",
-            admin,
-            null
-        ));
+        Operario operario = asegurarTrabajadores(admin);
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
         TipoHabitacion estandar = tipoRepo.save(new TipoHabitacion(
@@ -474,15 +467,7 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        Operario operario = operarioRepo.findByCorreo("operario@polaris.com")
-            .orElseGet(() -> operarioRepo.save(new Operario(
-                null,
-                "operario@polaris.com",
-                "operario123",
-                "Operario Principal",
-                admin,
-                null
-            )));
+        Operario operario = asegurarTrabajadores(admin);
 
         List<Habitacion> habitaciones = habitacionRepo.findAll();
         boolean habitacionesActualizadas = false;
@@ -521,6 +506,34 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         precargarCuentaEItemCuenta();
+    }
+
+    private Operario asegurarTrabajadores(Administrador admin) {
+        Operario operarioPrincipal = crearOperarioSiNoExiste(
+            "operario@polaris.com",
+            "operario123",
+            "Operario Principal",
+            admin
+        );
+
+        crearOperarioSiNoExiste("recepcion1@polaris.com", "recepcion123", "Laura Perez", admin);
+        crearOperarioSiNoExiste("recepcion2@polaris.com", "recepcion456", "Miguel Torres", admin);
+        crearOperarioSiNoExiste("conserje@polaris.com", "conserje123", "Roberto Gomez", admin);
+        crearOperarioSiNoExiste("mantenimiento@polaris.com", "mantto123", "Carlos Ramirez", admin);
+
+        return operarioPrincipal;
+    }
+
+    private Operario crearOperarioSiNoExiste(String correo, String contrasena, String nombre, Administrador admin) {
+        return operarioRepo.findByCorreo(correo)
+            .orElseGet(() -> operarioRepo.save(new Operario(
+                null,
+                correo,
+                contrasena,
+                nombre,
+                admin,
+                null
+            )));
     }
 
     private void precargarCuentaEItemCuenta() {

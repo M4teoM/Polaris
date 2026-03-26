@@ -25,7 +25,7 @@ export class HabitacionModel implements Habitacion {
    * Inicializa una habitación aplicando datos parciales sobre valores por defecto.
    * @param data Datos opcionales de la habitación.
    */
-  constructor(data?: Partial<Habitacion>) {
+  constructor(data?: Partial<Habitacion>) { //el partial se encarga de que los datos recibidos no sean obligatorios
     Object.assign(this, data);
   }
 }

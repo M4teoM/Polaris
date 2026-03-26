@@ -1,0 +1,129 @@
+<!-- Hero -->
+<div class="form-hero">
+  <div class="form-hero-content">
+    <span class="form-hero-badge">✦ Administración · Hotel Polaris</span>
+    <h1>{{ tituloPagina }}</h1>
+    <p>{{ modoEdicion ? 'Modifica los datos del tipo de habitación' : 'Completa el formulario para registrar un nuevo tipo' }}</p>
+  </div>
+</div>
+
+<!-- Formulario -->
+<div class="container">
+  <div class="form-card">
+
+    <!-- Botón volver -->
+    <button class="btn-volver" (click)="cancelar()">
+      ← Volver al listado
+    </button>
+
+    <!-- Error general -->
+    <div class="alert-error" *ngIf="errorGeneral">
+      <span>⚠️</span> {{ errorGeneral }}
+    </div>
+
+    <!-- Preview de imagen -->
+    <div class="img-preview" *ngIf="form.imagenUrl">
+      <img [src]="form.imagenUrl" alt="Preview" (error)="form.imagenUrl = ''">
+      <span class="img-preview-label">Vista previa</span>
+    </div>
+
+    <!-- Grid de campos -->
+    <div class="form-grid">
+
+      <!-- Nombre -->
+      <div class="field field-full">
+        <label for="nombre">Nombre del tipo <span class="req">*</span></label>
+        <input
+          id="nombre"
+          type="text"
+          [(ngModel)]="form.nombre"
+          placeholder="Ej: Suite Presidencial"
+          maxlength="50"
+        >
+      </div>
+
+      <!-- Descripción -->
+      <div class="field field-full">
+        <label for="descripcion">Descripción <span class="req">*</span></label>
+        <textarea
+          id="descripcion"
+          [(ngModel)]="form.descripcion"
+          placeholder="Describe las características de este tipo de habitación..."
+          rows="4"
+          maxlength="500"
+        ></textarea>
+        <span class="char-count">{{ form.descripcion.length }}/500</span>
+      </div>
+
+      <!-- URL Imagen -->
+      <div class="field field-full">
+        <label for="imagenUrl">URL de imagen</label>
+        <input
+          id="imagenUrl"
+          type="url"
+          [(ngModel)]="form.imagenUrl"
+          placeholder="https://ejemplo.com/imagen.jpg"
+        >
+      </div>
+
+      <!-- Tipo de cama -->
+      <div class="field">
+        <label for="tipoCama">Tipo de cama <span class="req">*</span></label>
+        <select id="tipoCama" [(ngModel)]="form.tipoCama">
+          <option value="" disabled>Selecciona...</option>
+          <option *ngFor="let cama of tiposCama" [value]="cama">{{ cama }}</option>
+        </select>
+      </div>
+
+      <!-- Capacidad -->
+      <div class="field">
+        <label for="capacidad">Capacidad (personas) <span class="req">*</span></label>
+        <input
+          id="capacidad"
+          type="number"
+          [(ngModel)]="form.capacidad"
+          min="1"
+          max="20"
+          placeholder="2"
+        >
+      </div>
+
+      <!-- Metros cuadrados -->
+      <div class="field">
+        <label for="metros">Metros cuadrados <span class="req">*</span></label>
+        <input
+          id="metros"
+          type="number"
+          [(ngModel)]="form.metrosCuadrados"
+          min="1"
+          placeholder="35"
+        >
+      </div>
+
+      <!-- Precio por noche -->
+      <div class="field">
+        <label for="precio">Precio por noche (COP) <span class="req">*</span></label>
+        <div class="input-prefix">
+          <span>$</span>
+          <input
+            id="precio"
+            type="number"
+            [(ngModel)]="form.precioPorNoche"
+            min="1"
+            placeholder="250000"
+          >
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Acciones -->
+    <div class="form-acciones">
+      <button class="btn-cancelar" type="button" (click)="cancelar()">Cancelar</button>
+      <button class="btn-guardar" type="button" (click)="guardar()">
+        {{ labelBoton }}
+      </button>
+    </div>
+
+  </div>
+</div>

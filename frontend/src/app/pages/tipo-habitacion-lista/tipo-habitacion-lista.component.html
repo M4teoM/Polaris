@@ -1,0 +1,98 @@
+<!-- Hero -->
+<div class="th-hero">
+  <div class="th-hero-content">
+    <span class="th-hero-badge">✦ Administración · Hotel Polaris</span>
+    <h1>Tipos de Habitación</h1>
+    <p>Gestión del catálogo de tipos de habitación</p>
+  </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="container">
+
+  <!-- Mensaje de éxito -->
+  <div class="alert-exito" *ngIf="mensajeExito">
+    <span class="alert-icon">✓</span> {{ mensajeExito }}
+  </div>
+
+  <!-- Barra de acciones -->
+  <div class="th-toolbar">
+    <div>
+      <h2 class="th-titulo">Listado de tipos</h2>
+      <p class="th-subtitulo">{{ tiposHabitacion.length }} tipo(s) registrado(s)</p>
+    </div>
+    <button class="btn-crear" (click)="irACrear()">
+      <span>+</span> Nuevo Tipo
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="th-tabla-wrapper" *ngIf="tiposHabitacion.length > 0; else sinTipos">
+    <table class="th-tabla">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Cama</th>
+          <th>Capacidad</th>
+          <th>m²</th>
+          <th>Precio / noche</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tipo of tiposHabitacion">
+          <td class="td-id">{{ tipo.id }}</td>
+          <td class="td-img">
+            <img [src]="tipo.imagenUrl" [alt]="tipo.nombre" class="th-thumb">
+          </td>
+          <td class="td-nombre">
+            <strong>{{ tipo.nombre }}</strong>
+            <p class="td-desc">{{ tipo.descripcion }}</p>
+          </td>
+          <td>
+            <span class="badge-cama">{{ tipo.tipoCama }}</span>
+          </td>
+          <td class="td-center">{{ tipo.capacidad }} <span class="td-unit">pers.</span></td>
+          <td class="td-center">{{ tipo.metrosCuadrados }} <span class="td-unit">m²</span></td>
+          <td class="td-precio">{{ formatPrice(tipo.precioPorNoche) }}</td>
+          <td class="td-acciones">
+            <button class="btn-editar" (click)="irAEditar(tipo.id)" title="Editar">
+              ✏️ Editar
+            </button>
+            <button class="btn-eliminar" (click)="confirmarEliminar(tipo)" title="Eliminar">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #sinTipos>
+    <div class="sin-datos">
+      <div class="sin-datos-icon">🛏️</div>
+      <h3>No hay tipos de habitación registrados</h3>
+      <p>Crea el primer tipo de habitación.</p>
+      <button class="btn-crear" (click)="irACrear()">+ Crear Tipo</button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal-overlay" *ngIf="mostrarConfirmacion" (click)="cancelarEliminar()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">⚠️</div>
+    <h3 class="modal-titulo">Confirmar eliminación</h3>
+    <p class="modal-texto">
+      ¿Estás seguro de eliminar el tipo
+      <strong>"{{ tipoAEliminar?.nombre }}"</strong>?
+      Esta acción no se puede deshacer.
+    </p>
+    <div class="modal-acciones">
+      <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+      <button class="btn-confirmar" (click)="ejecutarEliminar()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>

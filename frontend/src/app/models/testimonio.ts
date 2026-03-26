@@ -13,6 +13,10 @@ export class TestimonioModel implements Testimonio {
   autorUbicacion: string = '';
   estrellas: number = 0;
 
+  /**
+   * Inicializa un testimonio con propiedades opcionales.
+   * @param data Datos parciales del testimonio.
+   */
   constructor(data?: Partial<Testimonio>) {
     Object.assign(this, data);
   }

@@ -13,10 +13,15 @@ export class HabitacionFisicaModel implements HabitacionFisica {
   id: number = 0;
   numero: string = '';
   piso: number = 0;
-  estado: 'DISPONIBLE' | 'OCUPADA' | 'MANTENIMIENTO' | 'LIMPIEZA' = 'DISPONIBLE';
+  estado: 'DISPONIBLE' | 'OCUPADA' | 'MANTENIMIENTO' | 'LIMPIEZA' =
+    'DISPONIBLE';
   tipoHabitacionId: number = 0;
   tipoHabitacion?: TipoHabitacion;
 
+  /**
+   * Inicializa una habitación física con propiedades opcionales.
+   * @param data Datos parciales para hidratar la entidad.
+   */
   constructor(data?: Partial<HabitacionFisica>) {
     Object.assign(this, data);
   }

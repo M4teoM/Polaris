@@ -5,7 +5,7 @@ import { ServicioService } from '../../services/servicio.service';
 @Component({
   selector: 'app-servicios-lista',
   templateUrl: './servicios-lista.component.html',
-  styleUrls: ['./servicios-lista.component.css']
+  styleUrls: ['./servicios-lista.component.css'],
 })
 export class ServiciosListaComponent implements OnInit {
   servicios: Servicio[] = [];
@@ -14,17 +14,26 @@ export class ServiciosListaComponent implements OnInit {
 
   constructor(private servicioService: ServicioService) {}
 
+  /**
+   * Inicializa lista completa y lista filtrada de servicios.
+   */
   ngOnInit(): void {
     this.servicios = this.servicioService.getServicios();
     this.serviciosFiltrados = this.servicios;
   }
 
+  /**
+   * Aplica filtro por categoría visual para actualizar el listado visible.
+   * @param filtro Clave del filtro activo.
+   */
   filtrar(filtro: string): void {
     this.filtroActivo = filtro;
     if (filtro === 'all') {
       this.serviciosFiltrados = this.servicios;
     } else {
-      this.serviciosFiltrados = this.servicios.filter(s => s.icono === filtro);
+      this.serviciosFiltrados = this.servicios.filter(
+        (s) => s.icono === filtro,
+      );
     }
   }
 }

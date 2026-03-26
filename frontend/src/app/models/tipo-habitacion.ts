@@ -19,6 +19,10 @@ export class TipoHabitacionModel implements TipoHabitacion {
   capacidad: number = 0;
   tipoCama: string = '';
 
+  /**
+   * Inicializa un tipo de habitación con valores parciales.
+   * @param data Datos opcionales del tipo de habitación.
+   */
   constructor(data?: Partial<TipoHabitacion>) {
     Object.assign(this, data);
   }

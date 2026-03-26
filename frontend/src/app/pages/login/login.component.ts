@@ -5,15 +5,21 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   correo = '';
   contrasena = '';
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
+  /**
+   * Intenta autenticar al usuario y redirige al inicio si es exitoso.
+   */
   onLogin() {
     if (this.authService.login(this.correo, this.contrasena)) {
       this.router.navigate(['/']);

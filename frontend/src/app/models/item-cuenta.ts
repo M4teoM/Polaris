@@ -15,6 +15,10 @@ export class ItemCuentaModel implements ItemCuenta {
   servicioNombre?: string;
   servicioPrecio?: number;
 
+  /**
+   * Inicializa un ítem de cuenta con datos parciales.
+   * @param data Datos opcionales del ítem.
+   */
   constructor(data?: Partial<ItemCuenta>) {
     Object.assign(this, data);
   }

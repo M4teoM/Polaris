@@ -6,7 +6,7 @@ import { TipoHabitacionService } from '../../services/tipo-habitacion.service';
 @Component({
   selector: 'app-tipo-habitacion-form',
   templateUrl: './tipo-habitacion-form.component.html',
-  styleUrls: ['./tipo-habitacion-form.component.css']
+  styleUrls: ['./tipo-habitacion-form.component.css'],
 })
 export class TipoHabitacionFormComponent implements OnInit {
   modoEdicion = false;
@@ -21,7 +21,7 @@ export class TipoHabitacionFormComponent implements OnInit {
     precioPorNoche: 0,
     metrosCuadrados: 0,
     tipoCama: '',
-    capacidad: 1
+    capacidad: 1,
   };
 
   tiposCama = ['King Size', 'Queen Size', 'Doble', 'Individual', 'Litera'];
@@ -29,9 +29,12 @@ export class TipoHabitacionFormComponent implements OnInit {
   constructor(
     private tipoHabitacionService: TipoHabitacionService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
+  /**
+   * Detecta si el formulario está en modo edición y precarga datos si aplica.
+   */
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -46,7 +49,7 @@ export class TipoHabitacionFormComponent implements OnInit {
           precioPorNoche: tipo.precioPorNoche,
           metrosCuadrados: tipo.metrosCuadrados,
           tipoCama: tipo.tipoCama,
-          capacidad: tipo.capacidad
+          capacidad: tipo.capacidad,
         };
       } else {
         this.errorGeneral = 'No se encontró el tipo de habitación.';
@@ -54,14 +57,27 @@ export class TipoHabitacionFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Define el título dinámico según modo crear/editar.
+   * @returns Título para la cabecera de la página.
+   */
   get tituloPagina(): string {
-    return this.modoEdicion ? 'Editar Tipo de Habitación' : 'Nuevo Tipo de Habitación';
+    return this.modoEdicion
+      ? 'Editar Tipo de Habitación'
+      : 'Nuevo Tipo de Habitación';
   }
 
+  /**
+   * Define la etiqueta del botón principal de envío.
+   * @returns Texto del botón de acción.
+   */
   get labelBoton(): string {
     return this.modoEdicion ? 'Guardar cambios' : 'Crear Tipo';
   }
 
+  /**
+   * Valida el formulario y guarda (crear/editar) el tipo de habitación.
+   */
   guardar(): void {
     this.errorGeneral = '';
 
@@ -99,6 +115,9 @@ export class TipoHabitacionFormComponent implements OnInit {
     this.router.navigate(['/admin/tipos-habitacion']);
   }
 
+  /**
+   * Cancela la edición y vuelve al listado administrativo.
+   */
   cancelar(): void {
     this.router.navigate(['/admin/tipos-habitacion']);
   }

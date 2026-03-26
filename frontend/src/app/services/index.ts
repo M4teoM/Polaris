@@ -8,3 +8,4 @@ export * from './habitacion-fisica.service';
 export * from './operario.service';
 export * from './reserva.service';
 export * from './servicio.service';
+export * from './tipo-habitacion.service';

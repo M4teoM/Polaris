@@ -13,6 +13,10 @@ export class OperarioModel implements Operario {
   nombre: string = '';
   administradorId: number = 0;
 
+  /**
+   * Crea una instancia de operario con propiedades opcionales.
+   * @param data Datos parciales para inicializar el modelo.
+   */
   constructor(data?: Partial<Operario>) {
     Object.assign(this, data);
   }

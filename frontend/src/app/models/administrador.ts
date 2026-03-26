@@ -9,6 +9,10 @@ export class AdministradorModel implements Administrador {
   correo: string = '';
   contrasena: string = '';
 
+  /**
+   * Inicializa una instancia de administrador combinando valores por defecto y datos parciales.
+   * @param data Datos opcionales para hidratar el modelo.
+   */
   constructor(data?: Partial<Administrador>) {
     Object.assign(this, data);
   }

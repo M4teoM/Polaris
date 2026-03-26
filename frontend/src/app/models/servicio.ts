@@ -27,6 +27,10 @@ export class ServicioModel implements Servicio {
   destacados?: string;
   icono?: string;
 
+  /**
+   * Inicializa un servicio con los datos suministrados.
+   * @param data Datos parciales del servicio.
+   */
   constructor(data?: Partial<Servicio>) {
     Object.assign(this, data);
   }

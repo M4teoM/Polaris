@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { ReservaHabitacion } from '../models/reserva-habitacion';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReservaService {
-
   private reservas: ReservaHabitacion[] = [
     {
       id: 1,
@@ -15,7 +14,7 @@ export class ReservaService {
       numeroHuespedes: 2,
       clienteId: 1,
       habitacionId: 2,
-      operarioId: 1
+      operarioId: 1,
     },
     {
       id: 2,
@@ -25,7 +24,7 @@ export class ReservaService {
       numeroHuespedes: 2,
       clienteId: 2,
       habitacionId: 7,
-      operarioId: 2
+      operarioId: 2,
     },
     {
       id: 3,
@@ -35,7 +34,7 @@ export class ReservaService {
       numeroHuespedes: 1,
       clienteId: 3,
       habitacionId: 12,
-      operarioId: 1
+      operarioId: 1,
     },
     {
       id: 4,
@@ -44,7 +43,7 @@ export class ReservaService {
       estado: 'PENDIENTE',
       numeroHuespedes: 3,
       clienteId: 4,
-      habitacionId: 6
+      habitacionId: 6,
     },
     {
       id: 5,
@@ -54,33 +53,64 @@ export class ReservaService {
       numeroHuespedes: 2,
       clienteId: 5,
       habitacionId: 10,
-      operarioId: 2
-    }
+      operarioId: 2,
+    },
   ];
 
+  /**
+   * Obtiene todas las reservas registradas.
+   * @returns Arreglo de reservas.
+   */
   getReservas(): ReservaHabitacion[] {
     return this.reservas;
   }
 
+  /**
+   * Busca una reserva por su ID.
+   * @param id ID de la reserva.
+   * @returns Reserva encontrada o undefined.
+   */
   getReservaById(id: number): ReservaHabitacion | undefined {
-    return this.reservas.find(r => r.id === id);
+    return this.reservas.find((r) => r.id === id);
   }
 
+  /**
+   * Filtra reservas pertenecientes a un cliente.
+   * @param clienteId ID del cliente.
+   * @returns Reservas del cliente indicado.
+   */
   getReservasByCliente(clienteId: number): ReservaHabitacion[] {
-    return this.reservas.filter(r => r.clienteId === clienteId);
+    return this.reservas.filter((r) => r.clienteId === clienteId);
   }
 
+  /**
+   * Filtra reservas asociadas a una habitación específica.
+   * @param habitacionId ID de la habitación.
+   * @returns Reservas encontradas para la habitación.
+   */
   getReservasByHabitacion(habitacionId: number): ReservaHabitacion[] {
-    return this.reservas.filter(r => r.habitacionId === habitacionId);
+    return this.reservas.filter((r) => r.habitacionId === habitacionId);
   }
 
+  /**
+   * Filtra reservas por estado operativo.
+   * @param estado Estado de reserva a consultar.
+   * @returns Reservas que coinciden con el estado.
+   */
   getReservasByEstado(estado: string): ReservaHabitacion[] {
-    return this.reservas.filter(r => r.estado === estado);
+    return this.reservas.filter((r) => r.estado === estado);
   }
 
+  /**
+   * Obtiene reservas activas considerando estados aún no finalizados.
+   * @returns Reservas en curso o pendientes.
+   */
   getReservasActivas(): ReservaHabitacion[] {
-    return this.reservas.filter(r => 
-      r.estado === 'CONFIRMADA' || r.estado === 'CHECKIN' || r.estado === 'PENDIENTE'
+    return this.reservas.filter(
+      (r) =>
+        r.estado === 'CONFIRMADA' ||
+        r.estado === 'CHECKIN' ||
+        r.estado === 'PENDIENTE',
     );
   }
 }

@@ -8,3 +8,16 @@ export interface HabitacionFisica {
   tipoHabitacionId: number;
   tipoHabitacion?: TipoHabitacion;
 }
+
+export class HabitacionFisicaModel implements HabitacionFisica {
+  id: number = 0;
+  numero: string = '';
+  piso: number = 0;
+  estado: 'DISPONIBLE' | 'OCUPADA' | 'MANTENIMIENTO' | 'LIMPIEZA' = 'DISPONIBLE';
+  tipoHabitacionId: number = 0;
+  tipoHabitacion?: TipoHabitacion;
+
+  constructor(data?: Partial<HabitacionFisica>) {
+    Object.assign(this, data);
+  }
+}

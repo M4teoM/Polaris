@@ -5,6 +5,21 @@ export interface TipoHabitacion {
   imagenUrl: string;
   precioPorNoche: number;
   metrosCuadrados: number;
-  tipoCama: string;
   capacidad: number;
+  tipoCama: string;
+}
+
+export class TipoHabitacionModel implements TipoHabitacion {
+  id: number = 0;
+  nombre: string = '';
+  descripcion: string = '';
+  imagenUrl: string = '';
+  precioPorNoche: number = 0;
+  metrosCuadrados: number = 0;
+  capacidad: number = 0;
+  tipoCama: string = '';
+
+  constructor(data?: Partial<TipoHabitacion>) {
+    Object.assign(this, data);
+  }
 }

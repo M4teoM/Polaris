@@ -9,3 +9,19 @@ export interface Habitacion {
   capacidad: number;
   disponible?: boolean;
 }
+
+export class HabitacionModel implements Habitacion {
+  id: number = 0;
+  nombre: string = '';
+  descripcion: string = '';
+  imagenUrl: string = '';
+  precioPorNoche: number = 0;
+  metrosCuadrados: number = 0;
+  tipoCama: string = '';
+  capacidad: number = 0;
+  disponible?: boolean;
+
+  constructor(data?: Partial<Habitacion>) {
+    Object.assign(this, data);
+  }
+}

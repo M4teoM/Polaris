@@ -7,6 +7,8 @@ import { HabitacionesListaComponent } from './pages/habitaciones-lista/habitacio
 import { HabitacionDetalleComponent } from './pages/habitacion-detalle/habitacion-detalle.component';
 import { ServiciosListaComponent } from './pages/servicios-lista/servicios-lista.component';
 import { ServicioDetalleComponent } from './pages/servicio-detalle/servicio-detalle.component';
+import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo-habitacion-lista.component';
+import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +18,9 @@ const routes: Routes = [
   { path: 'habitaciones/:id', component: HabitacionDetalleComponent },
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
+  { path: 'admin/tipos-habitacion', component: TipoHabitacionListaComponent },
+  { path: 'admin/tipos-habitacion/nuevo', component: TipoHabitacionFormComponent },
+  { path: 'admin/tipos-habitacion/editar/:id', component: TipoHabitacionFormComponent },
   { path: '**', redirectTo: '' }
 ];
 

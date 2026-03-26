@@ -19,6 +19,8 @@ import { HabitacionesListaComponent } from './pages/habitaciones-lista/habitacio
 import { HabitacionDetalleComponent } from './pages/habitacion-detalle/habitacion-detalle.component';
 import { ServiciosListaComponent } from './pages/servicios-lista/servicios-lista.component';
 import { ServicioDetalleComponent } from './pages/servicio-detalle/servicio-detalle.component';
+import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo-habitacion-lista.component';
+import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { ServicioDetalleComponent } from './pages/servicio-detalle/servicio-deta
     HabitacionesListaComponent,
     HabitacionDetalleComponent,
     ServiciosListaComponent,
-    ServicioDetalleComponent
+    ServicioDetalleComponent,
+    TipoHabitacionListaComponent,
+    TipoHabitacionFormComponent
   ],
   imports: [
     BrowserModule,

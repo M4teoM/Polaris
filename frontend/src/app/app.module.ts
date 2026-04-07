@@ -21,6 +21,8 @@ import { ServiciosListaComponent } from './pages/servicios-lista/servicios-lista
 import { ServicioDetalleComponent } from './pages/servicio-detalle/servicio-detalle.component';
 import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo-habitacion-lista.component';
 import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
+import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admin-servicios-lista.component';
+import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
 
 @NgModule({
   declarations: [
@@ -40,15 +42,13 @@ import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-h
     HabitacionDetalleComponent,
     ServiciosListaComponent,
     ServicioDetalleComponent,
+    AdminServiciosListaComponent,
+    AdminServicioFormComponent,
     TipoHabitacionListaComponent,
-    TipoHabitacionFormComponent
+    TipoHabitacionFormComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

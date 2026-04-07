@@ -5,6 +5,7 @@ import com.polaris.model.Cuenta;
 import com.polaris.model.Habitacion;
 import com.polaris.model.ItemCuenta;
 import com.polaris.model.Operario;
+import com.polaris.model.Pedido;
 import com.polaris.model.ReservaHabitacion;
 import com.polaris.model.Servicio;
 import com.polaris.model.TipoHabitacion;
@@ -15,6 +16,7 @@ import com.polaris.repository.ICuentaRepository;
 import com.polaris.repository.IHabitacionRepository;
 import com.polaris.repository.IItemCuentaRepository;
 import com.polaris.repository.IOperarioRepository;
+import com.polaris.repository.IPedidoRepository;
 import com.polaris.repository.IReservaHabitacionRepository;
 import com.polaris.repository.IServicioRepository;
 import com.polaris.repository.ITipoHabitacionRepository;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -38,6 +41,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired private IOperarioRepository operarioRepo;
     @Autowired private ICuentaRepository cuentaRepo;
     @Autowired private IItemCuentaRepository itemCuentaRepo;
+    @Autowired private IPedidoRepository pedidoRepo;
 
     @Override
     @Transactional
@@ -51,17 +55,19 @@ public class DataInitializer implements CommandLineRunner {
 
         if (datosBaseCargados) {
             completarModeloER();
+            garantizarDatosObjetivo();
             return;
         }
 
-        Administrador admin = administradorRepo.save(new Administrador(
-            null,
-            "admin@polaris.com",
-            "admin123",
-            null,
-            null,
-            null
-        ));
+        Administrador admin = administradorRepo.findByCorreo("admin@polaris.com")
+            .orElseGet(() -> administradorRepo.save(new Administrador(
+                null,
+                "admin@polaris.com",
+                "admin123",
+                null,
+                null,
+                null
+            )));
 
         Operario operario = asegurarTrabajadores(admin);
 
@@ -453,6 +459,7 @@ public class DataInitializer implements CommandLineRunner {
         reservaRepo.saveAll(reservasGuardadas);
 
         precargarCuentaEItemCuenta();
+        garantizarDatosObjetivo();
 
     }
 
@@ -581,6 +588,123 @@ public class DataInitializer implements CommandLineRunner {
                 itemSecundario.setFechaConsumo(reserva.getFechaCheckIn().plusDays(2));
                 itemCuentaRepo.save(itemSecundario);
             }
+        }
+    }
+
+    // Garantiza que los requerimientos académicos queden en 20 registros mínimos por tipo.
+    private void garantizarDatosObjetivo() {
+        Administrador admin = administradorRepo.findByCorreo("admin@polaris.com")
+            .orElseGet(() -> administradorRepo.save(new Administrador(
+                null,
+                "admin@polaris.com",
+                "admin123",
+                null,
+                null,
+                null
+            )));
+
+        Operario operarioPrincipal = asegurarTrabajadores(admin);
+
+        asegurarOperariosMinimos(admin, 20);
+        asegurarServiciosMinimos(admin, 20);
+        asegurarReservasMinimas(operarioPrincipal, 20);
+        asegurarPedidosMinimos(20);
+
+        // Recalcula cuentas/items por si se añadieron reservas nuevas.
+        precargarCuentaEItemCuenta();
+    }
+
+    // Crea operarios extra con correos únicos hasta llegar al objetivo.
+    private void asegurarOperariosMinimos(Administrador admin, int objetivo) {
+        long total = operarioRepo.count();
+        int indice = 1;
+
+        while (total < objetivo) {
+            String correo = "operario.extra" + indice + "@polaris.com";
+            String nombre = "Operario Extra " + indice;
+
+            if (operarioRepo.findByCorreo(correo).isEmpty()) {
+                operarioRepo.save(new Operario(null, correo, "operario123", nombre, admin, null));
+                total++;
+            }
+            indice++;
+        }
+    }
+
+    // Si por alguna razón hay menos de 20 servicios, completa con plantillas base.
+    private void asegurarServiciosMinimos(Administrador admin, int objetivo) {
+        long total = servicioRepo.count();
+        for (int i = (int) total + 1; i <= objetivo; i++) {
+            Servicio servicio = new Servicio();
+            servicio.setNombre("Servicio Base " + i);
+            servicio.setDescripcion("Servicio de apoyo cargado automáticamente");
+            servicio.setDescripcionDetallada("Servicio generado por el inicializador para completar el mínimo solicitado de servicios.");
+            servicio.setPrecio(90000.0 + (i * 2500));
+            servicio.setImagenUrl("https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80");
+            servicio.setCategoria("General");
+            servicio.setDuracion("60 minutos");
+            servicio.setHorario("Todos los días");
+            servicio.setIncluye("Atención personalizada|Uso de instalaciones");
+            servicio.setDestacados("Generado automáticamente para completar datos");
+            servicio.setAdministrador(admin);
+            servicioRepo.save(servicio);
+        }
+    }
+
+    // Genera reservas adicionales distribuyendo clientes y habitaciones existentes.
+    private void asegurarReservasMinimas(Operario operario, int objetivo) {
+        List<Cliente> clientes = clienteRepo.findAll();
+        List<Habitacion> habitaciones = habitacionRepo.findAll();
+
+        if (clientes.isEmpty() || habitaciones.isEmpty()) {
+            return;
+        }
+
+        String[] estados = {"Confirmada", "Pendiente", "Finalizada", "Cancelada"};
+        long total = reservaRepo.count();
+
+        for (int i = (int) total; i < objetivo; i++) {
+            Cliente cliente = clientes.get(i % clientes.size());
+            Habitacion habitacion = habitaciones.get((i * 2) % habitaciones.size());
+            LocalDate checkIn = LocalDate.of(2026, 9, 1).plusDays(i * 3L);
+            LocalDate checkOut = checkIn.plusDays(2);
+
+            ReservaHabitacion reserva = new ReservaHabitacion(
+                checkIn,
+                checkOut,
+                estados[i % estados.length],
+                (i % 4) + 1,
+                cliente,
+                habitacion
+            );
+            reserva.setOperario(operario);
+            reservaRepo.save(reserva);
+        }
+    }
+
+    // Crea pedidos relacionados a cliente, operario y servicio para que queden 20 registros.
+    private void asegurarPedidosMinimos(int objetivo) {
+        List<Cliente> clientes = clienteRepo.findAll();
+        List<Operario> operarios = operarioRepo.findAll();
+        List<Servicio> servicios = servicioRepo.findAll();
+
+        if (clientes.isEmpty() || operarios.isEmpty() || servicios.isEmpty()) {
+            return;
+        }
+
+        String[] estados = {"CREADO", "PROCESO", "COMPLETADO", "CANCELADO"};
+        long total = pedidoRepo.count();
+
+        for (int i = (int) total + 1; i <= objetivo; i++) {
+            Pedido pedido = new Pedido();
+            pedido.setCodigo(String.format("PED-%04d", i));
+            pedido.setFechaCreacion(LocalDateTime.of(2026, 4, 1, 9, 0).plusHours(i));
+            pedido.setEstado(estados[i % estados.length]);
+            pedido.setCliente(clientes.get((i - 1) % clientes.size()));
+            pedido.setOperario(operarios.get((i - 1) % operarios.size()));
+            pedido.setServicio(servicios.get((i - 1) % servicios.size()));
+            pedido.setTotal(60000.0 + (i * 12000));
+            pedidoRepo.save(pedido);
         }
     }
 }

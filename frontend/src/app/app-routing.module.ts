@@ -9,6 +9,8 @@ import { ServiciosListaComponent } from './pages/servicios-lista/servicios-lista
 import { ServicioDetalleComponent } from './pages/servicio-detalle/servicio-detalle.component';
 import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo-habitacion-lista.component';
 import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
+import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admin-servicios-lista.component';
+import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,17 +20,28 @@ const routes: Routes = [
   { path: 'habitaciones/:id', component: HabitacionDetalleComponent },
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
+  { path: 'admin/servicios', component: AdminServiciosListaComponent },
+  { path: 'admin/servicios/nuevo', component: AdminServicioFormComponent },
+  { path: 'admin/servicios/editar/:id', component: AdminServicioFormComponent },
   { path: 'admin/tipos-habitacion', component: TipoHabitacionListaComponent },
-  { path: 'admin/tipos-habitacion/nuevo', component: TipoHabitacionFormComponent },
-  { path: 'admin/tipos-habitacion/editar/:id', component: TipoHabitacionFormComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'admin/tipos-habitacion/nuevo',
+    component: TipoHabitacionFormComponent,
+  },
+  {
+    path: 'admin/tipos-habitacion/editar/:id',
+    component: TipoHabitacionFormComponent,
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { 
-    scrollPositionRestoration: 'enabled',
-    anchorScrolling: 'enabled'
-  })],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

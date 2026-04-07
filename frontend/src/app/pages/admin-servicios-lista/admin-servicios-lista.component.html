@@ -1,0 +1,79 @@
+<div class="svc-admin-hero">
+    <div class="svc-admin-hero-content">
+        <span class="svc-admin-badge">✦ Administración · Hotel Polaris</span>
+        <h1>Servicios</h1>
+        <p>CRUD en memoria con datos hardcodeados para pruebas y demostración.</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="alert-exito" *ngIf="mensajeExito">
+        <span class="alert-icon">✓</span> {{ mensajeExito }}
+    </div>
+
+    <div class="svc-admin-toolbar">
+        <div>
+            <h2>Catálogo de servicios</h2>
+            <p>{{ servicios.length }} servicio(s) registrado(s)</p>
+        </div>
+        <button class="btn-crear" type="button" (click)="irACrear()">
+            <span>+</span> Nuevo Servicio
+        </button>
+    </div>
+
+    <div class="svc-admin-grid" *ngIf="servicios.length > 0; else sinServicios">
+        <article class="svc-admin-card" *ngFor="let servicio of servicios">
+            <div class="svc-admin-card-media">
+                <img [src]="servicio.imagenUrl" [alt]="servicio.nombre"
+                    (error)="servicio.imagenUrl = 'assets/images/polaris-logo.png'">
+            </div>
+
+            <div class="svc-admin-card-body">
+                <div class="svc-admin-card-head">
+                    <div>
+                        <span class="svc-admin-chip">{{ servicio.categoria }}</span>
+                        <h3>{{ servicio.nombre }}</h3>
+                    </div>
+                    <strong>{{ formatPrice(servicio.precio) }}</strong>
+                </div>
+
+                <p>{{ servicio.descripcion }}</p>
+
+                <div class="svc-admin-meta">
+                    <span *ngIf="servicio.duracion">⏱ {{ servicio.duracion }}</span>
+                    <span *ngIf="servicio.horario">🕒 {{ servicio.horario }}</span>
+                </div>
+
+                <div class="svc-admin-actions">
+                    <button class="btn-editar" type="button" (click)="irAEditar(servicio.id)">Editar</button>
+                    <button class="btn-eliminar" type="button" (click)="confirmarEliminar(servicio)">Eliminar</button>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <ng-template #sinServicios>
+        <div class="sin-datos">
+            <div class="sin-datos-icon">🛎️</div>
+            <h3>No hay servicios registrados</h3>
+            <p>Crea el primer servicio para poblar el catálogo.</p>
+            <button class="btn-crear" type="button" (click)="irACrear()">+ Crear Servicio</button>
+        </div>
+    </ng-template>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarConfirmacion" (click)="cancelarEliminar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-icon">⚠️</div>
+        <h3 class="modal-titulo">Confirmar eliminación</h3>
+        <p class="modal-texto">
+            ¿Estás seguro de eliminar el servicio
+            <strong>"{{ servicioAEliminar?.nombre }}"</strong>?
+            Esta acción no se puede deshacer.
+        </p>
+        <div class="modal-acciones">
+            <button class="btn-cancelar" type="button" (click)="cancelarEliminar()">Cancelar</button>
+            <button class="btn-confirmar" type="button" (click)="ejecutarEliminar()">Sí, eliminar</button>
+        </div>
+    </div>
+</div>

@@ -649,7 +649,8 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        Operario operarioPrincipal = asegurarTrabajadores(admin);
+        List<Operario> operarios = asegurarTrabajadores(admin);
+        Operario operarioPrincipal = operarios.isEmpty() ? null : operarios.get(0);
 
         asegurarOperariosMinimos(admin, 20);
         asegurarServiciosMinimos(admin, 20);

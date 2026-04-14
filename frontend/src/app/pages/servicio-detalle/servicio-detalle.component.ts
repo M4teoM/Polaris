@@ -17,14 +17,11 @@ export class ServicioDetalleComponent implements OnInit {
     private servicioService: ServicioService,
   ) {}
 
-  /**
-   * Obtiene el servicio por ID desde parámetros de ruta.
-   */
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.servicio = this.servicioService.getServicioById(id);
-    if (!this.servicio) {
-      this.router.navigate(['/servicios']);
-    }
+    this.servicioService.getServicioById(id).subscribe({
+      next: data => { this.servicio = data; },
+      error: () => { this.router.navigate(['/servicios']); }
+    });
   }
 }

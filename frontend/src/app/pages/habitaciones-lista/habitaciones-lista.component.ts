@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Habitacion } from '../../models/habitacion';
+import { TipoHabitacion } from '../../models/tipo-habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 
 @Component({
@@ -8,22 +8,16 @@ import { HabitacionService } from '../../services/habitacion.service';
   styleUrls: ['./habitaciones-lista.component.css'],
 })
 export class HabitacionesListaComponent implements OnInit {
-  habitaciones: Habitacion[] = [];
+  habitaciones: TipoHabitacion[] = [];
 
   constructor(private habitacionService: HabitacionService) {}
 
-  /**
-   * Carga el listado de habitaciones para la vista de catálogo.
-   */
   ngOnInit(): void {
-    this.habitaciones = this.habitacionService.getHabitaciones();
+    this.habitacionService.getHabitaciones().subscribe(data => {
+      this.habitaciones = data;
+    });
   }
 
-  /**
-   * Da formato monetario a los precios mostrados en la lista.
-   * @param price Precio a formatear.
-   * @returns Texto de precio formateado.
-   */
   formatPrice(price: number): string {
     return this.habitacionService.formatPrice(price);
   }

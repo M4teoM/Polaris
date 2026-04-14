@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Habitacion } from '../../models/habitacion';
+import { TipoHabitacion } from '../../models/tipo-habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { HabitacionService } from '../../services/habitacion.service';
   styleUrls: ['./habitacion-detalle.component.css'],
 })
 export class HabitacionDetalleComponent implements OnInit {
-  habitacion: Habitacion | undefined;
+  habitacion: TipoHabitacion | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -17,22 +17,14 @@ export class HabitacionDetalleComponent implements OnInit {
     private habitacionService: HabitacionService,
   ) {}
 
-  /**
-   * Obtiene el ID desde la ruta y carga la habitación correspondiente.
-   */
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.habitacion = this.habitacionService.getHabitacionById(id);
-    if (!this.habitacion) {
-      this.router.navigate(['/habitaciones']);
-    }
+    this.habitacionService.getHabitacionById(id).subscribe({
+      next: data => { this.habitacion = data; },
+      error: () => { this.router.navigate(['/habitaciones']); }
+    });
   }
 
-  /**
-   * Formatea precios para mostrarlos en el detalle.
-   * @param price Precio numérico.
-   * @returns Precio en formato local.
-   */
   formatPrice(price: number): string {
     return this.habitacionService.formatPrice(price);
   }

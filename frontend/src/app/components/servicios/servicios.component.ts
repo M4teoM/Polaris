@@ -13,18 +13,12 @@ export class ServiciosComponent implements OnInit {
 
   constructor(private servicioService: ServicioService) {}
 
-  /**
-   * Carga el catálogo de servicios al iniciar el componente.
-   */
   ngOnInit() {
-    this.servicios = this.servicioService.getServicios();
+    this.servicioService.getServicios().subscribe(data => {
+      this.servicios = data;
+    });
   }
 
-  /**
-   * Expande o contrae el detalle del servicio seleccionado.
-   * @param index Índice del servicio en la lista.
-   * @param event Evento de clic para evitar navegación por defecto.
-   */
   toggleDetail(index: number, event: Event) {
     event.preventDefault();
     this.expandedIndex = this.expandedIndex === index ? null : index;

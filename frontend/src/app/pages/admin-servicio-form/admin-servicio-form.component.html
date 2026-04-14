@@ -1,0 +1,100 @@
+<div class="form-hero">
+    <div class="form-hero-content">
+        <span class="form-hero-badge">✦ Administración · Hotel Polaris</span>
+        <h1>{{ tituloPagina }}</h1>
+        <p>
+            {{ modoEdicion ? 'Modifica los datos del servicio' : 'Completa el formulario para registrar un nuevo
+            servicio' }}
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-card">
+        <button class="btn-volver" type="button" (click)="cancelar()">
+            ← Volver al listado
+        </button>
+
+        <div class="alert-error" *ngIf="errorGeneral">
+            <span>⚠️</span> {{ errorGeneral }}
+        </div>
+
+        <div class="img-preview" *ngIf="form.imagenUrl">
+            <img [src]="form.imagenUrl" alt="Preview" (error)="form.imagenUrl = ''">
+            <span class="img-preview-label">Vista previa</span>
+        </div>
+
+        <div class="form-grid">
+            <div class="field field-full">
+                <label for="nombre">Nombre <span class="req">*</span></label>
+                <input id="nombre" type="text" [(ngModel)]="form.nombre" placeholder="Ej: Spa & Wellness"
+                    maxlength="80">
+            </div>
+
+            <div class="field field-full">
+                <label for="descripcion">Descripción corta <span class="req">*</span></label>
+                <textarea id="descripcion" [(ngModel)]="form.descripcion" rows="3" maxlength="300"
+                    placeholder="Describe el servicio en pocas palabras..."></textarea>
+            </div>
+
+            <div class="field field-full">
+                <label for="descripcionDetallada">Descripción detallada</label>
+                <textarea id="descripcionDetallada" [(ngModel)]="form.descripcionDetallada" rows="4"
+                    placeholder="Amplía la información del servicio..."></textarea>
+            </div>
+
+            <div class="field">
+                <label for="categoria">Categoría <span class="req">*</span></label>
+                <select id="categoria" [(ngModel)]="form.categoria">
+                    <option value="" disabled>Selecciona...</option>
+                    <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="precio">Precio (COP)</label>
+                <input id="precio" type="number" [(ngModel)]="form.precio" min="0" step="1000" placeholder="180000">
+            </div>
+
+            <div class="field">
+                <label for="duracion">Duración</label>
+                <input id="duracion" type="text" [(ngModel)]="form.duracion" placeholder="Ej: 60 minutos">
+            </div>
+
+            <div class="field">
+                <label for="horario">Horario</label>
+                <input id="horario" type="text" [(ngModel)]="form.horario" placeholder="Ej: Todos los días">
+            </div>
+
+            <div class="field field-full">
+                <label for="imagenUrl">URL de imagen</label>
+                <input id="imagenUrl" type="url" [(ngModel)]="form.imagenUrl" placeholder="https://...">
+            </div>
+
+            <div class="field field-full">
+                <label for="incluye">Qué incluye</label>
+                <textarea id="incluye" [(ngModel)]="form.incluye" rows="3"
+                    placeholder="Masaje completo|Aromaterapia|Jacuzzi privado"></textarea>
+            </div>
+
+            <div class="field field-full">
+                <label for="destacados">Destacados</label>
+                <textarea id="destacados" [(ngModel)]="form.destacados" rows="3"
+                    placeholder="Terapeutas certificados|Productos premium"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="icono">Icono</label>
+                <select id="icono" [(ngModel)]="form.icono">
+                    <option value="">Sin icono</option>
+                    <option *ngFor="let icono of iconos" [value]="icono">{{ icono }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-acciones">
+            <button class="btn-cancelar" type="button" (click)="cancelar()">Cancelar</button>
+            <button class="btn-guardar" type="button" (click)="guardar()">{{ labelBoton }}</button>
+        </div>
+    </div>
+</div>

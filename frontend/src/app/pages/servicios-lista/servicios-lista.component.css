@@ -55,7 +55,7 @@
 
 .svc-page-main {
   padding: 60px 5% 80px;
-  background: var(--pearl, #f8f6f3);
+  background: #f0f0f0;
 }
 
 .svc-crud-toggle {
@@ -124,28 +124,30 @@
 
 .svc-page-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .svc-page-card {
-  background: #fff;
+  background: #1B2B44;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s, box-shadow 0.3s;
+  min-height: 200px;
 }
 
 .svc-page-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .svc-page-card-img {
   height: 220px;
   overflow: hidden;
+  background: #0a1628;
 }
 
 .svc-page-card-img img {
@@ -166,14 +168,14 @@
 .svc-page-card-name {
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
-  color: #0a1628;
+  color: #ffffff;
   margin-bottom: 12px;
 }
 
 .svc-page-card-desc {
   font-family: 'Montserrat', sans-serif;
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
   margin-bottom: 20px;
 }
@@ -189,8 +191,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #0a1628;
-  color: #fff;
+  background: #D4AF37;
+  color: #0a1628;
   padding: 12px 24px;
   border-radius: 8px;
   text-decoration: none;
@@ -202,6 +204,7 @@
 
 .svc-page-card-btn:hover {
   background: #2ec4b6;
+  color: #fff;
 }
 
 .svc-page-card-btn.warning {

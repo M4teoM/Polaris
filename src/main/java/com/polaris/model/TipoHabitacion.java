@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Data
 @AllArgsConstructor
@@ -38,6 +40,7 @@ public class TipoHabitacion {
     @Column(length = 30, nullable = false)
     private String tipoCama;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
     private List<Habitacion> habitaciones;
 

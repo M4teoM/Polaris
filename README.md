@@ -16,26 +16,31 @@
 ### ✨ Características Principales
 
 #### 🛌 Gestión de Habitaciones
+
 El sistema implementa un modelo de jerarquía para el control de inventario:
-* **Tipos de Habitación:** Configuración de categorías (Estándar, Suite, Penthouse) definiendo precio, capacidad, tipo de cama y dimensiones.
-* **Unidades Físicas:** Gestión de habitaciones reales asignadas a un número y piso, con estados en tiempo real (*Disponible, Ocupada, Mantenimiento*).
+
+- **Tipos de Habitación:** Configuración de categorías (Estándar, Suite, Penthouse) definiendo precio, capacidad, tipo de cama y dimensiones.
+- **Unidades Físicas:** Gestión de habitaciones reales asignadas a un número y piso, con estados en tiempo real (_Disponible, Ocupada, Mantenimiento_).
 
 #### 👥 Módulo de Clientes
-* Registro y autenticación de usuarios.
-* Gestión de perfiles personales para consulta de información.
+
+- Registro y autenticación de usuarios.
+- Gestión de perfiles personales para consulta de información.
 
 #### 🛠️ Servicios Adicionales
-* Catálogo visual de servicios ofrecidos por el hotel accesible desde la página principal.
+
+- Catálogo visual de servicios ofrecidos por el hotel accesible desde la página principal.
 
 ---
 
 ## 🛠️ Stack Tecnológico
+
 El proyecto utiliza tecnologías robustas para garantizar un desarrollo ágil y escalable:
 
-* **Framework:** [Spring Boot](https://spring.io/projects/spring-boot)
-* **Motor de Plantillas:** [Thymeleaf](https://www.thymeleaf.org/)
-* **Persistencia:** H2 Database / En memoria
-* **Lenguaje:** Java 17
+- **Framework:** [Spring Boot](https://spring.io/projects/spring-boot)
+- **Motor de Plantillas:** [Thymeleaf](https://www.thymeleaf.org/)
+- **Persistencia:** H2 Database / En memoria
+- **Lenguaje:** Java 17
 
 ---
 
@@ -44,11 +49,33 @@ El proyecto utiliza tecnologías robustas para garantizar un desarrollo ágil y 
 Sigue estos pasos para desplegar el proyecto localmente:
 
 ### Requisitos previos
-* Java 17 o superior.
-* Maven 3.6+.
+
+- Java 17 o superior.
+- Maven 3.6+.
 
 ### Pasos de ejecución
+
 1. **Clonar el repositorio:**
    ```bash
    git clone [https://github.com/M4teoM/Polaris.git](https://github.com/M4teoM/Polaris.git)
    cd Polaris
+   ```
+
+````
+2. **Compilar y ejecutar:**
+```bash
+./mvnw spring-boot:run
+````
+
+## 🗃️ Migración de Base de Datos (Unificación a Servicio)
+
+Para completar la unificación del dominio y eliminar la entidad **Tratamiento**, se incluye este script:
+
+- sql/migrations/2026-04-06_drop_tratamiento.sql
+
+### Cómo ejecutarlo en H2
+
+1. Inicia la aplicación.
+2. Abre la consola H2 en /h2.
+3. Conéctate a la base con la URL configurada en application.properties.
+4. Ejecuta el contenido del script para eliminar la tabla tratamiento si existe.

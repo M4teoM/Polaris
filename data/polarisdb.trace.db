@@ -342,8 +342,9 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 16 more
-2026-04-06 20:17:26.536953-05:00 database: flush
-org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
+2026-04-06 20:54:37.062540-05:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
 	at org.h2.message.DbException.get(DbException.java:212)
 	at org.h2.message.DbException.convert(DbException.java:407)
 	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
@@ -404,24 +405,24 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
 	at com.polaris.DemoApplication.main(DemoApplication.java:10)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
-Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
-	... 65 more
-Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]
+	... 63 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]
 	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
 	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
-	... 59 more
-2026-04-06 20:21:35.718577-05:00 database: flush
-org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
+	... 57 more
+2026-04-06 20:58:44.943020-05:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
 	at org.h2.message.DbException.get(DbException.java:212)
 	at org.h2.message.DbException.convert(DbException.java:407)
 	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
@@ -436,65 +437,148 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at org.h2.engine.Engine.createSession(Engine.java:201)
 	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:344)
 	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
-	at org.h2.Driver.connect(Driver.java:59)
-	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:137)
-	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:360)
-	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
-	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:461)
-	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:550)
-	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:98)
-	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
-	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:467)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:320)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
-	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:346)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
-	at com.polaris.DemoApplication.main(DemoApplication.java:10)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
-Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:291)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:273)
+	at org.h2.tools.Shell.runTool(Shell.java:146)
+	at org.h2.tools.Shell.main(Shell.java:80)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]" [50000-232]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
-	... 65 more
-Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/danie/GitProyects/Polaris-MVC/data/polarisdb.mv.db [2.3.232/7]
+	... 18 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/josemadrigal/Downloads/Trabajos web /Proyecto/MVC/Polaris/data/polarisdb.mv.db [2.3.232/7]
 	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
 	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
-	... 59 more
+	... 12 more
+2026-04-06 21:01:28.323922-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido', COUNT() FROM pedido
+UNION ALL
+SELECT 'servicio', COUNT() FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:01:53.841670-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL [42001-232]
+2026-04-06 21:01:53.845198-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'pedido', COUNT([*]) FROM pedido\000d\000aUNION ALL"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'pedido', COUNT([*]) FROM pedido\000d\000aUNION ALL"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'pedido', COUNT() FROM pedido
+UNION ALL [42001-232]
+2026-04-06 21:01:53.846357-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'servicio', COUNT([*]) FROM servicio\000d\000aUNION ALL"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'servicio', COUNT([*]) FROM servicio\000d\000aUNION ALL"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'servicio', COUNT() FROM servicio
+UNION ALL [42001-232]
+2026-04-06 21:01:53.847592-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:02:04.886475-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL,\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL,\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL,\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL,\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL,\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL,\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL,
+SELECT 'pedido', COUNT() FROM pedido
+UNION ALL,
+SELECT 'servicio', COUNT() FROM servicio
+UNION ALL,
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:02:38.226432-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario [42001-232]
+2026-04-06 21:02:38.231037-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'pedido', COUNT([*]) FROM pedido"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'pedido', COUNT([*]) FROM pedido"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'pedido', COUNT() FROM pedido [42001-232]
+2026-04-06 21:02:38.232294-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'servicio', COUNT([*]) FROM servicio"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'servicio', COUNT([*]) FROM servicio"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'servicio', COUNT() FROM servicio [42001-232]
+2026-04-06 21:02:38.233410-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:02:49.867211-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario [42001-232]
+2026-04-06 21:02:49.869297-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'pedido', COUNT([*]) FROM pedido"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'pedido', COUNT([*]) FROM pedido"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'pedido', COUNT() FROM pedido [42001-232]
+2026-04-06 21:02:49.870339-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'servicio', COUNT([*]) FROM servicio"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'servicio', COUNT([*]) FROM servicio"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'servicio', COUNT() FROM servicio [42001-232]
+2026-04-06 21:02:49.871265-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'reserva_habitacion', COUNT([*]) FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:03:05.012387-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido', COUNT() FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio', COUNT() FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido', COUNT() FROM pedido
+UNION ALL
+SELECT 'servicio', COUNT() FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion', COUNT() FROM reserva_habitacion [42001-232]
+2026-04-06 21:03:39.923750-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido' AS tabla, COUNT() AS total FROM pedido
+UNION ALL
+SELECT 'servicio' AS tabla, COUNT() AS total FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion [42001-232]
+2026-04-06 21:03:40.833121-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido' AS tabla, COUNT() AS total FROM pedido
+UNION ALL
+SELECT 'servicio' AS tabla, COUNT() AS total FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion [42001-232]
+2026-04-06 21:03:41.430547-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido' AS tabla, COUNT() AS total FROM pedido
+UNION ALL
+SELECT 'servicio' AS tabla, COUNT() AS total FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion [42001-232]
+2026-04-06 21:03:42.681399-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; se esperaba "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "SELECT 'operario' AS tabla, COUNT([*]) AS total FROM operario\000d\000aUNION ALL\000d\000aSELECT 'pedido' AS tabla, COUNT() AS total FROM pedido\000d\000aUNION ALL\000d\000aSELECT 'servicio' AS tabla, COUNT() AS total FROM servicio\000d\000aUNION ALL\000d\000aSELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion"; expected "*, DISTINCT, ALL, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT 'operario' AS tabla, COUNT() AS total FROM operario
+UNION ALL
+SELECT 'pedido' AS tabla, COUNT() AS total FROM pedido
+UNION ALL
+SELECT 'servicio' AS tabla, COUNT() AS total FROM servicio
+UNION ALL
+SELECT 'reserva_habitacion' AS tabla, COUNT() AS total FROM reserva_habitacion [42001-232]
+2026-04-06 21:15:42.351828-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select ([*]*) from servicio"; se esperaba "), INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "select ([*]*) from servicio"; expected "), INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select (*) from servicio [42001-232]
+2026-04-06 21:24:04.673235-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]OPERARIO SELECT * FROM OPERARIO"
+Syntax error in SQL statement "[*]OPERARIO SELECT * FROM OPERARIO"; SQL statement:
+OPERARIO SELECT * FROM OPERARIO [42000-232]

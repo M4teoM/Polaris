@@ -23,7 +23,7 @@
             {{ expandedIndex === i ? 'Cerrar ←' : 'Descubrir más →' }}
           </a>
         </div>
-        <div class="svc-card-v2-detail" [class.active]="expandedIndex === i">
+        <div class="svc-card-v2-detail" [class.svc-detail-open]="expandedIndex === i">
           <p>{{ servicio.descripcionDetallada }}</p>
         </div>
       </article>

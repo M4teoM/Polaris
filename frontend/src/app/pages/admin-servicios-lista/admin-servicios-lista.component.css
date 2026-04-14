@@ -1,0 +1,270 @@
+.svc-admin-hero {
+    padding: 72px 0 28px;
+    background: linear-gradient(135deg, #10283f 0%, #1d3b5e 100%);
+    color: #fff;
+}
+
+.svc-admin-hero-content,
+.svc-admin-toolbar,
+.svc-admin-grid,
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.svc-admin-hero-content {
+    padding: 0 24px;
+}
+
+.svc-admin-badge {
+    display: inline-flex;
+    margin-bottom: 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+}
+
+.svc-admin-hero h1 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+}
+
+.svc-admin-hero p {
+    margin: 10px 0 0;
+    max-width: 720px;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 1rem;
+}
+
+.container {
+    padding: 28px 24px 72px;
+}
+
+.alert-exito {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #e8f7ee;
+    color: #14532d;
+    font-weight: 600;
+}
+
+.alert-icon {
+    margin-right: 8px;
+}
+
+.svc-admin-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.svc-admin-toolbar h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.svc-admin-toolbar p {
+    margin: 6px 0 0;
+    color: #6b7280;
+}
+
+.btn-crear,
+.btn-editar,
+.btn-eliminar,
+.btn-cancelar,
+.btn-confirmar {
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-crear:hover,
+.btn-editar:hover,
+.btn-eliminar:hover,
+.btn-cancelar:hover,
+.btn-confirmar:hover {
+    transform: translateY(-1px);
+}
+
+.btn-crear {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #b0894d, #8b5e34);
+    color: #fff;
+    font-weight: 700;
+}
+
+.svc-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.svc-admin-card {
+    overflow: hidden;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.svc-admin-card-media img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.svc-admin-card-body {
+    padding: 18px;
+}
+
+.svc-admin-card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.svc-admin-card-head h3 {
+    margin: 8px 0 0;
+    font-size: 1.25rem;
+}
+
+.svc-admin-card-head strong {
+    white-space: nowrap;
+    color: #10283f;
+}
+
+.svc-admin-card-body p {
+    margin: 12px 0 0;
+    color: #5f6673;
+    line-height: 1.55;
+}
+
+.svc-admin-chip {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.svc-admin-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.svc-admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-editar {
+    padding: 10px 14px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 700;
+}
+
+.btn-eliminar {
+    padding: 10px 14px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+.sin-datos {
+    margin-top: 24px;
+    padding: 40px 20px;
+    border-radius: 24px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.sin-datos-icon {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 50;
+}
+
+.modal {
+    width: min(520px, 100%);
+    padding: 24px;
+    border-radius: 24px;
+    background: #fff;
+    text-align: center;
+}
+
+.modal-icon {
+    font-size: 2rem;
+}
+
+.modal-titulo {
+    margin: 12px 0 10px;
+}
+
+.modal-texto {
+    margin: 0;
+    color: #5f6673;
+    line-height: 1.6;
+}
+
+.modal-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.btn-cancelar {
+    padding: 10px 16px;
+    background: #e5e7eb;
+    color: #111827;
+    font-weight: 700;
+}
+
+.btn-confirmar {
+    padding: 10px 16px;
+    background: #b91c1c;
+    color: #fff;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .svc-admin-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .svc-admin-card-head,
+    .svc-admin-actions,
+    .modal-acciones {
+        flex-direction: column;
+    }
+}

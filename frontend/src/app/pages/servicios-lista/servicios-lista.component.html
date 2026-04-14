@@ -8,23 +8,51 @@
   </div>
 </section>
 
-<main style="padding: 60px 5%; background: #f0f0f0; min-height: 600px;">
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto;">
-    <article
-      *ngFor="let servicio of serviciosFiltrados"
-      style="background: #1B2B44; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; min-height: 380px;">
-      <div style="height: 200px; background: #0a1628; flex-shrink: 0;">
-        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre"
-             style="width: 100%; height: 100%; object-fit: cover; display: block;"
-             loading="eager">
+<!-- Tarjetas -->
+<main class="svc-page-main">
+  <div class="svc-crud-toggle">
+    <button class="btn-primary" (click)="toggleCrud()">
+      {{ mostrarCrud ? 'Ocultar CRUD' : 'Mostrar CRUD de servicios' }}
+    </button>
+  </div>
+
+  <section class="svc-crud-form" *ngIf="mostrarCrud">
+    <h2>{{ editandoId ? 'Editar servicio' : 'Crear servicio' }}</h2>
+
+    <div class="svc-form-grid">
+      <input [(ngModel)]="nuevoServicio.nombre" placeholder="Nombre" />
+      <input [(ngModel)]="nuevoServicio.categoria" placeholder="Categoría" />
+      <input [(ngModel)]="nuevoServicio.imagenUrl" placeholder="URL imagen" />
+      <input [(ngModel)]="nuevoServicio.precio" type="number" min="0" placeholder="Precio" />
+      <input [(ngModel)]="nuevoServicio.icono" placeholder="Icono (star, user, swim...)" />
+      <input [(ngModel)]="nuevoServicio.duracion" placeholder="Duración" />
+    </div>
+
+    <textarea [(ngModel)]="nuevoServicio.descripcion" rows="2" placeholder="Descripción corta"></textarea>
+    <textarea [(ngModel)]="nuevoServicio.descripcionDetallada" rows="3" placeholder="Descripción detallada"></textarea>
+
+    <div class="svc-form-actions">
+      <button *ngIf="!editandoId" class="btn-primary" (click)="crearServicio()">Agregar</button>
+      <button *ngIf="editandoId" class="btn-primary" (click)="guardarEdicion()">Guardar</button>
+      <button *ngIf="editandoId" class="btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+    </div>
+  </section>
+
+  <div class="svc-page-grid">
+    <article class="svc-page-card svc-visible" *ngFor="let servicio of serviciosFiltrados">
+      <div class="svc-page-card-img">
+        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" loading="lazy">
       </div>
-      <div style="padding: 24px; flex: 1; display: flex; flex-direction: column;">
-        <h3 style="color: #ffffff; font-size: 1.3rem; margin: 0 0 8px; font-family: serif;">{{ servicio.nombre }}</h3>
-        <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0 0 16px; line-height: 1.5; flex: 1;">{{ servicio.descripcion }}</p>
-        <a [routerLink]="['/servicios', servicio.id]"
-           style="display: inline-block; background: #D4AF37; color: #0a1628; padding: 10px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; text-align: center;">
-          Ver Detalle
-        </a>
+      <div class="svc-page-card-body">
+        <h3 class="svc-page-card-name">{{ servicio.nombre }}</h3>
+        <p class="svc-page-card-desc">{{ servicio.descripcion }}</p>
+        <div class="svc-page-card-footer">
+          <a class="svc-page-card-btn" [routerLink]="['/servicios', servicio.id]">
+            <span>Ver Detalle</span>
+          </a>
+          <button class="svc-page-card-btn warning" (click)="editarServicio(servicio)">Editar</button>
+          <button class="svc-page-card-btn danger" (click)="eliminarServicio(servicio.id)">Eliminar</button>
+        </div>
       </div>
     </article>
   </div>

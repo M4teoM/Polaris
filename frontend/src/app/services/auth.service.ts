@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from '../models/cliente';
+import { ClienteService } from './cliente.service';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,25 +9,28 @@ import { Cliente } from '../models/cliente';
 export class AuthService {
   private currentUser: Cliente | null = null;
 
+  constructor(private clienteService: ClienteService) {}
+
   /**
    * Simula el inicio de sesión y guarda el usuario actual en memoria.
    * @param correo Correo del usuario.
    * @param contrasena Contraseña del usuario.
    * @returns true si los datos básicos existen; false en caso contrario.
    */
-  login(correo: string, contrasena: string): boolean {
-    // TODO: Conectar con API real de Spring Boot
-    // Por ahora simulamos un login exitoso
-    if (correo && contrasena) {
-      this.currentUser = {
-        id: 1,
-        nombre: 'Usuario',
-        apellido: 'Demo',
-        correo: correo,
-      };
-      return true;
-    }
-    return false;
+  login(correo: string, contrasena: string): Observable<boolean> {
+    return this.clienteService.getClientes().pipe(
+      map((clientes) =>
+        clientes.find(
+          (c) =>
+            c.correo.toLowerCase() === correo.toLowerCase() &&
+            (c.contrasena || '') === contrasena,
+        ),
+      ),
+      tap((cliente) => {
+        this.currentUser = cliente || null;
+      }),
+      map((cliente) => !!cliente),
+    );
   }
 
   /**
@@ -56,9 +61,18 @@ export class AuthService {
    * @param cliente Datos del cliente a registrar.
    * @returns true mientras el flujo simulado sea exitoso.
    */
-  register(cliente: Cliente): boolean {
-    // TODO: Conectar con API real
-    console.log('Registrando usuario:', cliente);
-    return true;
+  register(cliente: Cliente): Observable<Cliente> {
+    return this.clienteService.crearCliente({
+      nombre: cliente.nombre,
+      apellido: cliente.apellido,
+      correo: cliente.correo,
+      contrasena: cliente.contrasena,
+      cedula: cliente.cedula,
+      telefono: cliente.telefono,
+    }).pipe(
+      tap((creado) => {
+        this.currentUser = creado;
+      }),
+    );
   }
 }

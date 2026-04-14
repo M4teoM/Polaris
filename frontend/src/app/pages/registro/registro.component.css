@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.form-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px;
+  background-image: linear-gradient(rgba(7, 17, 31, 0.76), rgba(7, 17, 31, 0.76)),
+    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.25);
+}
+
+.form-card-header {
+  padding: 28px 30px 18px;
+  border-bottom: 1px solid #e7ebf0;
+}
+
+.form-card-header h1 {
+  margin: 0 0 8px;
+  font-family: 'Playfair Display', serif;
+  color: #0a1628;
+}
+
+.form-card-header p {
+  margin: 0;
+  color: #6c7685;
+  font-size: 0.95rem;
+}
+
+.form-card-body {
+  padding: 26px 30px 30px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.form-row.full {
+  grid-template-columns: 1fr;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field label {
+  font-weight: 600;
+  color: #1e2b40;
+  font-size: 0.9rem;
+}
+
+.form-field input {
+  border: 1px solid #d6dde8;
+  border-radius: 10px;
+  padding: 11px 13px;
+  font-size: 0.95rem;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #2ec4b6;
+  box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.2);
+}
+
+.form-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-cancelar,
+.btn-guardar {
+  text-decoration: none;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-cancelar {
+  background: #e8edf4;
+  color: #253551;
+}
+
+.btn-guardar {
+  background: #0a1628;
+  color: #fff;
+}
+
+.btn-guardar:hover {
+  background: #2ec4b6;
+}
+
+.error-msg {
+  margin-bottom: 12px;
+  background: #ffe8ea;
+  color: #a12336;
+  border: 1px solid #f4bcc4;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.9rem;
+}
+
+.success-msg {
+  margin-bottom: 12px;
+  background: #e8fbf4;
+  color: #106f4d;
+  border: 1px solid #b8ebd6;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -64,6 +64,63 @@
     color: var(--color-aguamarina);
 }
 
+.footer-subscribe-text {
+    font-size: 0.9rem;
+    color: var(--color-taupe-light);
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.footer-subscribe-form input {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+    font-size: 0.9rem;
+}
+
+.footer-subscribe-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-footer-subscribe {
+    background: var(--gold-principal);
+    color: var(--navy-principal);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-footer-subscribe:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.btn-footer-subscribe:hover:not(:disabled) {
+    background: var(--gold-hover);
+}
+
+.footer-subscribe-msg {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+}
+
+.footer-subscribe-msg.ok {
+    color: #7de4b2;
+}
+
+.footer-subscribe-msg.error {
+    color: #ff9ea7;
+}
+
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: var(--spacing-lg);

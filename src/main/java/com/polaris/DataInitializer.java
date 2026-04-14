@@ -69,7 +69,8 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        Operario operario = asegurarTrabajadores(admin);
+        List<Operario> operarios = asegurarTrabajadores(admin);
+        Operario operario = operarios.get(0);
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
         TipoHabitacion estandar = tipoRepo.save(new TipoHabitacion(
@@ -455,8 +456,15 @@ public class DataInitializer implements CommandLineRunner {
             "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
 
         List<ReservaHabitacion> reservasGuardadas = reservaRepo.findAll();
-        reservasGuardadas.forEach(r -> r.setOperario(operario));
+        for (int i = 0; i < reservasGuardadas.size(); i++) {
+            ReservaHabitacion reserva = reservasGuardadas.get(i);
+            if (reserva.getOperario() == null) {
+                reserva.setOperario(operarios.get(i % operarios.size()));
+            }
+        }
         reservaRepo.saveAll(reservasGuardadas);
+
+        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll(), operarios);
 
         precargarCuentaEItemCuenta();
         garantizarDatosObjetivo();
@@ -474,7 +482,8 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        Operario operario = asegurarTrabajadores(admin);
+        List<Operario> operarios = asegurarTrabajadores(admin);
+        Operario operario = operarios.get(0);
 
         List<Habitacion> habitaciones = habitacionRepo.findAll();
         boolean habitacionesActualizadas = false;
@@ -512,23 +521,25 @@ public class DataInitializer implements CommandLineRunner {
             reservaRepo.saveAll(reservas);
         }
 
+        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll(), operarios);
         precargarCuentaEItemCuenta();
     }
 
-    private Operario asegurarTrabajadores(Administrador admin) {
-        Operario operarioPrincipal = crearOperarioSiNoExiste(
+    private List<Operario> asegurarTrabajadores(Administrador admin) {
+        crearOperarioSiNoExiste(
             "operario@polaris.com",
             "operario123",
             "Operario Principal",
             admin
         );
 
-        crearOperarioSiNoExiste("recepcion1@polaris.com", "recepcion123", "Laura Perez", admin);
-        crearOperarioSiNoExiste("recepcion2@polaris.com", "recepcion456", "Miguel Torres", admin);
-        crearOperarioSiNoExiste("conserje@polaris.com", "conserje123", "Roberto Gomez", admin);
-        crearOperarioSiNoExiste("mantenimiento@polaris.com", "mantto123", "Carlos Ramirez", admin);
+        for (int i = 1; i <= 19; i++) {
+            String correo = String.format("operario%02d@polaris.com", i);
+            String nombre = String.format("Operario %02d", i);
+            crearOperarioSiNoExiste(correo, "operario123", nombre, admin);
+        }
 
-        return operarioPrincipal;
+        return operarioRepo.findAll();
     }
 
     private Operario crearOperarioSiNoExiste(String correo, String contrasena, String nombre, Administrador admin) {
@@ -541,6 +552,41 @@ public class DataInitializer implements CommandLineRunner {
                 admin,
                 null
             )));
+    }
+
+    private void asegurarReservasMinimas(List<Cliente> clientes, List<Habitacion> habitaciones, List<Operario> operarios) {
+        if (clientes.isEmpty() || habitaciones.isEmpty() || operarios.isEmpty()) {
+            return;
+        }
+
+        long reservasActuales = reservaRepo.count();
+        int faltantes = (int) (20 - reservasActuales);
+        if (faltantes <= 0) {
+            return;
+        }
+
+        String[] estados = {"Confirmada", "Pendiente", "Finalizada", "Cancelada"};
+        LocalDate fechaBase = LocalDate.of(2026, 9, 1);
+
+        for (int i = 0; i < faltantes; i++) {
+            Cliente cliente = clientes.get(i % clientes.size());
+            Habitacion habitacion = habitaciones.get((i * 3) % habitaciones.size());
+            Operario operario = operarios.get(i % operarios.size());
+
+            LocalDate checkIn = fechaBase.plusDays(i * 4L);
+            LocalDate checkOut = checkIn.plusDays(2 + (i % 4));
+
+            ReservaHabitacion reserva = new ReservaHabitacion(
+                checkIn,
+                checkOut,
+                estados[i % estados.length],
+                1 + (i % 4),
+                cliente,
+                habitacion
+            );
+            reserva.setOperario(operario);
+            reservaRepo.save(reserva);
+        }
     }
 
     private void precargarCuentaEItemCuenta() {

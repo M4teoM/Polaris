@@ -33,6 +33,7 @@ public class Cuenta {
     @Column(nullable = false)
     private Boolean pagada = false;
 
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

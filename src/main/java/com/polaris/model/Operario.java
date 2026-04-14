@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
@@ -29,10 +30,12 @@ public class Operario {
     @Column(length = 80, nullable = false)
     private String nombre;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_admin", nullable = false)
     private Administrador administrador;
 
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "operario", fetch = FetchType.LAZY)

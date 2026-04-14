@@ -1,1 +1,86 @@
-<p>registro works!</p>
+<div class="form-page">
+  <div class="form-card">
+    <div class="form-card-header">
+      <h1>Nuevo Cliente</h1>
+      <p>Complete los campos para registrarse</p>
+    </div>
+    <div class="form-card-body">
+      <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="successMessage">{{ successMessage }}</div>
+
+      <form (ngSubmit)="registrar()">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="nombre">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              [(ngModel)]="cliente.nombre"
+              placeholder="Ej: Jose"
+              required
+            />
+          </div>
+          <div class="form-field">
+            <label for="apellido">Apellido</label>
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              [(ngModel)]="cliente.apellido"
+              placeholder="Ej: Perez"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-field">
+            <label for="correo">Correo electrónico</label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              [(ngModel)]="cliente.correo"
+              placeholder="usuario@correo.com"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-field">
+            <label for="contrasena">Contraseña</label>
+            <input
+              type="password"
+              id="contrasena"
+              name="contrasena"
+              [(ngModel)]="cliente.contrasena"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-field">
+            <label for="confirmarContrasena">Confirmar contraseña</label>
+            <input
+              type="password"
+              id="confirmarContrasena"
+              name="confirmarContrasena"
+              [(ngModel)]="confirmarContrasena"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/login" class="btn-cancelar">Volver a login</a>
+          <button type="submit" class="btn-guardar">Crear Cuenta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

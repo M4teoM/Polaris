@@ -116,7 +116,7 @@ export class ServicioService {
    * @returns Arreglo de servicios.
    */
   getServicios(): Servicio[] {
-    return this.servicios;
+    return [...this.servicios];
   }
 
   /**
@@ -135,6 +135,33 @@ export class ServicioService {
    */
   getServiciosByCategoria(categoria: string): Servicio[] {
     return this.servicios.filter((s) => s.categoria === categoria);
+  }
+
+  createServicio(servicio: Omit<Servicio, 'id'>): Servicio {
+    const nextId =
+      this.servicios.length > 0
+        ? Math.max(...this.servicios.map((s) => s.id)) + 1
+        : 1;
+
+    const nuevoServicio: Servicio = { id: nextId, ...servicio };
+    this.servicios = [...this.servicios, nuevoServicio];
+    return nuevoServicio;
+  }
+
+  updateServicio(servicioActualizado: Servicio): Servicio | undefined {
+    const index = this.servicios.findIndex((s) => s.id === servicioActualizado.id);
+    if (index === -1) {
+      return undefined;
+    }
+
+    this.servicios[index] = { ...servicioActualizado };
+    return this.servicios[index];
+  }
+
+  deleteServicio(id: number): boolean {
+    const totalAntes = this.servicios.length;
+    this.servicios = this.servicios.filter((s) => s.id !== id);
+    return this.servicios.length < totalAntes;
   }
 
   /**

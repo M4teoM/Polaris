@@ -8,5 +8,6 @@ export * from './item-cuenta';
 export * from './operario';
 export * from './reserva-habitacion';
 export * from './servicio';
+export * from './suscripcion';
 export * from './testimonio';
 export * from './tipo-habitacion';

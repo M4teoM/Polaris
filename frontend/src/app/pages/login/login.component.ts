@@ -21,10 +21,18 @@ export class LoginComponent {
    * Intenta autenticar al usuario y redirige al inicio si es exitoso.
    */
   onLogin() {
-    if (this.authService.login(this.correo, this.contrasena)) {
-      this.router.navigate(['/']);
-    } else {
-      this.errorMessage = 'Credenciales incorrectas';
-    }
+    this.errorMessage = '';
+    this.authService.login(this.correo, this.contrasena).subscribe({
+      next: (ok) => {
+        if (ok) {
+          this.router.navigate(['/']);
+          return;
+        }
+        this.errorMessage = 'Credenciales incorrectas';
+      },
+      error: () => {
+        this.errorMessage = 'No se pudo iniciar sesión. Revisa si el backend está encendido.';
+      },
+    });
   }
 }

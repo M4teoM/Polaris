@@ -14,6 +14,9 @@
   <div class="alert-exito" *ngIf="mensajeExito">
     <span class="alert-icon">✓</span> {{ mensajeExito }}
   </div>
+  <div class="alert-exito" *ngIf="errorGeneral" style="background:#fff3f3;border-color:#ffcaca;color:#9b1c1c;">
+    <span class="alert-icon">⚠</span> {{ errorGeneral }}
+  </div>
 
   <!-- Barra de acciones -->
   <div class="th-toolbar">

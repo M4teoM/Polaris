@@ -1,0 +1,68 @@
+<div class="admin-wrap">
+    <section class="admin-panel">
+        <h1>CRUD Clientes</h1>
+        <p>Gestión de clientes registrada en base de datos.</p>
+
+        <div class="alert ok" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+        <div class="alert error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
+
+        <div class="form-grid">
+            <input [(ngModel)]="form.nombre" placeholder="Nombre" />
+            <input [(ngModel)]="form.apellido" placeholder="Apellido" />
+            <input [(ngModel)]="form.correo" type="email" placeholder="Correo" />
+            <input [(ngModel)]="form.contrasena" type="password" placeholder="Contraseña" />
+            <input [(ngModel)]="form.cedula" placeholder="Cédula" />
+            <input [(ngModel)]="form.telefono" placeholder="Teléfono" />
+        </div>
+
+        <div class="actions">
+            <button class="btn primary" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear cliente'
+                }}</button>
+            <button *ngIf="editandoId" class="btn" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+    </section>
+
+    <section class="admin-panel">
+        <h2>Listado</h2>
+        <div class="table-wrap" *ngIf="clientes.length; else sinDatos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clientes">
+                        <td>{{ cliente.id }}</td>
+                        <td>{{ cliente.nombre }} {{ cliente.apellido }}</td>
+                        <td>{{ cliente.correo }}</td>
+                        <td>{{ cliente.telefono || '-' }}</td>
+                        <td class="row-actions">
+                            <button class="btn" (click)="editar(cliente)">Editar</button>
+                            <button class="btn danger" (click)="confirmarEliminar(cliente)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ng-template #sinDatos>
+            <p>No hay clientes para mostrar.</p>
+        </ng-template>
+    </section>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarConfirmacion" (click)="cancelarEliminar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <h3>Confirmar eliminación</h3>
+        <p>Se eliminará el cliente {{ clienteAEliminar?.nombre }} {{ clienteAEliminar?.apellido }}.</p>
+        <div class="actions">
+            <button class="btn" (click)="cancelarEliminar()">Cancelar</button>
+            <button class="btn danger" (click)="ejecutarEliminar()">Eliminar</button>
+        </div>
+    </div>
+</div>

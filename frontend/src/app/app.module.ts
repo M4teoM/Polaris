@@ -24,6 +24,8 @@ import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo
 import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
 import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admin-servicios-lista.component';
 import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
+import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
+import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 
 @NgModule({
   declarations: [
@@ -47,13 +49,10 @@ import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-se
     AdminServicioFormComponent,
     TipoHabitacionListaComponent,
     TipoHabitacionFormComponent,
+    AdminClientesListaComponent,
+    AdminHabitacionesListaComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

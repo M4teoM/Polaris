@@ -11,6 +11,9 @@ import { TipoHabitacionListaComponent } from './pages/tipo-habitacion-lista/tipo
 import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-habitacion-form.component';
 import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admin-servicios-lista.component';
 import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
+import { AdminGuard } from './guards/admin.guard';
+import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
+import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,17 +23,45 @@ const routes: Routes = [
   { path: 'habitaciones/:id', component: HabitacionDetalleComponent },
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
-  { path: 'admin/servicios', component: AdminServiciosListaComponent },
-  { path: 'admin/servicios/nuevo', component: AdminServicioFormComponent },
-  { path: 'admin/servicios/editar/:id', component: AdminServicioFormComponent },
-  { path: 'admin/tipos-habitacion', component: TipoHabitacionListaComponent },
+  {
+    path: 'admin/servicios',
+    component: AdminServiciosListaComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/servicios/nuevo',
+    component: AdminServicioFormComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/servicios/editar/:id',
+    component: AdminServicioFormComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/tipos-habitacion',
+    component: TipoHabitacionListaComponent,
+    canActivate: [AdminGuard],
+  },
   {
     path: 'admin/tipos-habitacion/nuevo',
     component: TipoHabitacionFormComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'admin/tipos-habitacion/editar/:id',
     component: TipoHabitacionFormComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/clientes',
+    component: AdminClientesListaComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/habitaciones',
+    component: AdminHabitacionesListaComponent,
+    canActivate: [AdminGuard],
   },
   { path: '**', redirectTo: '' },
 ];

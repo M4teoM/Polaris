@@ -13,21 +13,29 @@ export class AdminServiciosListaComponent implements OnInit {
   servicioAEliminar: Servicio | null = null;
   mostrarConfirmacion = false;
   mensajeExito = '';
+  errorGeneral = '';
 
-  constructor(private servicioService: ServicioService, private router: Router) {}
+  constructor(
+    private servicioService: ServicioService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.cargarServicios();
   }
 
   cargarServicios(): void {
-    this.servicioService.getServicios().subscribe(data => {
+    this.servicioService.getServicios().subscribe((data) => {
       this.servicios = data;
     });
   }
 
-  irACrear(): void { this.router.navigate(['/admin/servicios/nuevo']); }
-  irAEditar(id: number): void { this.router.navigate(['/admin/servicios/editar', id]); }
+  irACrear(): void {
+    this.router.navigate(['/admin/servicios/nuevo']);
+  }
+  irAEditar(id: number): void {
+    this.router.navigate(['/admin/servicios/editar', id]);
+  }
 
   confirmarEliminar(servicio: Servicio): void {
     this.servicioAEliminar = servicio;
@@ -41,16 +49,29 @@ export class AdminServiciosListaComponent implements OnInit {
 
   ejecutarEliminar(): void {
     if (!this.servicioAEliminar) return;
-    this.servicioService.delete(this.servicioAEliminar.id).subscribe(() => {
-      this.mensajeExito = `"${this.servicioAEliminar!.nombre}" eliminado correctamente.`;
-      this.servicioAEliminar = null;
-      this.mostrarConfirmacion = false;
-      this.cargarServicios();
-      setTimeout(() => (this.mensajeExito = ''), 3000);
+    this.errorGeneral = '';
+    this.servicioService.delete(this.servicioAEliminar.id).subscribe({
+      next: () => {
+        this.mensajeExito = `"${this.servicioAEliminar!.nombre}" eliminado correctamente.`;
+        this.servicioAEliminar = null;
+        this.mostrarConfirmacion = false;
+        this.cargarServicios();
+        setTimeout(() => (this.mensajeExito = ''), 3000);
+      },
+      error: (err) => {
+        this.errorGeneral =
+          err?.error?.error ||
+          'No se pudo eliminar el servicio. Verifica si tiene datos asociados.';
+        this.mostrarConfirmacion = false;
+      },
     });
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price || 0);
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0,
+    }).format(price || 0);
   }
 }

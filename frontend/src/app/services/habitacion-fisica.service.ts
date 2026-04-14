@@ -147,4 +147,41 @@ export class HabitacionFisicaService {
   getHabitacionesByPiso(piso: number): HabitacionFisica[] {
     return this.habitaciones.filter((h) => h.piso === piso);
   }
+
+  crearHabitacion(habitacion: Omit<HabitacionFisica, 'id'>): HabitacionFisica {
+    const nuevaHabitacion: HabitacionFisica = {
+      ...habitacion,
+      id: this.getNextId(),
+    };
+    this.habitaciones = [...this.habitaciones, nuevaHabitacion];
+    return nuevaHabitacion;
+  }
+
+  actualizarHabitacion(
+    id: number,
+    cambios: Omit<HabitacionFisica, 'id'>,
+  ): HabitacionFisica | undefined {
+    const index = this.habitaciones.findIndex((h) => h.id === id);
+    if (index === -1) {
+      return undefined;
+    }
+
+    const actualizada: HabitacionFisica = { id, ...cambios };
+    this.habitaciones[index] = actualizada;
+    this.habitaciones = [...this.habitaciones];
+    return actualizada;
+  }
+
+  eliminarHabitacion(id: number): boolean {
+    const totalAntes = this.habitaciones.length;
+    this.habitaciones = this.habitaciones.filter((h) => h.id !== id);
+    return this.habitaciones.length < totalAntes;
+  }
+
+  private getNextId(): number {
+    if (this.habitaciones.length === 0) {
+      return 1;
+    }
+    return Math.max(...this.habitaciones.map((h) => h.id)) + 1;
+  }
 }

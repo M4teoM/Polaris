@@ -68,10 +68,13 @@
 }
 
 @keyframes starPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.8;
         transform: scale(1.05);
@@ -116,6 +119,19 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+}
+
+.user-pill {
+    font-size: 0.82rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    padding: 8px 12px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .nav-toggle {

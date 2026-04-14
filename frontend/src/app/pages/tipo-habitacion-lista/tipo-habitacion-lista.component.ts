@@ -13,15 +13,19 @@ export class TipoHabitacionListaComponent implements OnInit {
   tipoAEliminar: TipoHabitacion | null = null;
   mostrarConfirmacion = false;
   mensajeExito = '';
+  errorGeneral = '';
 
-  constructor(private tipoHabitacionService: TipoHabitacionService, private router: Router) {}
+  constructor(
+    private tipoHabitacionService: TipoHabitacionService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.cargarTipos();
   }
 
   cargarTipos(): void {
-    this.tipoHabitacionService.getAll().subscribe(data => {
+    this.tipoHabitacionService.getAll().subscribe((data) => {
       this.tiposHabitacion = data;
     });
   }
@@ -50,12 +54,21 @@ export class TipoHabitacionListaComponent implements OnInit {
 
   ejecutarEliminar(): void {
     if (this.tipoAEliminar) {
-      this.tipoHabitacionService.delete(this.tipoAEliminar.id!).subscribe(() => {
-        this.mensajeExito = `"${this.tipoAEliminar!.nombre}" eliminado correctamente.`;
-        this.tipoAEliminar = null;
-        this.mostrarConfirmacion = false;
-        this.cargarTipos();
-        setTimeout(() => (this.mensajeExito = ''), 3000);
+      this.errorGeneral = '';
+      this.tipoHabitacionService.delete(this.tipoAEliminar.id!).subscribe({
+        next: () => {
+          this.mensajeExito = `"${this.tipoAEliminar!.nombre}" eliminado correctamente.`;
+          this.tipoAEliminar = null;
+          this.mostrarConfirmacion = false;
+          this.cargarTipos();
+          setTimeout(() => (this.mensajeExito = ''), 3000);
+        },
+        error: (err) => {
+          this.errorGeneral =
+            err?.error?.error ||
+            'No se pudo eliminar. Este tipo puede tener habitaciones asociadas.';
+          this.mostrarConfirmacion = false;
+        },
       });
     }
   }

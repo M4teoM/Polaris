@@ -10,34 +10,6 @@
 
 <!-- Tarjetas -->
 <main class="svc-page-main">
-  <div class="svc-crud-toggle">
-    <button class="btn-primary" (click)="toggleCrud()">
-      {{ mostrarCrud ? 'Ocultar CRUD' : 'Mostrar CRUD de servicios' }}
-    </button>
-  </div>
-
-  <section class="svc-crud-form" *ngIf="mostrarCrud">
-    <h2>{{ editandoId ? 'Editar servicio' : 'Crear servicio' }}</h2>
-
-    <div class="svc-form-grid">
-      <input [(ngModel)]="nuevoServicio.nombre" placeholder="Nombre" />
-      <input [(ngModel)]="nuevoServicio.categoria" placeholder="Categoría" />
-      <input [(ngModel)]="nuevoServicio.imagenUrl" placeholder="URL imagen" />
-      <input [(ngModel)]="nuevoServicio.precio" type="number" min="0" placeholder="Precio" />
-      <input [(ngModel)]="nuevoServicio.icono" placeholder="Icono (star, user, swim...)" />
-      <input [(ngModel)]="nuevoServicio.duracion" placeholder="Duración" />
-    </div>
-
-    <textarea [(ngModel)]="nuevoServicio.descripcion" rows="2" placeholder="Descripción corta"></textarea>
-    <textarea [(ngModel)]="nuevoServicio.descripcionDetallada" rows="3" placeholder="Descripción detallada"></textarea>
-
-    <div class="svc-form-actions">
-      <button *ngIf="!editandoId" class="btn-primary" (click)="crearServicio()">Agregar</button>
-      <button *ngIf="editandoId" class="btn-primary" (click)="guardarEdicion()">Guardar</button>
-      <button *ngIf="editandoId" class="btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
-    </div>
-  </section>
-
   <div class="svc-page-grid">
     <article class="svc-page-card svc-visible" *ngFor="let servicio of serviciosFiltrados">
       <div class="svc-page-card-img">
@@ -50,8 +22,6 @@
           <a class="svc-page-card-btn" [routerLink]="['/servicios', servicio.id]">
             <span>Ver Detalle</span>
           </a>
-          <button class="svc-page-card-btn warning" (click)="editarServicio(servicio)">Editar</button>
-          <button class="svc-page-card-btn danger" (click)="eliminarServicio(servicio.id)">Eliminar</button>
         </div>
       </div>
     </article>

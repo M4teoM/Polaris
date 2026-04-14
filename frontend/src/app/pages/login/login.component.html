@@ -5,6 +5,7 @@
       <p>Inicia sesión en tu cuenta</p>
     </div>
     <div class="login-card-body">
+      <div class="info-msg">{{ infoMessage }}</div>
       <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
       <form (ngSubmit)="onLogin()">
         <div class="form-field">
@@ -13,7 +14,8 @@
         </div>
         <div class="form-field">
           <label for="contrasena">Contraseña</label>
-          <input type="password" id="contrasena" [(ngModel)]="contrasena" name="contrasena" placeholder="••••••••" required>
+          <input type="password" id="contrasena" [(ngModel)]="contrasena" name="contrasena" placeholder="••••••••"
+            required>
         </div>
         <button type="submit" class="btn-login">Ingresar</button>
       </form>

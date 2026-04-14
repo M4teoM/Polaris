@@ -1,15 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from '../models/cliente';
 import { ClienteService } from './cliente.service';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
+
+export type UserRole = 'admin' | 'cliente';
+
+interface SessionUser {
+  role: UserRole;
+  nombre: string;
+  correo: string;
+  cliente?: Cliente;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUser: Cliente | null = null;
+  private static readonly STORAGE_KEY = 'polaris_session_user';
 
-  constructor(private clienteService: ClienteService) {}
+  private currentUser: SessionUser | null = null;
+
+  private readonly adminCredentials = {
+    correo: 'admin@polaris.com',
+    contrasena: 'admin123',
+    nombre: 'Administrador',
+  };
+
+  constructor(private clienteService: ClienteService) {
+    this.restoreSession();
+  }
 
   /**
    * Simula el inicio de sesión y guarda el usuario actual en memoria.
@@ -18,6 +37,19 @@ export class AuthService {
    * @returns true si los datos básicos existen; false en caso contrario.
    */
   login(correo: string, contrasena: string): Observable<boolean> {
+    if (
+      correo.toLowerCase() === this.adminCredentials.correo.toLowerCase() &&
+      contrasena === this.adminCredentials.contrasena
+    ) {
+      this.currentUser = {
+        role: 'admin',
+        nombre: this.adminCredentials.nombre,
+        correo: this.adminCredentials.correo,
+      };
+      this.persistSession();
+      return of(true);
+    }
+
     return this.clienteService.getClientes().pipe(
       map((clientes) =>
         clientes.find(
@@ -27,7 +59,19 @@ export class AuthService {
         ),
       ),
       tap((cliente) => {
-        this.currentUser = cliente || null;
+        if (!cliente) {
+          this.currentUser = null;
+          this.clearSession();
+          return;
+        }
+
+        this.currentUser = {
+          role: 'cliente',
+          nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
+          correo: cliente.correo,
+          cliente,
+        };
+        this.persistSession();
       }),
       map((cliente) => !!cliente),
     );
@@ -38,6 +82,7 @@ export class AuthService {
    */
   logout(): void {
     this.currentUser = null;
+    this.clearSession();
   }
 
   /**
@@ -48,12 +93,28 @@ export class AuthService {
     return this.currentUser !== null;
   }
 
+  isAdmin(): boolean {
+    return this.currentUser?.role === 'admin';
+  }
+
+  isCliente(): boolean {
+    return this.currentUser?.role === 'cliente';
+  }
+
+  getRole(): UserRole | null {
+    return this.currentUser?.role ?? null;
+  }
+
+  getDisplayName(): string {
+    return this.currentUser?.nombre || 'Usuario';
+  }
+
   /**
    * Obtiene el usuario autenticado actualmente.
    * @returns Cliente autenticado o null si no hay sesión.
    */
   getCurrentUser(): Cliente | null {
-    return this.currentUser;
+    return this.currentUser?.cliente || null;
   }
 
   /**
@@ -62,17 +123,53 @@ export class AuthService {
    * @returns true mientras el flujo simulado sea exitoso.
    */
   register(cliente: Cliente): Observable<Cliente> {
-    return this.clienteService.crearCliente({
-      nombre: cliente.nombre,
-      apellido: cliente.apellido,
-      correo: cliente.correo,
-      contrasena: cliente.contrasena,
-      cedula: cliente.cedula,
-      telefono: cliente.telefono,
-    }).pipe(
-      tap((creado) => {
-        this.currentUser = creado;
-      }),
+    return this.clienteService
+      .crearCliente({
+        nombre: cliente.nombre,
+        apellido: cliente.apellido,
+        correo: cliente.correo,
+        contrasena: cliente.contrasena,
+        cedula: cliente.cedula,
+        telefono: cliente.telefono,
+      })
+      .pipe(
+        tap((creado) => {
+          this.currentUser = {
+            role: 'cliente',
+            nombre: `${creado.nombre} ${creado.apellido}`.trim(),
+            correo: creado.correo,
+            cliente: creado,
+          };
+          this.persistSession();
+        }),
+      );
+  }
+
+  private persistSession(): void {
+    if (!this.currentUser) {
+      return;
+    }
+    localStorage.setItem(
+      AuthService.STORAGE_KEY,
+      JSON.stringify(this.currentUser),
     );
+  }
+
+  private restoreSession(): void {
+    const raw = localStorage.getItem(AuthService.STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      this.currentUser = JSON.parse(raw) as SessionUser;
+    } catch {
+      this.currentUser = null;
+      this.clearSession();
+    }
+  }
+
+  private clearSession(): void {
+    localStorage.removeItem(AuthService.STORAGE_KEY);
   }
 }

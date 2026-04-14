@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 
@@ -31,19 +32,21 @@ public class ReservaHabitacion {
     private int numeroHuespedes;
 
     // Un cliente puede tener múltiples reservas a lo largo del tiempo
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
     // Una habitación puede ser reservada múltiples veces en distintas fechas
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "habitacion_id", nullable = false)
     private Habitacion habitacion;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_operario")
     private Operario operario;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "reserva", fetch = FetchType.LAZY)
     private Cuenta cuenta;
 

@@ -32,11 +32,11 @@ export class LoginComponent {
 
       if (ok) {
         if (this.authService.isAdmin()) {
-          this.router.navigate(['/admin/servicios']);
+          this.router.navigate(['/admin']);
           return;
         }
 
-        this.router.navigate(['/']);
+        this.router.navigate(['/clientes/ver']);
         return;
       }
 

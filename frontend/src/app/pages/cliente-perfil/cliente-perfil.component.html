@@ -1,0 +1,179 @@
+<section class="perfil-hero" *ngIf="!cargando && cliente as c">
+    <div class="perfil-hero-content">
+        <span class="perfil-badge">★ Cliente Polaris</span>
+        <div class="perfil-avatar">{{ avatar }}</div>
+        <h1>{{ c.nombre }} {{ c.apellido }}</h1>
+        <p>{{ c.correo }}</p>
+    </div>
+</section>
+
+<section class="perfil-container" *ngIf="!cargando; else cargandoTpl">
+    <div class="flash-message flash-success" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+    <div class="flash-message flash-error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
+
+    <div class="perfil-card" *ngIf="cliente as c">
+        <div class="perfil-card-header">
+            <h2>Datos de la cuenta</h2>
+            <span>ID: {{ c.id }}</span>
+        </div>
+
+        <div class="perfil-card-body" *ngIf="!editando; else formEdicionTpl">
+            <div class="perfil-field">
+                <div class="perfil-field-icon">👤</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Nombre</div>
+                    <div class="perfil-field-value">{{ c.nombre }}</div>
+                </div>
+            </div>
+
+            <div class="perfil-field">
+                <div class="perfil-field-icon">👥</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Apellido</div>
+                    <div class="perfil-field-value">{{ c.apellido }}</div>
+                </div>
+            </div>
+
+            <div class="perfil-field">
+                <div class="perfil-field-icon">✉️</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Correo electrónico</div>
+                    <div class="perfil-field-value">{{ c.correo }}</div>
+                </div>
+            </div>
+
+            <div class="perfil-field">
+                <div class="perfil-field-icon">📇</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Cédula</div>
+                    <div class="perfil-field-value">{{ c.cedula || 'No registrada' }}</div>
+                </div>
+            </div>
+
+            <div class="perfil-field">
+                <div class="perfil-field-icon">📱</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Teléfono</div>
+                    <div class="perfil-field-value">{{ c.telefono || 'No registrado' }}</div>
+                </div>
+            </div>
+
+            <div class="perfil-field">
+                <div class="perfil-field-icon">🔒</div>
+                <div class="perfil-field-info">
+                    <div class="perfil-field-label">Contraseña</div>
+                    <div class="perfil-field-value">••••••••</div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #formEdicionTpl>
+            <form class="perfil-form" (ngSubmit)="guardarCambios()">
+                <div class="perfil-form-grid">
+                    <label>
+                        Nombre
+                        <input type="text" [(ngModel)]="form.nombre" name="nombre" required />
+                    </label>
+
+                    <label>
+                        Apellido
+                        <input type="text" [(ngModel)]="form.apellido" name="apellido" required />
+                    </label>
+
+                    <label>
+                        Correo
+                        <input type="email" [(ngModel)]="form.correo" name="correo" required />
+                    </label>
+
+                    <label>
+                        Contraseña
+                        <input type="text" [(ngModel)]="form.contrasena" name="contrasena" required />
+                    </label>
+
+                    <label>
+                        Cédula
+                        <input type="text" [(ngModel)]="form.cedula" name="cedula" />
+                    </label>
+
+                    <label>
+                        Teléfono
+                        <input type="text" [(ngModel)]="form.telefono" name="telefono" />
+                    </label>
+                </div>
+
+                <div class="perfil-actions form-actions">
+                    <button type="button" class="btn-volver" (click)="cancelarEdicion()">Cancelar</button>
+                    <button type="submit" class="btn-editar-perfil" [disabled]="guardando">
+                        {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+                    </button>
+                </div>
+            </form>
+        </ng-template>
+
+        <div class="perfil-actions" *ngIf="!editando">
+            <a routerLink="/" class="btn-volver">← Volver al inicio</a>
+            <button type="button" class="btn-editar-perfil" (click)="activarEdicion()">Editar</button>
+            <button type="button" class="btn-eliminar-perfil" (click)="eliminarCuenta()">Eliminar cuenta</button>
+        </div>
+    </div>
+
+    <div class="perfil-card" *ngIf="reservas.length > 0; else sinReservasTpl">
+        <div class="perfil-card-header">
+            <h2>Mis Reservas</h2>
+            <div class="perfil-reservas-head-actions">
+                <span>{{ reservas.length }} reserva(s)</span>
+                <a [routerLink]="['/habitaciones']" [queryParams]="{ clienteId: clienteId }" class="btn-add-reserva">+
+                    Agregar reserva</a>
+            </div>
+        </div>
+
+        <div class="perfil-card-body table-body">
+            <table class="perfil-table">
+                <thead>
+                    <tr>
+                        <th>Habitación</th>
+                        <th>Tipo</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reserva of reservas">
+                        <td>{{ habitacionLabel(reserva) }}</td>
+                        <td>{{ tipoLabel(reserva) }}</td>
+                        <td>{{ formatFecha(reserva.fechaCheckIn) }}</td>
+                        <td>{{ formatFecha(reserva.fechaCheckOut) }}</td>
+                        <td>
+                            <span class="estado-pill" [ngClass]="estadoClase(reserva.estado)">{{ reserva.estado
+                                }}</span>
+                        </td>
+                        <td>
+                            <button *ngIf="estadoClase(reserva.estado) !== 'cancelada'" type="button"
+                                class="btn-cancelar-reserva" (click)="cancelarReserva(reserva)"
+                                [disabled]="cancelandoReservaId === reserva.id">
+                                {{ cancelandoReservaId === reserva.id ? 'Cancelando...' : 'Cancelar' }}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ng-template #sinReservasTpl>
+        <div class="perfil-card perfil-empty">
+            <p>Aún no tienes reservas activas.</p>
+            <div class="perfil-actions">
+                <a routerLink="/habitaciones" class="btn-volver">Ver Habitaciones</a>
+                <a [routerLink]="['/habitaciones']" [queryParams]="{ clienteId: clienteId }" class="btn-add-reserva">+
+                    Agregar reserva</a>
+            </div>
+        </div>
+    </ng-template>
+</section>
+
+<ng-template #cargandoTpl>
+    <section class="perfil-loading">Cargando perfil...</section>
+</ng-template>

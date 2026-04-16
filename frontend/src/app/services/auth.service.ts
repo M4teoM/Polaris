@@ -117,6 +117,20 @@ export class AuthService {
     return this.currentUser?.cliente || null;
   }
 
+  updateClienteSession(cliente: Cliente): void {
+    if (!this.currentUser || this.currentUser.role !== 'cliente') {
+      return;
+    }
+
+    this.currentUser = {
+      role: 'cliente',
+      nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
+      correo: cliente.correo,
+      cliente,
+    };
+    this.persistSession();
+  }
+
   /**
    * Simula el registro de un cliente.
    * @param cliente Datos del cliente a registrar.

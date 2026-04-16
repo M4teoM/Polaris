@@ -15,6 +15,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'habitaciones/:id', component: HabitacionDetalleComponent },
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
+  { path: 'clientes/ver', component: ClientePerfilComponent },
   {
     path: 'admin',
     component: AdminPanelComponent,

@@ -10,9 +10,11 @@
       <li><a routerLink="/" fragment="inicio" class="nav-link" (click)="closeMenu()">Inicio</a></li>
       <li><a routerLink="/habitaciones" class="nav-link" (click)="closeMenu()">Habitaciones</a></li>
       <li><a routerLink="/servicios" class="nav-link" (click)="closeMenu()">Servicios</a></li>
+      <li><a routerLink="/" fragment="testimonios" class="nav-link" (click)="closeMenu()">Testimonios</a></li>
+      <li *ngIf="authService.isCliente()"><a routerLink="/clientes/ver" class="nav-link" (click)="closeMenu()">Mi
+          Perfil</a></li>
       <li *ngIf="authService.isAdmin()"><a routerLink="/admin" class="nav-link" (click)="closeMenu()">Panel Admin</a>
       </li>
-      <li><a routerLink="/" fragment="testimonios" class="nav-link" (click)="closeMenu()">Testimonios</a></li>
     </ul>
 
     <div class="nav-actions">

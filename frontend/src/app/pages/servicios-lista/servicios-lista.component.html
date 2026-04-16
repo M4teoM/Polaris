@@ -8,17 +8,38 @@
   </div>
 </section>
 
-<!-- Tarjetas -->
 <main class="svc-page-main">
+  <div class="svc-filter-bar">
+    <button class="svc-filter-btn" [class.svc-filter-active]="filtroActivo === 'all'" (click)="filtrar('all')">
+      Todos
+    </button>
+    <button class="svc-filter-btn" *ngFor="let cat of categorias" [class.svc-filter-active]="filtroActivo === cat"
+      (click)="filtrar(cat)">
+      {{ cat }}
+    </button>
+  </div>
+
   <div class="svc-page-grid">
     <article class="svc-page-card svc-visible" *ngFor="let servicio of serviciosFiltrados">
       <div class="svc-page-card-img">
         <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" loading="lazy">
+        <div class="svc-page-card-cat">{{ servicio.categoria }}</div>
       </div>
       <div class="svc-page-card-body">
+        <div class="svc-page-card-meta">
+          <span *ngIf="servicio.duracion">
+            <span aria-hidden="true">⏱</span>
+            <span>{{ servicio.duracion }}</span>
+          </span>
+          <span *ngIf="servicio.horario">
+            <span aria-hidden="true">◌</span>
+            <span>{{ servicio.horario }}</span>
+          </span>
+        </div>
         <h3 class="svc-page-card-name">{{ servicio.nombre }}</h3>
         <p class="svc-page-card-desc">{{ servicio.descripcion }}</p>
         <div class="svc-page-card-footer">
+          <span class="svc-page-card-price">{{ formatPrice(servicio.precio) }}</span>
           <a class="svc-page-card-btn" [routerLink]="['/servicios', servicio.id]">
             <span>Ver Detalle</span>
           </a>
@@ -26,4 +47,86 @@
       </div>
     </article>
   </div>
+
+  <section class="svc-role-tables">
+    <div class="svc-role-header">
+      <h2>Tablas por rol</h2>
+      <p>Consulta rápida para administración y operación.</p>
+    </div>
+
+    <div class="svc-role-switch">
+      <button type="button" class="svc-role-btn" [class.active]="panelActivo === 'admin'"
+        (click)="panelActivo = 'admin'">
+        Administrador
+      </button>
+      <button type="button" class="svc-role-btn" [class.active]="panelActivo === 'operador'"
+        (click)="panelActivo = 'operador'">
+        Operador
+      </button>
+    </div>
+
+    <div class="svc-role-panel" [class.active]="panelActivo === 'admin'">
+      <div class="svc-role-table-wrap">
+        <table class="svc-role-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Duración</th>
+              <th>Horario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let servicio of serviciosFiltrados">
+              <td>{{ servicio.id }}</td>
+              <td>{{ servicio.nombre }}</td>
+              <td><span class="svc-role-chip">{{ servicio.categoria }}</span></td>
+              <td class="svc-role-price">{{ formatPrice(servicio.precio) }}</td>
+              <td>{{ servicio.duracion || '—' }}</td>
+              <td>{{ servicio.horario || '—' }}</td>
+              <td>
+                <div class="svc-role-actions">
+                  <a class="svc-role-action view" [routerLink]="['/servicios', servicio.id]">Ver</a>
+                  <a *ngIf="isAdmin" class="svc-role-action edit"
+                    [routerLink]="['/admin/servicios/editar', servicio.id]">Editar</a>
+                  <button *ngIf="isAdmin" type="button" class="svc-role-action delete"
+                    (click)="eliminarDesdeTabla(servicio.id)">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="svc-role-panel" [class.active]="panelActivo === 'operador'">
+      <div class="svc-role-table-wrap">
+        <table class="svc-role-table">
+          <thead>
+            <tr>
+              <th>Servicio</th>
+              <th>Categoría</th>
+              <th>Duración</th>
+              <th>Horario</th>
+              <th>Precio</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let servicio of serviciosFiltrados">
+              <td>{{ servicio.nombre }}</td>
+              <td><span class="svc-role-chip">{{ servicio.categoria }}</span></td>
+              <td>{{ servicio.duracion || '—' }}</td>
+              <td>{{ servicio.horario || '—' }}</td>
+              <td class="svc-role-price">{{ formatPrice(servicio.precio) }}</td>
+              <td><a class="svc-role-action view" [routerLink]="['/servicios', servicio.id]">Ver</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </main>

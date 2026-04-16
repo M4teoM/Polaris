@@ -27,6 +27,7 @@ import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-se
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
     TipoHabitacionFormComponent,
     AdminClientesListaComponent,
     AdminHabitacionesListaComponent,
+    ClientePerfilComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

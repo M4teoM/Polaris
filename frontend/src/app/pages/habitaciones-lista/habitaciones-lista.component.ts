@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { TipoHabitacion } from '../../models/tipo-habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 
@@ -12,10 +13,14 @@ export class HabitacionesListaComponent implements OnInit {
 
   constructor(private habitacionService: HabitacionService) {}
 
-  ngOnInit(): void {
-    this.habitacionService.getHabitaciones().subscribe(data => {
-      this.habitaciones = data;
-    });
+  async ngOnInit(): Promise<void> {
+    try {
+      this.habitaciones = await firstValueFrom(
+        this.habitacionService.getHabitaciones(),
+      );
+    } catch {
+      this.habitaciones = [];
+    }
   }
 
   formatPrice(price: number): string {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,24 +22,28 @@ export class LoginComponent {
   /**
    * Intenta autenticar al usuario y redirige al inicio si es exitoso.
    */
-  onLogin() {
+  async onLogin(): Promise<void> {
     this.errorMessage = '';
-    this.authService.login(this.correo, this.contrasena).subscribe({
-      next: (ok) => {
-        if (ok) {
-          if (this.authService.isAdmin()) {
-            this.router.navigate(['/admin/servicios']);
-            return;
-          }
-          this.router.navigate(['/']);
+
+    try {
+      const ok = await firstValueFrom(
+        this.authService.login(this.correo, this.contrasena),
+      );
+
+      if (ok) {
+        if (this.authService.isAdmin()) {
+          this.router.navigate(['/admin/servicios']);
           return;
         }
-        this.errorMessage = 'Credenciales incorrectas';
-      },
-      error: () => {
-        this.errorMessage =
-          'No se pudo iniciar sesión. Revisa si el backend está encendido.';
-      },
-    });
+
+        this.router.navigate(['/']);
+        return;
+      }
+
+      this.errorMessage = 'Credenciales incorrectas';
+    } catch {
+      this.errorMessage =
+        'No se pudo iniciar sesión. Revisa si el backend está encendido.';
+    }
   }
 }

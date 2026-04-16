@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Servicio } from '../../models/servicio';
 import { ServicioService } from '../../services/servicio.service';
 
@@ -13,10 +14,14 @@ export class ServiciosComponent implements OnInit {
 
   constructor(private servicioService: ServicioService) {}
 
-  ngOnInit() {
-    this.servicioService.getServicios().subscribe(data => {
-      this.servicios = data;
-    });
+  async ngOnInit(): Promise<void> {
+    try {
+      this.servicios = await firstValueFrom(
+        this.servicioService.getServicios(),
+      );
+    } catch {
+      this.servicios = [];
+    }
   }
 
   toggleDetail(index: number, event: Event) {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Cliente } from '../../models/cliente';
 import { ClienteService } from '../../services/cliente.service';
 
@@ -13,6 +14,8 @@ export class AdminClientesListaComponent implements OnInit {
   errorGeneral = '';
   clienteAEliminar: Cliente | null = null;
   mostrarConfirmacion = false;
+  mostrarConfirmacionForzada = false;
+  motivoBloqueoEliminacion = '';
 
   form: Omit<Cliente, 'id'> = this.getEmptyForm();
   editandoId: number | null = null;
@@ -20,13 +23,15 @@ export class AdminClientesListaComponent implements OnInit {
   constructor(private clienteService: ClienteService) {}
 
   ngOnInit(): void {
-    this.cargarClientes();
+    void this.cargarClientes();
   }
 
-  cargarClientes(): void {
-    this.clienteService.getClientes().subscribe((data) => {
-      this.clientes = data;
-    });
+  async cargarClientes(): Promise<void> {
+    try {
+      this.clientes = await firstValueFrom(this.clienteService.getClientes());
+    } catch {
+      this.errorGeneral = 'No se pudieron cargar los clientes.';
+    }
   }
 
   editar(cliente: Cliente): void {
@@ -42,7 +47,7 @@ export class AdminClientesListaComponent implements OnInit {
     this.errorGeneral = '';
   }
 
-  guardar(): void {
+  async guardar(): Promise<void> {
     this.errorGeneral = '';
     if (
       !this.form.nombre.trim() ||
@@ -54,60 +59,81 @@ export class AdminClientesListaComponent implements OnInit {
     }
 
     if (this.editandoId !== null) {
-      this.clienteService
-        .actualizarCliente(this.editandoId, this.form)
-        .subscribe({
-          next: () => {
-            this.mensajeExito = 'Cliente actualizado correctamente.';
-            this.cancelarEdicion();
-            this.cargarClientes();
-          },
-          error: (err) => {
-            this.errorGeneral =
-              err?.error?.error || 'No se pudo actualizar el cliente.';
-          },
-        });
+      try {
+        await firstValueFrom(
+          this.clienteService.actualizarCliente(this.editandoId, this.form),
+        );
+        this.mensajeExito = 'Cliente actualizado correctamente.';
+        this.cancelarEdicion();
+        await this.cargarClientes();
+      } catch (err: any) {
+        this.errorGeneral =
+          err?.error?.error || 'No se pudo actualizar el cliente.';
+      }
       return;
     }
 
-    this.clienteService.crearCliente(this.form).subscribe({
-      next: () => {
-        this.mensajeExito = 'Cliente creado correctamente.';
-        this.form = this.getEmptyForm();
-        this.cargarClientes();
-      },
-      error: (err) => {
-        this.errorGeneral = err?.error?.error || 'No se pudo crear el cliente.';
-      },
-    });
+    try {
+      await firstValueFrom(this.clienteService.crearCliente(this.form));
+      this.mensajeExito = 'Cliente creado correctamente.';
+      this.form = this.getEmptyForm();
+      await this.cargarClientes();
+    } catch (err: any) {
+      this.errorGeneral = err?.error?.error || 'No se pudo crear el cliente.';
+    }
   }
 
   confirmarEliminar(cliente: Cliente): void {
     this.clienteAEliminar = cliente;
     this.mostrarConfirmacion = true;
+    this.mostrarConfirmacionForzada = false;
+    this.motivoBloqueoEliminacion = '';
   }
 
   cancelarEliminar(): void {
     this.clienteAEliminar = null;
     this.mostrarConfirmacion = false;
+    this.mostrarConfirmacionForzada = false;
+    this.motivoBloqueoEliminacion = '';
   }
 
-  ejecutarEliminar(): void {
+  async ejecutarEliminar(): Promise<void> {
     if (!this.clienteAEliminar?.id) {
       return;
     }
 
-    this.clienteService.eliminarCliente(this.clienteAEliminar.id).subscribe({
-      next: () => {
-        this.mensajeExito = 'Cliente eliminado correctamente.';
-        this.cancelarEliminar();
-        this.cargarClientes();
-      },
-      error: () => {
-        this.errorGeneral = 'No se pudo eliminar el cliente.';
-        this.cancelarEliminar();
-      },
-    });
+    try {
+      await firstValueFrom(
+        this.clienteService.eliminarCliente(this.clienteAEliminar.id),
+      );
+      this.mensajeExito = 'Cliente eliminado correctamente.';
+      this.cancelarEliminar();
+      await this.cargarClientes();
+    } catch (err: any) {
+      this.motivoBloqueoEliminacion =
+        err?.error?.error || 'No se pudo eliminar el cliente.';
+      this.mostrarConfirmacion = false;
+      this.mostrarConfirmacionForzada = true;
+    }
+  }
+
+  async ejecutarEliminarForzado(): Promise<void> {
+    if (!this.clienteAEliminar?.id) {
+      return;
+    }
+
+    try {
+      await firstValueFrom(
+        this.clienteService.eliminarCliente(this.clienteAEliminar.id, true),
+      );
+      this.mensajeExito = 'Cliente eliminado de todos modos.';
+      this.cancelarEliminar();
+      await this.cargarClientes();
+    } catch (err: any) {
+      this.errorGeneral =
+        err?.error?.error || 'No se pudo eliminar el cliente de forma forzada.';
+      this.cancelarEliminar();
+    }
   }
 
   cancelarEdicion(): void {

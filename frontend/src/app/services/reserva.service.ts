@@ -10,22 +10,56 @@ export class ReservaService {
   constructor(private http: HttpClient) {}
 
   getReservas(): Observable<ReservaHabitacion[]> {
+    return this.getReservas$();
+  }
+
+  getReservas$(): Observable<ReservaHabitacion[]> {
     return this.http.get<ReservaHabitacion[]>(this.apiUrl);
   }
 
   getReservaById(id: number): Observable<ReservaHabitacion> {
+    return this.getReservaById$(id);
+  }
+
+  getReservaById$(id: number): Observable<ReservaHabitacion> {
     return this.http.get<ReservaHabitacion>(`${this.apiUrl}/${id}`);
   }
 
   getReservasByCliente(clienteId: number): Observable<ReservaHabitacion[]> {
-    return this.http.get<ReservaHabitacion[]>(`${this.apiUrl}/cliente/${clienteId}`);
+    return this.getReservasByCliente$(clienteId);
   }
 
-  crear(body: { clienteId: number; tipoHabitacionId: number; fechaCheckIn: string; fechaCheckOut: string; numeroHuespedes: number }): Observable<any> {
+  getReservasByCliente$(clienteId: number): Observable<ReservaHabitacion[]> {
+    return this.http.get<ReservaHabitacion[]>(
+      `${this.apiUrl}/cliente/${clienteId}`,
+    );
+  }
+
+  crear(body: {
+    clienteId: number;
+    tipoHabitacionId: number;
+    fechaCheckIn: string;
+    fechaCheckOut: string;
+    numeroHuespedes: number;
+  }): Observable<any> {
+    return this.crear$(body);
+  }
+
+  crear$(body: {
+    clienteId: number;
+    tipoHabitacionId: number;
+    fechaCheckIn: string;
+    fechaCheckOut: string;
+    numeroHuespedes: number;
+  }): Observable<any> {
     return this.http.post(this.apiUrl, body);
   }
 
   cancelar(id: number, clienteId: number): Observable<any> {
+    return this.cancelar$(id, clienteId);
+  }
+
+  cancelar$(id: number, clienteId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/cancelar/${id}`, { clienteId });
   }
 }

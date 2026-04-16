@@ -70,7 +70,9 @@ public class DataInitializer implements CommandLineRunner {
             )));
 
         List<Operario> operarios = asegurarTrabajadores(admin);
-        Operario operario = operarios.get(0);
+        if (operarios.isEmpty()) {
+            throw new IllegalStateException("No se pudieron crear operarios base.");
+        }
 
         // ── 5 Tipos de Habitación ─────────────────────────────────────────
         TipoHabitacion estandar = tipoRepo.save(new TipoHabitacion(

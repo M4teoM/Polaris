@@ -10,10 +10,18 @@ export class HabitacionService {
   constructor(private http: HttpClient) {}
 
   getHabitaciones(): Observable<TipoHabitacion[]> {
+    return this.getHabitaciones$();
+  }
+
+  getHabitaciones$(): Observable<TipoHabitacion[]> {
     return this.http.get<TipoHabitacion[]>(this.apiUrl);
   }
 
   getHabitacionById(id: number): Observable<TipoHabitacion> {
+    return this.getHabitacionById$(id);
+  }
+
+  getHabitacionById$(id: number): Observable<TipoHabitacion> {
     return this.http.get<TipoHabitacion>(`${this.apiUrl}/${id}`);
   }
 

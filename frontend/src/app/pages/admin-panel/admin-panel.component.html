@@ -1,0 +1,20 @@
+<section class="admin-hero">
+    <div class="admin-hero-content">
+        <span class="admin-hero-badge">⚙ Panel Administrativo</span>
+        <h1>Gestión de datos</h1>
+        <p class="admin-panel-current">Página actual: {{ seccionActual }}</p>
+    </div>
+</section>
+
+<section class="admin-panel-shell">
+    <nav class="section-tabs" aria-label="Módulos de administración">
+        <a routerLink="/admin/tipos-habitacion" routerLinkActive="active" class="section-tab">Tipos de Habitación</a>
+        <a routerLink="/admin/habitaciones" routerLinkActive="active" class="section-tab">Habitaciones Físicas</a>
+        <a routerLink="/admin/servicios" routerLinkActive="active" class="section-tab">Servicios</a>
+        <a routerLink="/admin/clientes" routerLinkActive="active" class="section-tab">Clientes</a>
+    </nav>
+
+    <div class="admin-panel-content">
+        <router-outlet></router-outlet>
+    </div>
+</section>

@@ -6,6 +6,8 @@ import com.polaris.model.Cuenta;
 import com.polaris.model.ReservaHabitacion;
 import com.polaris.repository.IClienteRepository;
 import com.polaris.repository.ICuentaRepository;
+import com.polaris.repository.IPedidoRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,9 @@ public class ClienteService implements IClienteService {
 
     @Autowired
     private ICuentaRepository cuentaRepo;
+
+    @Autowired
+    private IPedidoRepository pedidoRepo;
 
     @Override
     public List<Cliente> obtenerTodos() {
@@ -65,6 +70,41 @@ public class ClienteService implements IClienteService {
                 "El cliente \"" + cliente.getNombre() + " " + cliente.getApellido() +
                 "\" no se puede eliminar porque cuenta con " + reservas + " reserva(s) activas.");
         }
+
+        long pedidosAsociados = pedidoRepo.countByClienteId(id);
+        if (pedidosAsociados > 0) {
+            throw new IllegalStateException(
+                "El cliente \"" + cliente.getNombre() + " " + cliente.getApellido() +
+                "\" no se puede eliminar porque tiene " + pedidosAsociados + " pedido(s) asociado(s)."
+            );
+        }
+
+        List<Cuenta> cuentasCliente = cuentaRepo.findByClienteId(id);
+        if (!cuentasCliente.isEmpty()) {
+            cuentaRepo.deleteAll(cuentasCliente);
+        }
+
+        List<ReservaHabitacion> reservasCliente = reservaRepo.findByClienteId(id);
+        if (!reservasCliente.isEmpty()) {
+            reservaRepo.deleteAll(reservasCliente);
+        }
+
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException(
+                "No se pudo eliminar el cliente porque tiene datos relacionados en la base de datos.",
+                e
+            );
+        }
+    }
+
+    @Override
+    @Transactional
+    public void eliminarForzado(Long id) {
+        obtenerPorId(id);
+
+        pedidoRepo.deleteByClienteId(id);
 
         List<Cuenta> cuentasCliente = cuentaRepo.findByClienteId(id);
         if (!cuentasCliente.isEmpty()) {

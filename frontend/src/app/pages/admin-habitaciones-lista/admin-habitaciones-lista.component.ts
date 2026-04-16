@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { HabitacionFisica } from '../../models/habitacion-fisica';
+import { TipoHabitacion } from '../../models/tipo-habitacion';
 import { HabitacionFisicaService } from '../../services/habitacion-fisica.service';
+import { TipoHabitacionService } from '../../services/tipo-habitacion.service';
 
 @Component({
   selector: 'app-admin-habitaciones-lista',
@@ -9,20 +12,35 @@ import { HabitacionFisicaService } from '../../services/habitacion-fisica.servic
 })
 export class AdminHabitacionesListaComponent implements OnInit {
   habitaciones: HabitacionFisica[] = [];
+  tiposHabitacion: TipoHabitacion[] = [];
   editandoId: number | null = null;
   errorGeneral = '';
   mensajeExito = '';
 
   form: Omit<HabitacionFisica, 'id'> = this.getEmptyForm();
 
-  constructor(private habitacionFisicaService: HabitacionFisicaService) {}
+  constructor(
+    private habitacionFisicaService: HabitacionFisicaService,
+    private tipoHabitacionService: TipoHabitacionService,
+  ) {}
 
   ngOnInit(): void {
     this.cargarHabitaciones();
+    void this.cargarTiposHabitacion();
   }
 
   cargarHabitaciones(): void {
     this.habitaciones = this.habitacionFisicaService.getHabitaciones();
+  }
+
+  async cargarTiposHabitacion(): Promise<void> {
+    try {
+      this.tiposHabitacion = await firstValueFrom(
+        this.tipoHabitacionService.getAll$(),
+      );
+    } catch {
+      this.tiposHabitacion = [];
+    }
   }
 
   editar(habitacion: HabitacionFisica): void {
@@ -41,6 +59,11 @@ export class AdminHabitacionesListaComponent implements OnInit {
 
     if (!this.form.numero.trim()) {
       this.errorGeneral = 'El número de habitación es obligatorio.';
+      return;
+    }
+
+    if (!this.form.tipoHabitacionId || this.form.tipoHabitacionId <= 0) {
+      this.errorGeneral = 'Debes seleccionar un tipo de habitación.';
       return;
     }
 
@@ -73,6 +96,11 @@ export class AdminHabitacionesListaComponent implements OnInit {
     }
     this.mensajeExito = 'Habitación eliminada correctamente.';
     this.cargarHabitaciones();
+  }
+
+  getNombreTipoHabitacion(tipoHabitacionId: number): string {
+    const tipo = this.tiposHabitacion.find((t) => t.id === tipoHabitacionId);
+    return tipo?.nombre || `Tipo #${tipoHabitacionId}`;
   }
 
   cancelar(): void {

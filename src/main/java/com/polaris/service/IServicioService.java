@@ -9,4 +9,5 @@ public interface IServicioService {
     void crear(Servicio servicio);
     void actualizar(Servicio servicio);
     void eliminar(Long id);
+    void eliminarForzado(Long id);
 }

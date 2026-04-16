@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { TipoHabitacion } from '../../models/tipo-habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 
@@ -18,11 +19,19 @@ export class HabitacionDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    void this.cargarHabitacion();
+  }
+
+  private async cargarHabitacion(): Promise<void> {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.habitacionService.getHabitacionById(id).subscribe({
-      next: data => { this.habitacion = data; },
-      error: () => { this.router.navigate(['/habitaciones']); }
-    });
+
+    try {
+      this.habitacion = await firstValueFrom(
+        this.habitacionService.getHabitacionById(id),
+      );
+    } catch {
+      this.router.navigate(['/habitaciones']);
+    }
   }
 
   formatPrice(price: number): string {

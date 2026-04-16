@@ -1,0 +1,112 @@
+/* ===== HERO ===== */
+.admin-hero {
+    height: 220px;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 80px;
+}
+
+.admin-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover;
+    opacity: 0.15;
+}
+
+.admin-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-hero-badge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 12px;
+}
+
+.admin-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #fff;
+    margin: 0;
+}
+
+.admin-panel-current {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+}
+
+.admin-panel-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 56px;
+}
+
+/* ===== TABS ===== */
+.section-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid #eef0f5;
+    margin: 32px 0 0;
+    flex-wrap: wrap;
+}
+
+.section-tab {
+    padding: 12px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.section-tab.active {
+    color: #0a1628;
+    border-bottom-color: #2ec4b6;
+}
+
+.section-tab:hover:not(.active) {
+    color: #0a1628;
+}
+
+.admin-panel-content {
+    padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+    .section-tabs {
+        gap: 0;
+    }
+
+    .section-tab {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #eef0f5;
+        margin-bottom: 0;
+    }
+
+    .section-tab.active {
+        border-bottom-color: #2ec4b6;
+    }
+}

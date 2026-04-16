@@ -1,7 +1,6 @@
 package com.polaris.service;
 
 import com.polaris.errors.ErrorReservaException;
-import com.polaris.errors.ErrorRoomNotFoundException;
 import com.polaris.errors.ErrorUserNotFoundException;
 import com.polaris.model.Cliente;
 import com.polaris.model.Habitacion;
@@ -11,6 +10,7 @@ import com.polaris.repository.IHabitacionRepository;
 import com.polaris.repository.IReservaHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -70,6 +70,7 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
     }
 
     @Override
+    @Transactional
     public void crearDesdeDetalle(Long clienteId, Long tipoHabitacionId,
                                   LocalDate checkIn, LocalDate checkOut, int numeroHuespedes) {
 
@@ -105,6 +106,7 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
     }
 
     @Override
+    @Transactional
     public void cancelar(Long reservaId, Long clienteId) {
         ReservaHabitacion reserva = obtenerPorId(reservaId);
 

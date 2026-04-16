@@ -50,7 +50,7 @@ export class AuthService {
       return of(true);
     }
 
-    return this.clienteService.getClientes().pipe(
+    return this.clienteService.getClientes$().pipe(
       map((clientes) =>
         clientes.find(
           (c) =>
@@ -124,7 +124,7 @@ export class AuthService {
    */
   register(cliente: Cliente): Observable<Cliente> {
     return this.clienteService
-      .crearCliente({
+      .crearCliente$({
         nombre: cliente.nombre,
         apellido: cliente.apellido,
         correo: cliente.correo,

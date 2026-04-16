@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
+	long countByServicioId(Long servicioId);
+	long countByClienteId(Long clienteId);
+	long deleteByServicioId(Long servicioId);
+	long deleteByClienteId(Long clienteId);
 }

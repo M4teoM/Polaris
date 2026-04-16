@@ -2,6 +2,7 @@ package com.polaris.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -31,6 +33,7 @@ public class Cuenta {
     private Cliente cliente;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean pagada = false;
 
 

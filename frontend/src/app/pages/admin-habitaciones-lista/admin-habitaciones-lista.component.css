@@ -1,6 +1,4 @@
 .admin-wrap {
-    margin-top: 96px;
-    padding: 24px;
     display: grid;
     gap: 18px;
 }
@@ -8,13 +6,56 @@
 .admin-panel {
     background: #fff;
     border-radius: 14px;
+    border: 1px solid #eef0f5;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
     padding: 18px;
-    box-shadow: 0 10px 20px rgba(7, 26, 45, 0.08);
+}
+
+.admin-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0 16px;
+}
+
+.admin-toolbar h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #0a1628;
+    margin: 0;
+}
+
+.admin-toolbar span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.flash-message {
+    margin: 0 0 14px;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.flash-error {
+    background: #fff0f0;
+    color: #9f2f23;
+    border-color: #f2c8c4;
+}
+
+.flash-success {
+    background: #e9fbf5;
+    color: #167f66;
+    border-color: #b8ebdc;
 }
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 10px;
 }
 
@@ -25,66 +66,181 @@ select {
     border-radius: 8px;
     padding: 10px;
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.84rem;
 }
 
-.actions {
+.room-actions {
     margin-top: 12px;
     display: flex;
     gap: 8px;
 }
 
-.btn {
-    border: 0;
+.btn-nueva {
+    background: #2ec4b6;
+    color: #0a1628;
+    padding: 11px 24px;
     border-radius: 8px;
-    padding: 9px 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    border: none;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-nueva:hover {
+    background: #d4af37;
+}
+
+.btn-cancelar {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.btn.primary {
-    background: #113152;
-    color: #fff;
-}
-
-.btn.danger {
-    background: #b4232c;
-    color: #fff;
-}
-
-.alert {
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 10px;
-}
-
-.alert.ok {
-    background: #edfff5;
-    color: #0f5f34;
-    border: 1px solid #b0ebc8;
-}
-
-.alert.error {
-    background: #fff1f1;
-    color: #8f1c1c;
-    border: 1px solid #f2b8b8;
-}
-
-.table-wrap {
+.rooms-table-wrap {
     overflow-x: auto;
 }
 
-table {
+.rooms-table {
     width: 100%;
     border-collapse: collapse;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
 }
 
-th,
-td {
+.rooms-table thead {
+    background: #0a1628;
+}
+
+.rooms-table thead th {
+    padding: 12px 14px;
     text-align: left;
-    padding: 10px;
-    border-bottom: 1px solid #edf2f7;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.row-actions {
+.rooms-table tbody tr {
+    border-bottom: 1px solid #f0f3f9;
+    transition: background 0.15s;
+}
+
+.rooms-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.rooms-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.rooms-table td {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+    color: #333;
+    vertical-align: middle;
+}
+
+.rooms-table td.num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    color: #0a1628;
+    font-weight: 600;
+}
+
+.tipo-chip {
+    display: inline-block;
+    background: #f0f3f9;
+    color: #0a1628;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.estado-pill {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.estado-pill.disponible {
+    background: #d8f5ea;
+    color: #117a5e;
+}
+
+.estado-pill.ocupada {
+    background: #ffe5e5;
+    color: #b4232c;
+}
+
+.estado-pill.mantenimiento {
+    background: #fff2d8;
+    color: #996000;
+}
+
+.estado-pill.limpieza {
+    background: #e6f1ff;
+    color: #1f5ea8;
+}
+
+.table-actions {
     display: flex;
     gap: 6px;
+}
+
+.btn-tbl-edit {
+    background: #fff8e6;
+    color: #a07800;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.btn-tbl-edit:hover {
+    background: #d4af37;
+    color: #fff;
+}
+
+.btn-tbl-del {
+    background: #fff0f0;
+    color: #c0392b;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.btn-tbl-del:hover {
+    background: #c0392b;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .admin-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .table-actions,
+    .room-actions {
+        flex-direction: column;
+    }
 }

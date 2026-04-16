@@ -2,6 +2,7 @@ package com.polaris.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

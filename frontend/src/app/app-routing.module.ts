@@ -14,6 +14,7 @@ import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-se
 import { AdminGuard } from './guards/admin.guard';
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
+import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,44 +25,52 @@ const routes: Routes = [
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
   {
-    path: 'admin/servicios',
-    component: AdminServiciosListaComponent,
+    path: 'admin',
+    component: AdminPanelComponent,
     canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/servicios/nuevo',
-    component: AdminServicioFormComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/servicios/editar/:id',
-    component: AdminServicioFormComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/tipos-habitacion',
-    component: TipoHabitacionListaComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/tipos-habitacion/nuevo',
-    component: TipoHabitacionFormComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/tipos-habitacion/editar/:id',
-    component: TipoHabitacionFormComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/clientes',
-    component: AdminClientesListaComponent,
-    canActivate: [AdminGuard],
-  },
-  {
-    path: 'admin/habitaciones',
-    component: AdminHabitacionesListaComponent,
-    canActivate: [AdminGuard],
+    children: [
+      { path: '', redirectTo: 'servicios', pathMatch: 'full' },
+      {
+        path: 'servicios',
+        component: AdminServiciosListaComponent,
+        data: { sectionLabel: 'CRUD Servicios' },
+      },
+      {
+        path: 'servicios/nuevo',
+        component: AdminServicioFormComponent,
+        data: { sectionLabel: 'CRUD Servicios · Nuevo' },
+      },
+      {
+        path: 'servicios/editar/:id',
+        component: AdminServicioFormComponent,
+        data: { sectionLabel: 'CRUD Servicios · Editar' },
+      },
+      {
+        path: 'tipos-habitacion',
+        component: TipoHabitacionListaComponent,
+        data: { sectionLabel: 'CRUD Tipos de Habitación' },
+      },
+      {
+        path: 'tipos-habitacion/nuevo',
+        component: TipoHabitacionFormComponent,
+        data: { sectionLabel: 'CRUD Tipos · Nuevo' },
+      },
+      {
+        path: 'tipos-habitacion/editar/:id',
+        component: TipoHabitacionFormComponent,
+        data: { sectionLabel: 'CRUD Tipos · Editar' },
+      },
+      {
+        path: 'clientes',
+        component: AdminClientesListaComponent,
+        data: { sectionLabel: 'CRUD Clientes' },
+      },
+      {
+        path: 'habitaciones',
+        component: AdminHabitacionesListaComponent,
+        data: { sectionLabel: 'CRUD Habitaciones' },
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

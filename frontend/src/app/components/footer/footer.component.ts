@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { SuscripcionService } from '../../services/suscripcion.service';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent {
   nombre = '';
@@ -15,7 +16,7 @@ export class FooterComponent {
 
   constructor(private suscripcionService: SuscripcionService) {}
 
-  suscribirse(): void {
+  async suscribirse(): Promise<void> {
     this.mensaje = '';
     this.tipoMensaje = '';
 
@@ -35,20 +36,19 @@ export class FooterComponent {
     }
 
     this.enviando = true;
-    this.suscripcionService.crear(nombre, email).subscribe({
-      next: () => {
-        this.tipoMensaje = 'ok';
-        this.mensaje = '¡Suscripción registrada con éxito!';
-        this.nombre = '';
-        this.email = '';
-        this.enviando = false;
-      },
-      error: (err) => {
-        this.tipoMensaje = 'error';
-        this.mensaje = err?.error?.error || 'No se pudo registrar la suscripción.';
-        this.enviando = false;
-      },
-    });
-  }
 
+    try {
+      await firstValueFrom(this.suscripcionService.crear(nombre, email));
+      this.tipoMensaje = 'ok';
+      this.mensaje = '¡Suscripción registrada con éxito!';
+      this.nombre = '';
+      this.email = '';
+    } catch (err: any) {
+      this.tipoMensaje = 'error';
+      this.mensaje =
+        err?.error?.error || 'No se pudo registrar la suscripción.';
+    } finally {
+      this.enviando = false;
+    }
+  }
 }

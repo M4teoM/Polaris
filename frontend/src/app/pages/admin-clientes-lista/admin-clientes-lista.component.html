@@ -66,3 +66,18 @@
         </div>
     </div>
 </div>
+
+<div class="modal-overlay" *ngIf="mostrarConfirmacionForzada" (click)="cancelarEliminar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <h3>No se pudo eliminar de forma normal</h3>
+        <p>{{ motivoBloqueoEliminacion }}</p>
+        <p>
+            ¿Deseas <strong>borrar de todos modos</strong> al cliente
+            <strong>{{ clienteAEliminar?.nombre }} {{ clienteAEliminar?.apellido }}</strong>?
+        </p>
+        <div class="actions">
+            <button class="btn" (click)="cancelarEliminar()">Cancelar</button>
+            <button class="btn danger" (click)="ejecutarEliminarForzado()">Borrar de todos modos</button>
+        </div>
+    </div>
+</div>

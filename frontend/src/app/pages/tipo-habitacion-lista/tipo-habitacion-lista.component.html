@@ -1,37 +1,27 @@
-<!-- Hero -->
-<div class="th-hero">
-  <div class="th-hero-content">
-    <span class="th-hero-badge">✦ Administración · Hotel Polaris</span>
-    <h1>Tipos de Habitación</h1>
-    <p>Gestión del catálogo de tipos de habitación</p>
-  </div>
-</div>
-
-<!-- Contenido principal -->
 <div class="container">
 
   <!-- Mensaje de éxito -->
-  <div class="alert-exito" *ngIf="mensajeExito">
-    <span class="alert-icon">✓</span> {{ mensajeExito }}
+  <div class="flash-message flash-success" *ngIf="mensajeExito">
+    {{ mensajeExito }}
   </div>
-  <div class="alert-exito" *ngIf="errorGeneral" style="background:#fff3f3;border-color:#ffcaca;color:#9b1c1c;">
-    <span class="alert-icon">⚠</span> {{ errorGeneral }}
+  <div class="flash-message flash-error" *ngIf="errorGeneral">
+    {{ errorGeneral }}
   </div>
 
   <!-- Barra de acciones -->
-  <div class="th-toolbar">
+  <div class="admin-toolbar">
     <div>
-      <h2 class="th-titulo">Listado de tipos</h2>
-      <p class="th-subtitulo">{{ tiposHabitacion.length }} tipo(s) registrado(s)</p>
+      <h2>Tipos de habitación</h2>
+      <span>{{ tiposHabitacion.length }} tipo(s) registrados</span>
     </div>
-    <button class="btn-crear" (click)="irACrear()">
+    <button class="btn-nueva" (click)="irACrear()">
       <span>+</span> Nuevo Tipo
     </button>
   </div>
 
   <!-- Tabla -->
-  <div class="th-tabla-wrapper" *ngIf="tiposHabitacion.length > 0; else sinTipos">
-    <table class="th-tabla">
+  <div class="rooms-table-wrap" *ngIf="tiposHabitacion.length > 0; else sinTipos">
+    <table class="rooms-table">
       <thead>
         <tr>
           <th>#</th>
@@ -47,26 +37,24 @@
       <tbody>
         <tr *ngFor="let tipo of tiposHabitacion">
           <td class="td-id">{{ tipo.id }}</td>
-          <td class="td-img">
-            <img [src]="tipo.imagenUrl" [alt]="tipo.nombre" class="th-thumb">
+          <td>
+            <img [src]="tipo.imagenUrl" [alt]="tipo.nombre" class="th-thumb" />
           </td>
-          <td class="td-nombre">
+          <td class="num">
             <strong>{{ tipo.nombre }}</strong>
             <p class="td-desc">{{ tipo.descripcion }}</p>
           </td>
           <td>
-            <span class="badge-cama">{{ tipo.tipoCama }}</span>
+            <span class="tipo-chip">{{ tipo.tipoCama }}</span>
           </td>
           <td class="td-center">{{ tipo.capacidad }} <span class="td-unit">pers.</span></td>
           <td class="td-center">{{ tipo.metrosCuadrados }} <span class="td-unit">m²</span></td>
           <td class="td-precio">{{ formatPrice(tipo.precioPorNoche) }}</td>
-          <td class="td-acciones">
-            <button class="btn-editar" (click)="irAEditar(tipo.id)" title="Editar">
-              ✏️ Editar
-            </button>
-            <button class="btn-eliminar" (click)="confirmarEliminar(tipo)" title="Eliminar">
-              🗑️ Eliminar
-            </button>
+          <td>
+            <div class="table-actions">
+              <button class="btn-tbl-edit" (click)="irAEditar(tipo.id)" title="Editar">Editar</button>
+              <button class="btn-tbl-del" (click)="confirmarEliminar(tipo)" title="Eliminar">Eliminar</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -75,10 +63,9 @@
 
   <ng-template #sinTipos>
     <div class="sin-datos">
-      <div class="sin-datos-icon">🛏️</div>
       <h3>No hay tipos de habitación registrados</h3>
       <p>Crea el primer tipo de habitación.</p>
-      <button class="btn-crear" (click)="irACrear()">+ Crear Tipo</button>
+      <button class="btn-nueva" (click)="irACrear()">+ Crear Tipo</button>
     </div>
   </ng-template>
 </div>
@@ -96,6 +83,22 @@
     <div class="modal-acciones">
       <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
       <button class="btn-confirmar" (click)="ejecutarEliminar()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarConfirmacionForzada" (click)="cancelarEliminar()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">⚠️</div>
+    <h3 class="modal-titulo">No se pudo eliminar de forma normal</h3>
+    <p class="modal-texto">{{ motivoBloqueoEliminacion }}</p>
+    <p class="modal-texto">
+      ¿Deseas <strong>borrar de todos modos</strong> el tipo
+      <strong>"{{ tipoAEliminar?.nombre }}"</strong>?
+    </p>
+    <div class="modal-acciones">
+      <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+      <button class="btn-confirmar" (click)="ejecutarEliminarForzado()">Borrar de todos modos</button>
     </div>
   </div>
 </div>

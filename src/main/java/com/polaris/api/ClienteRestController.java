@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/clientes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClienteRestController {
 
     @Autowired
@@ -46,9 +47,18 @@ public class ClienteRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        clienteService.eliminar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> eliminar(@PathVariable Long id,
+                                      @RequestParam(defaultValue = "false") boolean force) {
+        try {
+            if (force) {
+                clienteService.eliminarForzado(id);
+            } else {
+                clienteService.eliminar(id);
+            }
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     // Login — Angular manda { correo, contrasena }, recibe el cliente o 401

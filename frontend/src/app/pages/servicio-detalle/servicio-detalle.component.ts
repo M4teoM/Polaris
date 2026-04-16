@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { Servicio } from '../../models/servicio';
 import { ServicioService } from '../../services/servicio.service';
 
@@ -18,10 +19,18 @@ export class ServicioDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    void this.cargarServicio();
+  }
+
+  private async cargarServicio(): Promise<void> {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.servicioService.getServicioById(id).subscribe({
-      next: data => { this.servicio = data; },
-      error: () => { this.router.navigate(['/servicios']); }
-    });
+
+    try {
+      this.servicio = await firstValueFrom(
+        this.servicioService.getServicioById(id),
+      );
+    } catch {
+      this.router.navigate(['/servicios']);
+    }
   }
 }

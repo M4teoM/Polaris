@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

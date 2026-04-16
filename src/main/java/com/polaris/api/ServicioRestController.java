@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/servicios")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ServicioRestController {
 
     @Autowired
@@ -39,8 +41,17 @@ public class ServicioRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        servicioService.eliminar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> eliminar(@PathVariable Long id,
+                                      @RequestParam(defaultValue = "false") boolean force) {
+        try {
+            if (force) {
+                servicioService.eliminarForzado(id);
+            } else {
+                servicioService.eliminar(id);
+            }
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

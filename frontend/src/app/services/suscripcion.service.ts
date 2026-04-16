@@ -12,14 +12,26 @@ export class SuscripcionService {
   constructor(private http: HttpClient) {}
 
   listar(): Observable<Suscripcion[]> {
+    return this.listar$();
+  }
+
+  listar$(): Observable<Suscripcion[]> {
     return this.http.get<Suscripcion[]>(this.apiUrl);
   }
 
   crear(nombre: string, email: string): Observable<Suscripcion> {
+    return this.crear$(nombre, email);
+  }
+
+  crear$(nombre: string, email: string): Observable<Suscripcion> {
     return this.http.post<Suscripcion>(this.apiUrl, { nombre, email });
   }
 
   cancelar(id: number): Observable<Suscripcion> {
+    return this.cancelar$(id);
+  }
+
+  cancelar$(id: number): Observable<Suscripcion> {
     return this.http.delete<Suscripcion>(`${this.apiUrl}/${id}`);
   }
 }

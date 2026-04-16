@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Servicio } from '../../models/servicio';
 import { ServicioService } from '../../services/servicio.service';
 
@@ -15,7 +16,7 @@ export class ServiciosListaComponent implements OnInit {
   constructor(private servicioService: ServicioService) {}
 
   ngOnInit(): void {
-    this.recargarServicios();
+    void this.recargarServicios();
   }
 
   filtrar(filtro: string): void {
@@ -26,10 +27,15 @@ export class ServiciosListaComponent implements OnInit {
         : this.servicios.filter((s) => s.icono === filtro);
   }
 
-  private recargarServicios(): void {
-    this.servicioService.getServicios().subscribe((data) => {
-      this.servicios = data;
+  private async recargarServicios(): Promise<void> {
+    try {
+      this.servicios = await firstValueFrom(
+        this.servicioService.getServicios(),
+      );
       this.filtrar(this.filtroActivo);
-    });
+    } catch {
+      this.servicios = [];
+      this.serviciosFiltrados = [];
+    }
   }
 }

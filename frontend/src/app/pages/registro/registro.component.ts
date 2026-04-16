@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Cliente } from '../../models/cliente';
 
@@ -26,7 +27,7 @@ export class RegistroComponent {
     private router: Router,
   ) {}
 
-  registrar(): void {
+  async registrar(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -55,16 +56,15 @@ export class RegistroComponent {
       return;
     }
 
-    this.authService.register(this.cliente).subscribe({
-      next: () => {
-        this.successMessage = 'Registro exitoso. Redirigiendo...';
-        setTimeout(() => this.router.navigate(['/']), 900);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.errorMessage =
-          err?.error?.error ||
-          'No se pudo registrar. Verifica backend/CORS e intenta de nuevo.';
-      },
-    });
+    try {
+      await firstValueFrom(this.authService.register(this.cliente));
+      this.successMessage = 'Registro exitoso. Redirigiendo...';
+      setTimeout(() => this.router.navigate(['/']), 900);
+    } catch (err: unknown) {
+      const httpError = err as HttpErrorResponse;
+      this.errorMessage =
+        httpError?.error?.error ||
+        'No se pudo registrar. Verifica backend/CORS e intenta de nuevo.';
+    }
   }
 }

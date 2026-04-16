@@ -12,4 +12,5 @@ public interface IClienteService {
     void crear(Cliente cliente);
     void actualizar(Cliente cliente);
     void eliminar(Long id);
+    void eliminarForzado(Long id);
 }

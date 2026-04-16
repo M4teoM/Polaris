@@ -15,4 +15,6 @@ public interface ITipoHabitacionService {
     void actualizar(TipoHabitacion tipoHabitacion);
 
     void eliminar(Long id);
+
+    void eliminarForzado(Long id);
 }

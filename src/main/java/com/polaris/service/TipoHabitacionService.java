@@ -1,13 +1,20 @@
 package com.polaris.service;
 
 import com.polaris.errors.ErrorRoomNotFoundException;
+import com.polaris.model.Cuenta;
+import com.polaris.model.Habitacion;
+import com.polaris.model.ReservaHabitacion;
 import com.polaris.model.TipoHabitacion;
+import com.polaris.repository.ICuentaRepository;
 import com.polaris.repository.IHabitacionRepository;
+import com.polaris.repository.IReservaHabitacionRepository;
 import com.polaris.repository.ITipoHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipoHabitacionService implements ITipoHabitacionService {
@@ -17,6 +24,12 @@ public class TipoHabitacionService implements ITipoHabitacionService {
 
     @Autowired
     private IHabitacionRepository habitacionRepository;
+
+    @Autowired
+    private IReservaHabitacionRepository reservaRepository;
+
+    @Autowired
+    private ICuentaRepository cuentaRepository;
 
     @Override
     public List<TipoHabitacion> obtenerTodos() {
@@ -47,5 +60,32 @@ public class TipoHabitacionService implements ITipoHabitacionService {
                     + habitacionesAsociadas + " habitacion(es).");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarForzado(Long id) {
+        TipoHabitacion tipo = obtenerPorId(id);
+
+        List<Habitacion> habitaciones = habitacionRepository.findByTipoHabitacion_Id(tipo.getId());
+
+        for (Habitacion habitacion : habitaciones) {
+            List<ReservaHabitacion> reservas = reservaRepository.findByHabitacionId(habitacion.getId());
+
+            for (ReservaHabitacion reserva : reservas) {
+                Optional<Cuenta> cuenta = cuentaRepository.findByReservaId(reserva.getId());
+                cuenta.ifPresent(cuentaRepository::delete);
+            }
+
+            if (!reservas.isEmpty()) {
+                reservaRepository.deleteAll(reservas);
+            }
+        }
+
+        if (!habitaciones.isEmpty()) {
+            habitacionRepository.deleteAll(habitaciones);
+        }
+
+        repository.deleteById(tipo.getId());
     }
 }

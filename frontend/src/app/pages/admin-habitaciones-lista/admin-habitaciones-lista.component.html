@@ -1,15 +1,24 @@
 <div class="admin-wrap">
-    <section class="admin-panel">
-        <h1>CRUD Habitaciones</h1>
-        <p>Gestión rápida de habitaciones físicas (frontend).</p>
+    <section class="admin-panel room-form-wrap">
+        <div class="admin-toolbar">
+            <div>
+                <h2>{{ editandoId ? 'Editar habitación' : 'Nueva habitación' }}</h2>
+                <span>Gestión de habitaciones físicas</span>
+            </div>
+        </div>
 
-        <div class="alert ok" *ngIf="mensajeExito">{{ mensajeExito }}</div>
-        <div class="alert error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
+        <div class="flash-message flash-success" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+        <div class="flash-message flash-error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
 
         <div class="form-grid">
             <input [(ngModel)]="form.numero" placeholder="Número" />
             <input [(ngModel)]="form.piso" type="number" min="1" placeholder="Piso" />
-            <input [(ngModel)]="form.tipoHabitacionId" type="number" min="1" placeholder="Tipo ID" />
+            <select [(ngModel)]="form.tipoHabitacionId">
+                <option [ngValue]="0" disabled>Selecciona un tipo</option>
+                <option *ngFor="let tipo of tiposHabitacion" [ngValue]="tipo.id">
+                    {{ tipo.nombre }}
+                </option>
+            </select>
             <select [(ngModel)]="form.estado">
                 <option value="DISPONIBLE">DISPONIBLE</option>
                 <option value="OCUPADA">OCUPADA</option>
@@ -18,37 +27,44 @@
             </select>
         </div>
 
-        <div class="actions">
-            <button class="btn primary" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear habitación'
+        <div class="actions room-actions">
+            <button class="btn-nueva" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear habitación'
                 }}</button>
-            <button *ngIf="editandoId" class="btn" (click)="cancelar()">Cancelar</button>
+            <button *ngIf="editandoId" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
         </div>
     </section>
 
     <section class="admin-panel">
-        <h2>Listado</h2>
-        <div class="table-wrap" *ngIf="habitaciones.length; else sinDatos">
-            <table>
+        <div class="admin-toolbar">
+            <div>
+                <h2>Habitaciones</h2>
+                <span>{{ habitaciones.length }} habitación(es) registradas</span>
+            </div>
+        </div>
+        <div class="rooms-table-wrap" *ngIf="habitaciones.length; else sinDatos">
+            <table class="rooms-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Número</th>
                         <th>Piso</th>
                         <th>Estado</th>
-                        <th>Tipo ID</th>
+                        <th>Tipo de habitación</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let h of habitaciones">
                         <td>{{ h.id }}</td>
-                        <td>{{ h.numero }}</td>
+                        <td class="num">{{ h.numero }}</td>
                         <td>{{ h.piso }}</td>
-                        <td>{{ h.estado }}</td>
-                        <td>{{ h.tipoHabitacionId }}</td>
-                        <td class="row-actions">
-                            <button class="btn" (click)="editar(h)">Editar</button>
-                            <button class="btn danger" (click)="eliminar(h.id)">Eliminar</button>
+                        <td><span class="estado-pill" [ngClass]="h.estado.toLowerCase()">{{ h.estado }}</span></td>
+                        <td><span class="tipo-chip">{{ getNombreTipoHabitacion(h.tipoHabitacionId) }}</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="btn-tbl-edit" (click)="editar(h)">Editar</button>
+                                <button class="btn-tbl-del" (click)="eliminar(h.id)">Eliminar</button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

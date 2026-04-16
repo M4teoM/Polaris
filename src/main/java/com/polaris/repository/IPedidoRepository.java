@@ -10,4 +10,5 @@ public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
 	long countByClienteId(Long clienteId);
 	long deleteByServicioId(Long servicioId);
 	long deleteByClienteId(Long clienteId);
+	boolean existsByCodigo(String codigo);
 }

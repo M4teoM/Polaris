@@ -743,17 +743,33 @@ public class DataInitializer implements CommandLineRunner {
 
         String[] estados = {"CREADO", "PROCESO", "COMPLETADO", "CANCELADO"};
         long total = pedidoRepo.count();
+        if (total >= objetivo) {
+            return;
+        }
 
-        for (int i = (int) total + 1; i <= objetivo; i++) {
+        int siguienteCodigo = 1;
+        int creados = 0;
+        int faltantes = (int) (objetivo - total);
+
+        while (creados < faltantes) {
+            String codigo = String.format("PED-%04d", siguienteCodigo);
+            if (pedidoRepo.existsByCodigo(codigo)) {
+                siguienteCodigo++;
+                continue;
+            }
+
             Pedido pedido = new Pedido();
-            pedido.setCodigo(String.format("PED-%04d", i));
-            pedido.setFechaCreacion(LocalDateTime.of(2026, 4, 1, 9, 0).plusHours(i));
-            pedido.setEstado(estados[i % estados.length]);
-            pedido.setCliente(clientes.get((i - 1) % clientes.size()));
-            pedido.setOperario(operarios.get((i - 1) % operarios.size()));
-            pedido.setServicio(servicios.get((i - 1) % servicios.size()));
-            pedido.setTotal(60000.0 + (i * 12000));
+            pedido.setCodigo(codigo);
+            pedido.setFechaCreacion(LocalDateTime.of(2026, 4, 1, 9, 0).plusHours(siguienteCodigo));
+            pedido.setEstado(estados[siguienteCodigo % estados.length]);
+            pedido.setCliente(clientes.get((siguienteCodigo - 1) % clientes.size()));
+            pedido.setOperario(operarios.get((siguienteCodigo - 1) % operarios.size()));
+            pedido.setServicio(servicios.get((siguienteCodigo - 1) % servicios.size()));
+            pedido.setTotal(60000.0 + (siguienteCodigo * 12000));
             pedidoRepo.save(pedido);
+
+            creados++;
+            siguienteCodigo++;
         }
     }
 }

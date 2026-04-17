@@ -25,12 +25,20 @@ export class AdminHabitacionesListaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarHabitaciones();
+    void this.cargarHabitaciones();
     void this.cargarTiposHabitacion();
   }
 
-  cargarHabitaciones(): void {
-    this.habitaciones = this.habitacionFisicaService.getHabitaciones();
+  async cargarHabitaciones(): Promise<void> {
+    try {
+      this.habitaciones = await firstValueFrom(
+        this.habitacionFisicaService.getHabitaciones$(),
+      );
+    } catch {
+      this.habitaciones = [];
+      this.errorGeneral =
+        'No se pudieron cargar las habitaciones físicas desde el servidor.';
+    }
   }
 
   async cargarTiposHabitacion(): Promise<void> {
@@ -54,8 +62,9 @@ export class AdminHabitacionesListaComponent implements OnInit {
     };
   }
 
-  guardar(): void {
+  async guardar(): Promise<void> {
     this.errorGeneral = '';
+    this.mensajeExito = '';
 
     if (!this.form.numero.trim()) {
       this.errorGeneral = 'El número de habitación es obligatorio.';
@@ -67,35 +76,48 @@ export class AdminHabitacionesListaComponent implements OnInit {
       return;
     }
 
-    if (this.editandoId !== null) {
-      const updated = this.habitacionFisicaService.actualizarHabitacion(
-        this.editandoId,
-        this.form,
-      );
-      if (!updated) {
-        this.errorGeneral = 'No se encontró la habitación para actualizar.';
+    try {
+      if (this.editandoId !== null) {
+        await firstValueFrom(
+          this.habitacionFisicaService.actualizarHabitacion$(
+            this.editandoId,
+            this.form,
+          ),
+        );
+        this.mensajeExito = 'Habitación actualizada correctamente.';
+        this.cancelar();
+        await this.cargarHabitaciones();
         return;
       }
-      this.mensajeExito = 'Habitación actualizada correctamente.';
-      this.cancelar();
-      this.cargarHabitaciones();
-      return;
-    }
 
-    this.habitacionFisicaService.crearHabitacion(this.form);
-    this.mensajeExito = 'Habitación creada correctamente.';
-    this.form = this.getEmptyForm();
-    this.cargarHabitaciones();
+      await firstValueFrom(
+        this.habitacionFisicaService.crearHabitacion$(this.form),
+      );
+      this.mensajeExito = 'Habitación creada correctamente.';
+      this.form = this.getEmptyForm();
+      await this.cargarHabitaciones();
+    } catch (error: any) {
+      this.errorGeneral =
+        error?.error?.error ||
+        'No se pudo guardar la habitación. Verifica los datos e inténtalo de nuevo.';
+    }
   }
 
-  eliminar(id: number): void {
-    const ok = this.habitacionFisicaService.eliminarHabitacion(id);
-    if (!ok) {
-      this.errorGeneral = 'No se pudo eliminar la habitación.';
-      return;
+  async eliminar(id: number): Promise<void> {
+    this.errorGeneral = '';
+    this.mensajeExito = '';
+
+    try {
+      await firstValueFrom(
+        this.habitacionFisicaService.eliminarHabitacion$(id),
+      );
+      this.mensajeExito = 'Habitación eliminada correctamente.';
+      await this.cargarHabitaciones();
+    } catch (error: any) {
+      this.errorGeneral =
+        error?.error?.error ||
+        'No se pudo eliminar la habitación. Puede estar asociada a reservas.';
     }
-    this.mensajeExito = 'Habitación eliminada correctamente.';
-    this.cargarHabitaciones();
   }
 
   getNombreTipoHabitacion(tipoHabitacionId: number): string {

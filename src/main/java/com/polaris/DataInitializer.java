@@ -47,13 +47,13 @@ public class DataInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) {
 
-        boolean datosBaseCargados = tipoRepo.count() >= 5
-                && habitacionRepo.count() >= 5
-                && clienteRepo.count() >= 5
-                && servicioRepo.count() >= 5
-            && reservaRepo.count() >= 5;
+        boolean hayDatosPrevios = tipoRepo.count() > 0
+                || habitacionRepo.count() > 0
+                || clienteRepo.count() > 0
+                || servicioRepo.count() > 0
+                || reservaRepo.count() > 0;
 
-        if (datosBaseCargados) {
+        if (hayDatosPrevios) {
             completarModeloER();
             garantizarDatosObjetivo();
             return;

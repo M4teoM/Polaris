@@ -2,10 +2,26 @@ export interface ReservaHabitacion {
   id: number;
   fechaCheckIn: string;
   fechaCheckOut: string;
-  estado: 'PENDIENTE' | 'CONFIRMADA' | 'CHECKIN' | 'CHECKOUT' | 'CANCELADA';
+  estado: string;
   numeroHuespedes: number;
-  clienteId: number;
-  habitacionId: number;
+  clienteId?: number;
+  habitacionId?: number;
+  cliente?: {
+    id?: number;
+    nombre?: string;
+    apellido?: string;
+    correo?: string;
+  };
+  habitacion?: {
+    id?: number;
+    numero?: string;
+    estado?: string;
+    tipoHabitacion?: {
+      id?: number;
+      nombre?: string;
+      capacidad?: number;
+    };
+  };
   operarioId?: number;
 }
 
@@ -13,11 +29,26 @@ export class ReservaHabitacionModel implements ReservaHabitacion {
   id: number = 0;
   fechaCheckIn: string = '';
   fechaCheckOut: string = '';
-  estado: 'PENDIENTE' | 'CONFIRMADA' | 'CHECKIN' | 'CHECKOUT' | 'CANCELADA' =
-    'PENDIENTE';
+  estado: string = 'Pendiente';
   numeroHuespedes: number = 0;
-  clienteId: number = 0;
-  habitacionId: number = 0;
+  clienteId?: number;
+  habitacionId?: number;
+  cliente?: {
+    id?: number;
+    nombre?: string;
+    apellido?: string;
+    correo?: string;
+  };
+  habitacion?: {
+    id?: number;
+    numero?: string;
+    estado?: string;
+    tipoHabitacion?: {
+      id?: number;
+      nombre?: string;
+      capacidad?: number;
+    };
+  };
   operarioId?: number;
 
   /**

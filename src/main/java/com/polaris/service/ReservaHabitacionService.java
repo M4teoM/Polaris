@@ -90,6 +90,7 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
         Habitacion disponible = habitacionRepository
                 .findByTipoHabitacion_Id(tipoHabitacionId)
                 .stream()
+                .filter(h -> "disponible".equalsIgnoreCase(h.getEstado()))
                 .filter(h -> !ocupadas.contains(h.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ErrorReservaException(
@@ -102,7 +103,7 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
                             disponible.getTipoHabitacion().getCapacidad() + " personas).");
 
         repository.save(new ReservaHabitacion(
-                checkIn, checkOut, "Confirmada", numeroHuespedes, cliente, disponible));
+                checkIn, checkOut, "Pendiente", numeroHuespedes, cliente, disponible));
     }
 
     @Override

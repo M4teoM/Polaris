@@ -1,0 +1,25 @@
+.detalle-wrap {
+  margin-top: 96px;
+  padding: 24px;
+}
+
+.card {
+  margin-top: 12px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(7, 26, 45, 0.08);
+}
+
+.error {
+  color: #8f1c1c;
+  background: #fff1f1;
+  border: 1px solid #f2b8b8;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.loading {
+  margin-top: 10px;
+}

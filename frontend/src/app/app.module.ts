@@ -28,6 +28,9 @@ import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
+import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
+import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
+import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,9 @@ import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.co
     AdminClientesListaComponent,
     AdminHabitacionesListaComponent,
     ClientePerfilComponent,
+    ReservasListaComponent,
+    ReservaDetalleComponent,
+    ReservaCrearComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

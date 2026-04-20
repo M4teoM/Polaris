@@ -1,0 +1,46 @@
+<div class="reservas-wrap">
+  <div class="reservas-header">
+    <h1>Reservas</h1>
+    <a routerLink="/reservas/nueva" class="btn-primary">+ Nueva reserva</a>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="cargando">Cargando reservas...</div>
+
+  <div class="table-wrap" *ngIf="!cargando && reservas.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Habitación</th>
+          <th>Tipo</th>
+          <th>Check-in</th>
+          <th>Check-out</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reserva of reservas">
+          <td>{{ reserva.id }}</td>
+          <td>{{ getClienteNombre(reserva) }}</td>
+          <td>{{ getHabitacionLabel(reserva) }}</td>
+          <td>{{ getTipoLabel(reserva) }}</td>
+          <td>{{ reserva.fechaCheckIn }}</td>
+          <td>{{ reserva.fechaCheckOut }}</td>
+          <td>{{ reserva.estado }}</td>
+          <td>
+            <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="empty" *ngIf="!cargando && reservas.length === 0">
+    No hay reservas registradas.
+  </div>
+</div>

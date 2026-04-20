@@ -1,0 +1,26 @@
+<div class="detalle-wrap">
+  <h1>Detalle de reserva</h1>
+  <a routerLink="/reservas">← Volver al listado</a>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="cargando">Cargando...</div>
+
+  <div class="card" *ngIf="!cargando && reserva">
+    <p><strong>ID:</strong> {{ reserva.id }}</p>
+    <p>
+      <strong>Cliente:</strong>
+      {{ reserva.cliente?.nombre }} {{ reserva.cliente?.apellido }}
+      <span *ngIf="!reserva.cliente">#{{ reserva.clienteId }}</span>
+    </p>
+    <p>
+      <strong>Habitación:</strong>
+      <span *ngIf="reserva.habitacion?.numero">Hab. {{ reserva.habitacion?.numero }}</span>
+      <span *ngIf="!reserva.habitacion?.numero">#{{ reserva.habitacionId }}</span>
+    </p>
+    <p><strong>Tipo:</strong> {{ reserva.habitacion?.tipoHabitacion?.nombre || '-' }}</p>
+    <p><strong>Check-in:</strong> {{ reserva.fechaCheckIn }}</p>
+    <p><strong>Check-out:</strong> {{ reserva.fechaCheckOut }}</p>
+    <p><strong>Huéspedes:</strong> {{ reserva.numeroHuespedes }}</p>
+    <p><strong>Estado:</strong> {{ reserva.estado }}</p>
+  </div>
+</div>

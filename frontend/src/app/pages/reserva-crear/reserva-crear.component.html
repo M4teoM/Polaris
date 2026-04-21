@@ -1,78 +1,99 @@
-<div class="crear-wrap">
-  <h1>Nueva reserva</h1>
-  <a [routerLink]="returnUrl">← Volver</a>
+<div class="crear-page">
+  <div class="crear-card">
 
-  <div class="error" *ngIf="error">{{ error }}</div>
-  <div class="ok" *ngIf="ok">{{ ok }}</div>
+    <div class="crear-header">
+      <h1>Nueva Reserva</h1>
+      <p>Se asignará automáticamente la primera habitación disponible del tipo seleccionado</p>
+    </div>
 
-  <div class="crear-layout">
-    <form class="card" (ngSubmit)="crear()">
-      <label *ngIf="!authService.isCliente(); else clienteSesionTpl">
-        Cliente
-        <select [(ngModel)]="form.clienteId" name="clienteId" required>
-          <option [ngValue]="0">Selecciona un cliente</option>
-          <option *ngFor="let c of clientes" [ngValue]="c.id">
-            {{ c.nombre }} {{ c.apellido }} ({{ c.correo }})
-          </option>
-        </select>
-      </label>
-      <ng-template #clienteSesionTpl>
-        <label>
-          Cliente
-          <input
-            type="text"
-            [value]="(clienteSesion?.nombre || '') + ' ' + (clienteSesion?.apellido || '') + ' (' + (clienteSesion?.correo || '') + ')'"
-            readonly
-          />
-        </label>
-      </ng-template>
+    <div class="crear-body">
 
-      <label>
-        Tipo de habitación
-        <select [(ngModel)]="form.tipoHabitacionId" name="tipoHabitacionId" required>
-          <option [ngValue]="0">Selecciona un tipo</option>
-          <option *ngFor="let t of tipos" [ngValue]="t.id">
-            {{ t.nombre }} - Capacidad: {{ t.capacidad }}
-          </option>
-        </select>
-      </label>
-
-      <label>
-        Fecha check-in
-        <input type="date" [(ngModel)]="form.fechaCheckIn" name="fechaCheckIn" required />
-      </label>
-
-      <label>
-        Fecha check-out
-        <input type="date" [(ngModel)]="form.fechaCheckOut" name="fechaCheckOut" required />
-      </label>
-
-      <label>
-        Número de huéspedes
-        <input
-          type="number"
-          min="1"
-          [(ngModel)]="form.numeroHuespedes"
-          name="numeroHuespedes"
-          required
-        />
-      </label>
-
-      <button class="btn-primary" type="submit" [disabled]="guardando">
-        {{ guardando ? 'Guardando...' : 'Crear reserva' }}
-      </button>
-    </form>
-
-    <aside class="tipos-panel" *ngIf="tipos.length > 0">
-      <h2>Tipos de habitación</h2>
-      <div class="tipo-item" *ngFor="let t of tipos" [class.selected]="t.id === form.tipoHabitacionId">
-        <div class="tipo-item-head">
-          <strong>{{ t.nombre }}</strong>
-          <span>Cap: {{ t.capacidad }}</span>
-        </div>
-        <p>{{ t.descripcion }}</p>
-        <small>${{ t.precioPorNoche | number:'1.0-0' }} / noche</small>
+      <div class="alert alert-error" *ngIf="error">
+        <span class="alert-icon">✕</span> {{ error }}
       </div>
-    </aside>
+      <div class="alert alert-ok" *ngIf="ok">
+        <span class="alert-icon">✓</span> {{ ok }}
+      </div>
+
+      <form (ngSubmit)="crear()">
+
+        <div class="form-row">
+          <div class="form-field" *ngIf="!authService.isCliente(); else clienteSesionTpl">
+            <label>Cliente</label>
+            <select [(ngModel)]="form.clienteId" name="clienteId" required>
+              <option [ngValue]="0">Selecciona un cliente</option>
+              <option *ngFor="let c of clientes" [ngValue]="c.id">
+                {{ c.nombre }} {{ c.apellido }} ({{ c.correo }})
+              </option>
+            </select>
+          </div>
+          <ng-template #clienteSesionTpl>
+            <div class="form-field">
+              <label>Cliente</label>
+              <input
+                type="text"
+                [value]="(clienteSesion?.nombre || '') + ' ' + (clienteSesion?.apellido || '')"
+                readonly
+              />
+            </div>
+          </ng-template>
+
+          <div class="form-field">
+            <label>Tipo de habitación</label>
+            <select [(ngModel)]="form.tipoHabitacionId" name="tipoHabitacionId" required>
+              <option [ngValue]="0">Selecciona un tipo</option>
+              <option *ngFor="let t of tipos" [ngValue]="t.id">
+                {{ t.nombre }} — Cap. {{ t.capacidad }} · ${{ t.precioPorNoche | number:'1.0-0' }}/noche
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Fecha check-in</label>
+            <input type="date" [(ngModel)]="form.fechaCheckIn" name="fechaCheckIn" required />
+          </div>
+          <div class="form-field">
+            <label>Fecha check-out</label>
+            <input type="date" [(ngModel)]="form.fechaCheckOut" name="fechaCheckOut" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Número de huéspedes</label>
+            <input type="number" min="1" [(ngModel)]="form.numeroHuespedes" name="numeroHuespedes" required />
+          </div>
+        </div>
+
+        <!-- Panel del tipo seleccionado -->
+        <div class="tipo-preview" *ngIf="form.tipoHabitacionId">
+          <ng-container *ngFor="let t of tipos">
+            <ng-container *ngIf="t.id === form.tipoHabitacionId">
+              <img [src]="t.imagenUrl" [alt]="t.nombre" *ngIf="t.imagenUrl" />
+              <div class="tipo-preview-info">
+                <strong>{{ t.nombre }}</strong>
+                <span>{{ t.descripcion }}</span>
+                <div class="tipo-preview-meta">
+                  <span>👤 Cap. {{ t.capacidad }}</span>
+                  <span>🛏 {{ t.tipoCama }}</span>
+                  <span>📐 {{ t.metrosCuadrados }} m²</span>
+                  <span class="precio">${{ t.precioPorNoche | number:'1.0-0' }} / noche</span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <div class="form-actions">
+          <a [routerLink]="returnUrl" class="btn-cancelar">Cancelar</a>
+          <button class="btn-guardar" type="submit" [disabled]="guardando">
+            {{ guardando ? 'Creando reserva...' : 'Confirmar reserva' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>

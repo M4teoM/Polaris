@@ -10,13 +10,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polaris.model.Cliente;
+import com.polaris.model.Operario;
 import com.polaris.service.IClienteService;
+import com.polaris.service.IOperarioService;
 
 @Controller
 public class LoginController {
 
     @Autowired
     private IClienteService clienteService;
+
+    @Autowired
+    private IOperarioService operarioService;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -27,10 +32,19 @@ public class LoginController {
     public String loginProcesar(@RequestParam String correo,
                                 @RequestParam String contrasena,
                                 Model model) {
-        Optional<Cliente> resultado = clienteService.buscarPorCorreo(correo);
+        String correoNormalizado = correo == null ? "" : correo.trim();
+        String contrasenaNormalizada = contrasena == null ? "" : contrasena.trim();
 
-        if (resultado.isPresent() && resultado.get().getContrasena().equals(contrasena)) {
+        Optional<Cliente> resultado = clienteService.buscarPorCorreo(correoNormalizado);
+
+        if (resultado.isPresent() && resultado.get().getContrasena().equals(contrasenaNormalizada)) {
             return "redirect:/clientes/ver/" + resultado.get().getId();
+        }
+
+        Optional<Operario> operario = operarioService.buscarPorCorreo(correoNormalizado);
+
+        if (operario.isPresent() && operario.get().getContrasena().equals(contrasenaNormalizada)) {
+            return "redirect:/habitaciones/admin?tab=reservas";
         }
 
         model.addAttribute("error", "Usuario o contraseña incorrecta");

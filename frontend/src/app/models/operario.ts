@@ -1,17 +1,17 @@
 export interface Operario {
   id: number;
   correo: string;
-  contrasena: string;
+  contrasena?: string;
   nombre: string;
-  administradorId: number;
+  administradorId?: number;
 }
 
 export class OperarioModel implements Operario {
   id: number = 0;
   correo: string = '';
-  contrasena: string = '';
+  contrasena?: string;
   nombre: string = '';
-  administradorId: number = 0;
+  administradorId?: number;
 
   /**
    * Crea una instancia de operario con propiedades opcionales.

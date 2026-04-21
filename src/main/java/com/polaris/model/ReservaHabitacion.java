@@ -44,11 +44,6 @@ public class ReservaHabitacion {
     private Habitacion habitacion;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_operario")
-    private Operario operario;
-
-    @JsonIgnore
     @OneToOne(mappedBy = "reserva", fetch = FetchType.LAZY)
     private Cuenta cuenta;
 

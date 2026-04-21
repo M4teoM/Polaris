@@ -457,16 +457,7 @@ public class DataInitializer implements CommandLineRunner {
             LocalDate.of(2026, 8, 5), LocalDate.of(2026, 8, 10),
             "Confirmada", 4, clientes.get(5), habitaciones.get(0)));
 
-        List<ReservaHabitacion> reservasGuardadas = reservaRepo.findAll();
-        for (int i = 0; i < reservasGuardadas.size(); i++) {
-            ReservaHabitacion reserva = reservasGuardadas.get(i);
-            if (reserva.getOperario() == null) {
-                reserva.setOperario(operarios.get(i % operarios.size()));
-            }
-        }
-        reservaRepo.saveAll(reservasGuardadas);
-
-        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll(), operarios);
+        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll());
 
         precargarCuentaEItemCuenta();
         garantizarDatosObjetivo();
@@ -484,9 +475,7 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        List<Operario> operarios = asegurarTrabajadores(admin);
-        Operario operario = operarios.get(0);
-
+        asegurarTrabajadores(admin);
         List<Habitacion> habitaciones = habitacionRepo.findAll();
         boolean habitacionesActualizadas = false;
         for (Habitacion habitacion : habitaciones) {
@@ -511,19 +500,7 @@ public class DataInitializer implements CommandLineRunner {
             servicioRepo.saveAll(servicios);
         }
 
-        List<ReservaHabitacion> reservas = reservaRepo.findAll();
-        boolean reservasActualizadas = false;
-        for (ReservaHabitacion reserva : reservas) {
-            if (reserva.getOperario() == null) {
-                reserva.setOperario(operario);
-                reservasActualizadas = true;
-            }
-        }
-        if (reservasActualizadas) {
-            reservaRepo.saveAll(reservas);
-        }
-
-        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll(), operarios);
+        asegurarReservasMinimas(clienteRepo.findAll(), habitacionRepo.findAll());
         precargarCuentaEItemCuenta();
     }
 
@@ -551,13 +528,12 @@ public class DataInitializer implements CommandLineRunner {
                 correo,
                 contrasena,
                 nombre,
-                admin,
-                null
+                admin
             )));
     }
 
-    private void asegurarReservasMinimas(List<Cliente> clientes, List<Habitacion> habitaciones, List<Operario> operarios) {
-        if (clientes.isEmpty() || habitaciones.isEmpty() || operarios.isEmpty()) {
+    private void asegurarReservasMinimas(List<Cliente> clientes, List<Habitacion> habitaciones) {
+        if (clientes.isEmpty() || habitaciones.isEmpty()) {
             return;
         }
 
@@ -573,7 +549,6 @@ public class DataInitializer implements CommandLineRunner {
         for (int i = 0; i < faltantes; i++) {
             Cliente cliente = clientes.get(i % clientes.size());
             Habitacion habitacion = habitaciones.get((i * 3) % habitaciones.size());
-            Operario operario = operarios.get(i % operarios.size());
 
             LocalDate checkIn = fechaBase.plusDays(i * 4L);
             LocalDate checkOut = checkIn.plusDays(2 + (i % 4));
@@ -586,7 +561,6 @@ public class DataInitializer implements CommandLineRunner {
                 cliente,
                 habitacion
             );
-            reserva.setOperario(operario);
             reservaRepo.save(reserva);
         }
     }
@@ -651,12 +625,11 @@ public class DataInitializer implements CommandLineRunner {
                 null
             )));
 
-        List<Operario> operarios = asegurarTrabajadores(admin);
-        Operario operarioPrincipal = operarios.isEmpty() ? null : operarios.get(0);
+        asegurarTrabajadores(admin);
 
         asegurarOperariosMinimos(admin, 20);
         asegurarServiciosMinimos(admin, 20);
-        asegurarReservasMinimas(operarioPrincipal, 20);
+        asegurarReservasMinimas(20);
         asegurarPedidosMinimos(20);
 
         // Recalcula cuentas/items por si se añadieron reservas nuevas.
@@ -673,7 +646,7 @@ public class DataInitializer implements CommandLineRunner {
             String nombre = "Operario Extra " + indice;
 
             if (operarioRepo.findByCorreo(correo).isEmpty()) {
-                operarioRepo.save(new Operario(null, correo, "operario123", nombre, admin, null));
+                operarioRepo.save(new Operario(null, correo, "operario123", nombre, admin));
                 total++;
             }
             indice++;
@@ -701,7 +674,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     // Genera reservas adicionales distribuyendo clientes y habitaciones existentes.
-    private void asegurarReservasMinimas(Operario operario, int objetivo) {
+    private void asegurarReservasMinimas(int objetivo) {
         List<Cliente> clientes = clienteRepo.findAll();
         List<Habitacion> habitaciones = habitacionRepo.findAll();
 
@@ -726,7 +699,6 @@ public class DataInitializer implements CommandLineRunner {
                 cliente,
                 habitacion
             );
-            reserva.setOperario(operario);
             reservaRepo.save(reserva);
         }
     }

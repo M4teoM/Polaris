@@ -4,12 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -36,10 +32,4 @@ public class Operario {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_admin", nullable = false)
     private Administrador administrador;
-
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "operario", fetch = FetchType.LAZY)
-    private List<ReservaHabitacion> reservas;
 }

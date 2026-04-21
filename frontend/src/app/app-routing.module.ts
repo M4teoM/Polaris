@@ -12,9 +12,11 @@ import { TipoHabitacionFormComponent } from './pages/tipo-habitacion-form/tipo-h
 import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admin-servicios-lista.component';
 import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
 import { AdminGuard } from './guards/admin.guard';
+import { OperadorGuard } from './guards/operador.guard';
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { OperadorPanelComponent } from './pages/operador-panel/operador-panel.component';
 import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
@@ -97,6 +99,43 @@ const routes: Routes = [
         path: 'reservas/:id',
         component: ReservaDetalleComponent,
         data: { sectionLabel: 'CRUD Reservas · Detalle' },
+      },
+    ],
+  },
+  {
+    path: 'operador',
+    component: OperadorPanelComponent,
+    canActivate: [OperadorGuard],
+    children: [
+      { path: '', redirectTo: 'reservas', pathMatch: 'full' },
+      {
+        path: 'reservas',
+        component: ReservasListaComponent,
+        data: {
+          sectionLabel: 'Reservas',
+          routePrefix: '/operador/reservas',
+        },
+      },
+      {
+        path: 'reservas/nueva',
+        component: ReservaCrearComponent,
+        data: {
+          sectionLabel: 'Reservas · Nuevo',
+          returnUrl: '/operador/reservas',
+        },
+      },
+      {
+        path: 'reservas/editar/:id',
+        component: ReservaCrearComponent,
+        data: {
+          sectionLabel: 'Reservas · Editar',
+          returnUrl: '/operador/reservas',
+        },
+      },
+      {
+        path: 'reservas/:id',
+        component: ReservaDetalleComponent,
+        data: { sectionLabel: 'Reservas · Detalle' },
       },
     ],
   },

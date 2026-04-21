@@ -27,6 +27,7 @@ import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-se
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { OperadorPanelComponent } from './pages/operador-panel/operador-panel.component';
 import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
@@ -53,6 +54,7 @@ import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.compo
     AdminServiciosListaComponent,
     AdminServicioFormComponent,
     AdminPanelComponent,
+    OperadorPanelComponent,
     TipoHabitacionListaComponent,
     TipoHabitacionFormComponent,
     AdminClientesListaComponent,

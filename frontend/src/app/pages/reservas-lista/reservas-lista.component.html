@@ -1,7 +1,7 @@
 <div class="reservas-wrap">
   <div class="reservas-header">
     <h1>Reservas</h1>
-    <a routerLink="/admin/reservas/nueva" class="btn-primary">+ Nueva reserva</a>
+    <button *ngIf="!readOnly" type="button" class="btn-primary" (click)="nuevaReserva()">+ Nueva reserva</button>
   </div>
 
   <div class="ok" *ngIf="mensajeExito">{{ mensajeExito }}</div>
@@ -36,10 +36,10 @@
               <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">
                 Ver
               </button>
-              <button type="button" class="btn-edit" (click)="editarReserva(reserva.id)">
+              <button *ngIf="!readOnly" type="button" class="btn-edit" (click)="editarReserva(reserva.id)">
                 Editar
               </button>
-              <button type="button" class="btn-del" (click)="eliminarReserva(reserva)">
+              <button *ngIf="!readOnly" type="button" class="btn-del" (click)="eliminarReserva(reserva)">
                 Eliminar
               </button>
             </div>

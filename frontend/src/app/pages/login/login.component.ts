@@ -12,7 +12,8 @@ export class LoginComponent {
   correo = '';
   contrasena = '';
   errorMessage = '';
-  infoMessage = 'Acceso admin: admin@polaris.com / admin123';
+  infoMessage =
+    'Accesos: admin@polaris.com / admin123, operario@polaris.com / operario123';
 
   constructor(
     private authService: AuthService,
@@ -33,6 +34,11 @@ export class LoginComponent {
       if (ok) {
         if (this.authService.isAdmin()) {
           this.router.navigate(['/admin']);
+          return;
+        }
+
+        if (this.authService.isOperador()) {
+          this.router.navigate(['/operador']);
           return;
         }
 

@@ -16,6 +16,9 @@
           Perfil</a></li>
       <li *ngIf="authService.isAdmin()"><a routerLink="/admin" class="nav-link" (click)="closeMenu()">Panel Admin</a>
       </li>
+      <li *ngIf="authService.isOperador()"><a routerLink="/operador" class="nav-link" (click)="closeMenu()">Panel
+          Operador</a>
+      </li>
     </ul>
 
     <div class="nav-actions">

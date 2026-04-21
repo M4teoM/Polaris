@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ReservaHabitacion } from '../../models/reserva-habitacion';
@@ -14,13 +15,19 @@ export class ReservasListaComponent implements OnInit {
   cargando = false;
   error = '';
   mensajeExito = '';
+  readOnly = false;
+  routePrefix = '/admin/reservas';
 
   constructor(
     private readonly reservaService: ReservaService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.readOnly = !!this.route.snapshot.data['readOnly'];
+    this.routePrefix =
+      (this.route.snapshot.data['routePrefix'] as string) || this.routePrefix;
     void this.cargarReservas();
   }
 
@@ -37,11 +44,15 @@ export class ReservasListaComponent implements OnInit {
   }
 
   verDetalle(id: number): void {
-    this.router.navigate(['/admin/reservas', id]);
+    this.router.navigate([this.routePrefix, id]);
+  }
+
+  nuevaReserva(): void {
+    this.router.navigateByUrl(`${this.routePrefix}/nueva`);
   }
 
   editarReserva(id: number): void {
-    this.router.navigate(['/admin/reservas/editar', id]);
+    this.router.navigateByUrl(`${this.routePrefix}/editar/${id}`);
   }
 
   async eliminarReserva(reserva: ReservaHabitacion): Promise<void> {

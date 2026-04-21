@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from '../models/cliente';
+import { Operario } from '../models/operario';
 import { ClienteService } from './cliente.service';
-import { Observable, map, of, tap } from 'rxjs';
+import { OperarioService } from './operario.service';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
-export type UserRole = 'admin' | 'cliente';
+export type UserRole = 'admin' | 'cliente' | 'operador';
 
 interface SessionUser {
   role: UserRole;
   nombre: string;
   correo: string;
   cliente?: Cliente;
+  operario?: Operario;
 }
 
 @Injectable({
@@ -26,7 +29,10 @@ export class AuthService {
     nombre: 'Administrador',
   };
 
-  constructor(private clienteService: ClienteService) {
+  constructor(
+    private clienteService: ClienteService,
+    private operarioService: OperarioService,
+  ) {
     this.restoreSession();
   }
 
@@ -37,9 +43,13 @@ export class AuthService {
    * @returns true si los datos básicos existen; false en caso contrario.
    */
   login(correo: string, contrasena: string): Observable<boolean> {
+    const correoNormalizado = (correo || '').trim();
+    const contrasenaNormalizada = (contrasena || '').trim();
+
     if (
-      correo.toLowerCase() === this.adminCredentials.correo.toLowerCase() &&
-      contrasena === this.adminCredentials.contrasena
+      correoNormalizado.toLowerCase() ===
+        this.adminCredentials.correo.toLowerCase() &&
+      contrasenaNormalizada === this.adminCredentials.contrasena
     ) {
       this.currentUser = {
         role: 'admin',
@@ -50,31 +60,47 @@ export class AuthService {
       return of(true);
     }
 
-    return this.clienteService.getClientes$().pipe(
-      map((clientes) =>
-        clientes.find(
-          (c) =>
-            c.correo.toLowerCase() === correo.toLowerCase() &&
-            (c.contrasena || '') === contrasena,
-        ),
-      ),
-      tap((cliente) => {
-        if (!cliente) {
-          this.currentUser = null;
-          this.clearSession();
-          return;
-        }
+    return this.operarioService
+      .login$(correoNormalizado, contrasenaNormalizada)
+      .pipe(
+        tap((operario) => {
+          this.currentUser = {
+            role: 'operador',
+            nombre: operario.nombre,
+            correo: operario.correo,
+            operario,
+          };
+          this.persistSession();
+        }),
+        map(() => true),
+        catchError(() =>
+          this.clienteService.getClientes$().pipe(
+            map((clientes) =>
+              clientes.find(
+                (c) =>
+                  c.correo.toLowerCase() === correoNormalizado.toLowerCase() &&
+                  (c.contrasena || '') === contrasenaNormalizada,
+              ),
+            ),
+            tap((cliente) => {
+              if (!cliente) {
+                this.currentUser = null;
+                this.clearSession();
+                return;
+              }
 
-        this.currentUser = {
-          role: 'cliente',
-          nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
-          correo: cliente.correo,
-          cliente,
-        };
-        this.persistSession();
-      }),
-      map((cliente) => !!cliente),
-    );
+              this.currentUser = {
+                role: 'cliente',
+                nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
+                correo: cliente.correo,
+                cliente,
+              };
+              this.persistSession();
+            }),
+            map((cliente) => !!cliente),
+          ),
+        ),
+      );
   }
 
   /**
@@ -101,6 +127,10 @@ export class AuthService {
     return this.currentUser?.role === 'cliente';
   }
 
+  isOperador(): boolean {
+    return this.currentUser?.role === 'operador';
+  }
+
   getRole(): UserRole | null {
     return this.currentUser?.role ?? null;
   }
@@ -115,6 +145,10 @@ export class AuthService {
    */
   getCurrentUser(): Cliente | null {
     return this.currentUser?.cliente || null;
+  }
+
+  getCurrentOperario(): Operario | null {
+    return this.currentUser?.operario || null;
   }
 
   updateClienteSession(cliente: Cliente): void {

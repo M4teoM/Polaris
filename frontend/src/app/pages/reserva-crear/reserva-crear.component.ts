@@ -57,6 +57,11 @@ export class ReservaCrearComponent implements OnInit {
       this.returnUrl = qpReturn;
     }
 
+    const dataReturn = this.route.snapshot.data['returnUrl'] as string;
+    if (dataReturn && dataReturn.startsWith('/')) {
+      this.returnUrl = dataReturn;
+    }
+
     this.clienteSesion = this.authService.getCurrentUser();
     if (this.authService.isCliente() && this.clienteSesion?.id) {
       this.form.clienteId = this.clienteSesion.id;

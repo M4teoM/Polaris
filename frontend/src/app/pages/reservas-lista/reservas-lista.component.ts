@@ -13,6 +13,7 @@ export class ReservasListaComponent implements OnInit {
   reservas: ReservaHabitacion[] = [];
   cargando = false;
   error = '';
+  mensajeExito = '';
 
   constructor(
     private readonly reservaService: ReservaService,
@@ -36,7 +37,29 @@ export class ReservasListaComponent implements OnInit {
   }
 
   verDetalle(id: number): void {
-    this.router.navigate(['/reservas', id]);
+    this.router.navigate(['/admin/reservas', id]);
+  }
+
+  editarReserva(id: number): void {
+    this.router.navigate(['/admin/reservas/editar', id]);
+  }
+
+  async eliminarReserva(reserva: ReservaHabitacion): Promise<void> {
+    const nombreCliente = this.getClienteNombre(reserva);
+    const confirmado = window.confirm(
+      `¿Deseas eliminar la reserva #${reserva.id} de ${nombreCliente}? Esta acción no se puede deshacer.`,
+    );
+    if (!confirmado) return;
+
+    this.error = '';
+    try {
+      await firstValueFrom(this.reservaService.delete$(reserva.id));
+      this.mensajeExito = `Reserva #${reserva.id} eliminada correctamente.`;
+      await this.cargarReservas();
+      setTimeout(() => (this.mensajeExito = ''), 3000);
+    } catch {
+      this.error = 'No se pudo eliminar la reserva.';
+    }
   }
 
   getClienteNombre(reserva: ReservaHabitacion): string {

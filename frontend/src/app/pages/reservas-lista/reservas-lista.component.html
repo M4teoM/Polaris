@@ -1,9 +1,10 @@
 <div class="reservas-wrap">
   <div class="reservas-header">
     <h1>Reservas</h1>
-    <a routerLink="/reservas/nueva" class="btn-primary">+ Nueva reserva</a>
+    <a routerLink="/admin/reservas/nueva" class="btn-primary">+ Nueva reserva</a>
   </div>
 
+  <div class="ok" *ngIf="mensajeExito">{{ mensajeExito }}</div>
   <div class="error" *ngIf="error">{{ error }}</div>
   <div class="loading" *ngIf="cargando">Cargando reservas...</div>
 
@@ -18,7 +19,7 @@
           <th>Check-in</th>
           <th>Check-out</th>
           <th>Estado</th>
-          <th></th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -31,9 +32,17 @@
           <td>{{ reserva.fechaCheckOut }}</td>
           <td>{{ reserva.estado }}</td>
           <td>
-            <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">
-              Ver detalle
-            </button>
+            <div class="table-actions">
+              <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">
+                Ver
+              </button>
+              <button type="button" class="btn-edit" (click)="editarReserva(reserva.id)">
+                Editar
+              </button>
+              <button type="button" class="btn-del" (click)="eliminarReserva(reserva)">
+                Eliminar
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

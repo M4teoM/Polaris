@@ -2,7 +2,7 @@
   <div class="crear-card">
 
     <div class="crear-header">
-      <h1>Nueva Reserva</h1>
+      <h1>{{ tituloPagina }}</h1>
       <p>Se asignará automáticamente la primera habitación disponible del tipo seleccionado</p>
     </div>
 
@@ -30,11 +30,8 @@
           <ng-template #clienteSesionTpl>
             <div class="form-field">
               <label>Cliente</label>
-              <input
-                type="text"
-                [value]="(clienteSesion?.nombre || '') + ' ' + (clienteSesion?.apellido || '')"
-                readonly
-              />
+              <input type="text" [value]="(clienteSesion?.nombre || '') + ' ' + (clienteSesion?.apellido || '')"
+                readonly />
             </div>
           </ng-template>
 
@@ -65,6 +62,12 @@
             <label>Número de huéspedes</label>
             <input type="number" min="1" [(ngModel)]="form.numeroHuespedes" name="numeroHuespedes" required />
           </div>
+          <div class="form-field" *ngIf="modoEdicion">
+            <label>Estado</label>
+            <select [(ngModel)]="form.estado" name="estado">
+              <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+            </select>
+          </div>
         </div>
 
         <!-- Panel del tipo seleccionado -->
@@ -89,7 +92,7 @@
         <div class="form-actions">
           <a [routerLink]="returnUrl" class="btn-cancelar">Cancelar</a>
           <button class="btn-guardar" type="submit" [disabled]="guardando">
-            {{ guardando ? 'Creando reserva...' : 'Confirmar reserva' }}
+            {{ etiquetaBoton }}
           </button>
         </div>
 

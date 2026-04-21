@@ -55,6 +55,22 @@ export class ReservaService {
     return this.http.post(this.apiUrl, body);
   }
 
+  update$(
+    id: number,
+    body: {
+      fechaCheckIn: string;
+      fechaCheckOut: string;
+      numeroHuespedes: number;
+      estado?: string;
+    },
+  ): Observable<ReservaHabitacion> {
+    return this.http.put<ReservaHabitacion>(`${this.apiUrl}/${id}`, body);
+  }
+
+  delete$(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
   cancelar(id: number, clienteId: number): Observable<any> {
     return this.cancelar$(id, clienteId);
   }

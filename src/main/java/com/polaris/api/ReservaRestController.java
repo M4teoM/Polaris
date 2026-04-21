@@ -50,6 +50,45 @@ public class ReservaRestController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id,
+                                        @RequestBody Map<String, Object> body) {
+        try {
+            ReservaHabitacion reserva = reservaService.obtenerPorId(id);
+
+            LocalDate checkIn = body.containsKey("fechaCheckIn")
+                    ? LocalDate.parse(body.get("fechaCheckIn").toString())
+                    : reserva.getFechaCheckIn();
+            LocalDate checkOut = body.containsKey("fechaCheckOut")
+                    ? LocalDate.parse(body.get("fechaCheckOut").toString())
+                    : reserva.getFechaCheckOut();
+
+            if (!checkOut.isAfter(checkIn)) {
+                return ResponseEntity.badRequest().body(
+                        Map.of("error", "La fecha de salida debe ser posterior a la de entrada."));
+            }
+
+            reserva.setFechaCheckIn(checkIn);
+            reserva.setFechaCheckOut(checkOut);
+
+            if (body.containsKey("numeroHuespedes")) {
+                reserva.setNumeroHuespedes(Integer.parseInt(body.get("numeroHuespedes").toString()));
+            }
+
+            if (body.containsKey("estado") && body.get("estado") != null) {
+                String estado = body.get("estado").toString().trim();
+                if (!estado.isBlank()) {
+                    reserva.setEstado(estado);
+                }
+            }
+
+            reservaService.actualizar(reserva);
+            return ResponseEntity.ok(reservaService.obtenerPorId(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<?> cancelar(@PathVariable Long id,
                                       @RequestBody Map<String, Object> body) {

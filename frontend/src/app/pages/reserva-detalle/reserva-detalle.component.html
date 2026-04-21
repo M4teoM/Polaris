@@ -6,10 +6,7 @@
         <h1>Reserva <span *ngIf="reserva">#{{ reserva.id }}</span></h1>
         <p>Detalle completo de la reserva</p>
       </div>
-      <span
-        class="estado-pill"
-        *ngIf="reserva"
-        [ngClass]="'estado-' + reserva.estado">
+      <span class="estado-pill" *ngIf="reserva" [ngClass]="'estado-' + reserva.estado">
         {{ reserva.estado }}
       </span>
     </div>
@@ -69,7 +66,7 @@
       </ng-container>
 
       <div class="detalle-actions">
-        <a routerLink="/reservas" class="btn-volver">← Volver al listado</a>
+        <a routerLink="/admin/reservas" class="btn-volver">← Volver al listado</a>
       </div>
 
     </div>

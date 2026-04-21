@@ -18,6 +18,9 @@ export class ReservaCrearComponent implements OnInit {
   clientes: Cliente[] = [];
   tipos: TipoHabitacion[] = [];
   clienteSesion: Cliente | null = null;
+  modoEdicion = false;
+  idEdicion: number | null = null;
+  estados = ['Pendiente', 'Confirmada', 'Finalizada', 'Cancelada'];
 
   form = {
     clienteId: 0,
@@ -25,12 +28,13 @@ export class ReservaCrearComponent implements OnInit {
     fechaCheckIn: '',
     fechaCheckOut: '',
     numeroHuespedes: 1,
+    estado: 'Pendiente',
   };
 
   guardando = false;
   error = '';
   ok = '';
-  returnUrl = '/reservas';
+  returnUrl = '/admin/reservas';
 
   constructor(
     private readonly clienteService: ClienteService,
@@ -42,6 +46,12 @@ export class ReservaCrearComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.modoEdicion = true;
+      this.idEdicion = id;
+    }
+
     const qpReturn = this.route.snapshot.queryParamMap.get('returnUrl');
     if (qpReturn && qpReturn.startsWith('/')) {
       this.returnUrl = qpReturn;
@@ -52,6 +62,36 @@ export class ReservaCrearComponent implements OnInit {
       this.form.clienteId = this.clienteSesion.id;
     }
     void this.cargarCatalogos();
+    if (this.modoEdicion && this.idEdicion) {
+      void this.cargarReservaEnEdicion(this.idEdicion);
+    }
+  }
+
+  async cargarReservaEnEdicion(id: number): Promise<void> {
+    try {
+      const reserva = await firstValueFrom(
+        this.reservaService.getReservaById$(id),
+      );
+      this.form.clienteId = reserva.cliente?.id ?? reserva.clienteId ?? 0;
+      this.form.tipoHabitacionId = reserva.habitacion?.tipoHabitacion?.id ?? 0;
+      this.form.fechaCheckIn = reserva.fechaCheckIn;
+      this.form.fechaCheckOut = reserva.fechaCheckOut;
+      this.form.numeroHuespedes = reserva.numeroHuespedes;
+      this.form.estado = reserva.estado || 'Pendiente';
+    } catch {
+      this.error = 'No se pudo cargar la reserva a editar.';
+    }
+  }
+
+  get tituloPagina(): string {
+    return this.modoEdicion ? 'Editar Reserva' : 'Nueva Reserva';
+  }
+
+  get etiquetaBoton(): string {
+    if (this.guardando) {
+      return this.modoEdicion ? 'Guardando cambios...' : 'Creando reserva...';
+    }
+    return this.modoEdicion ? 'Guardar cambios' : 'Confirmar reserva';
   }
 
   async cargarCatalogos(): Promise<void> {
@@ -62,7 +102,9 @@ export class ReservaCrearComponent implements OnInit {
       if (this.authService.isCliente() && this.clienteSesion?.id) {
         this.clientes = [this.clienteSesion];
       } else {
-        this.clientes = await firstValueFrom(this.clienteService.getClientes$());
+        this.clientes = await firstValueFrom(
+          this.clienteService.getClientes$(),
+        );
       }
     } catch {
       this.error = 'No se pudo cargar clientes/tipos de habitación.';
@@ -94,12 +136,28 @@ export class ReservaCrearComponent implements OnInit {
 
     this.guardando = true;
     try {
-      await firstValueFrom(this.reservaService.crear$(this.form));
-      this.ok = 'Reserva creada correctamente.';
+      if (this.modoEdicion && this.idEdicion) {
+        await firstValueFrom(
+          this.reservaService.update$(this.idEdicion, {
+            fechaCheckIn: this.form.fechaCheckIn,
+            fechaCheckOut: this.form.fechaCheckOut,
+            numeroHuespedes: this.form.numeroHuespedes,
+            estado: this.form.estado,
+          }),
+        );
+        this.ok = 'Reserva actualizada correctamente.';
+      } else {
+        await firstValueFrom(this.reservaService.crear$(this.form));
+        this.ok = 'Reserva creada correctamente.';
+      }
       setTimeout(() => this.router.navigateByUrl(this.returnUrl), 700);
     } catch (err) {
       const e = err as HttpErrorResponse;
-      this.error = e?.error?.error || 'No se pudo crear la reserva.';
+      this.error =
+        e?.error?.error ||
+        (this.modoEdicion
+          ? 'No se pudo actualizar la reserva.'
+          : 'No se pudo crear la reserva.');
     } finally {
       this.guardando = false;
     }

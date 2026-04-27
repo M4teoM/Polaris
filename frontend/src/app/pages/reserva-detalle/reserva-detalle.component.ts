@@ -13,6 +13,7 @@ export class ReservaDetalleComponent implements OnInit {
   reserva: ReservaHabitacion | null = null;
   cargando = false;
   error = '';
+  returnUrl = '/admin/reservas';
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -20,6 +21,11 @@ export class ReservaDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const qpReturn = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (qpReturn && qpReturn.startsWith('/')) {
+      this.returnUrl = qpReturn;
+    }
+
     void this.cargarDetalle();
   }
 

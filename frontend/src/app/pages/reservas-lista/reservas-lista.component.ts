@@ -44,7 +44,9 @@ export class ReservasListaComponent implements OnInit {
   }
 
   verDetalle(id: number): void {
-    this.router.navigate([this.routePrefix, id]);
+    this.router.navigate([this.routePrefix, id], {
+      queryParams: { returnUrl: this.routePrefix },
+    });
   }
 
   nuevaReserva(): void {

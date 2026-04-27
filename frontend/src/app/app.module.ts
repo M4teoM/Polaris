@@ -32,6 +32,7 @@ import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.co
 import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
 import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.component';
+import { OperadorContratarServicioComponent } from './pages/operador-contratar-servicio/operador-contratar-servicio.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.compo
     ReservasListaComponent,
     ReservaDetalleComponent,
     ReservaCrearComponent,
+    OperadorContratarServicioComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

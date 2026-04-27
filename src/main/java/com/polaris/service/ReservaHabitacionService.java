@@ -103,7 +103,7 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
                             disponible.getTipoHabitacion().getCapacidad() + " personas).");
 
         repository.save(new ReservaHabitacion(
-                checkIn, checkOut, "Pendiente", numeroHuespedes, cliente, disponible));
+                checkIn, checkOut, "Inactiva", numeroHuespedes, cliente, disponible));
     }
 
     @Override

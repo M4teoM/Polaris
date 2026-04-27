@@ -39,4 +39,15 @@ public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabit
             "JOIN FETCH r.habitacion h " +
             "JOIN FETCH h.tipoHabitacion")
     List<ReservaHabitacion> findAllConDetalle();
+
+    @Query("SELECT r FROM ReservaHabitacion r " +
+            "JOIN FETCH r.cliente " +
+            "JOIN FETCH r.habitacion h " +
+            "JOIN FETCH h.tipoHabitacion " +
+            "WHERE LOWER(h.numero) = LOWER(:numeroHabitacion) " +
+            "AND LOWER(r.estado) <> 'cancelada' " +
+            "AND r.fechaCheckIn <= :hoy " +
+            "AND r.fechaCheckOut > :hoy")
+    List<ReservaHabitacion> findReservasVigentesPorNumeroHabitacion(@Param("numeroHabitacion") String numeroHabitacion,
+                                                                    @Param("hoy") LocalDate hoy);
 }

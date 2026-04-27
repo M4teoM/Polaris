@@ -1,0 +1,144 @@
+.operador-servicio-wrap {
+  padding: 20px;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #12345a 0%, #1b4e84 100%);
+  color: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 14px 28px rgba(8, 31, 56, 0.28);
+}
+
+.hero-card h2 {
+  margin: 0 0 4px 0;
+}
+
+.hero-card .muted {
+  color: rgba(255, 255, 255, 0.86);
+  margin: 0;
+}
+
+.hero-chip {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.muted {
+  color: #5d6f84;
+  margin-bottom: 14px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 20px rgba(7, 26, 45, 0.08);
+  border: 1px solid #e6edf7;
+}
+
+.card-title {
+  margin: 0 0 12px 0;
+  color: #12345a;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.info-item {
+  background: #f6f9fe;
+  border: 1px solid #e0e9f6;
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.info-item span {
+  color: #647991;
+  font-size: 0.86rem;
+}
+
+.info-item strong {
+  color: #0e2f53;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid #cfd8e6;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.actions {
+  display: flex;
+}
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #12345a;
+  color: #fff;
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.alert.error {
+  background: #fff1f1;
+  color: #8f1c1c;
+  border: 1px solid #f2b8b8;
+}
+
+.alert.ok {
+  background: #edfff5;
+  color: #0f5f34;
+  border: 1px solid #b0ebc8;
+}
+
+@media (max-width: 768px) {
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

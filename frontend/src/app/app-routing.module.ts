@@ -17,6 +17,7 @@ import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { OperadorPanelComponent } from './pages/operador-panel/operador-panel.component';
+import { OperadorContratarServicioComponent } from './pages/operador-contratar-servicio/operador-contratar-servicio.component';
 import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
@@ -136,6 +137,11 @@ const routes: Routes = [
         path: 'reservas/:id',
         component: ReservaDetalleComponent,
         data: { sectionLabel: 'Reservas · Detalle' },
+      },
+      {
+        path: 'contratar-servicio',
+        component: OperadorContratarServicioComponent,
+        data: { sectionLabel: 'Contratar Servicio' },
       },
     ],
   },

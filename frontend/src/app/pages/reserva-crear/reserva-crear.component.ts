@@ -46,6 +46,11 @@ export class ReservaCrearComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.modoEdicion = true;

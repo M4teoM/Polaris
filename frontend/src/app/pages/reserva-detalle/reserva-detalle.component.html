@@ -24,11 +24,12 @@
           <h2 class="seccion-titulo">Cliente</h2>
           <div class="fila">
             <span class="fila-label">Nombre</span>
-            <span class="fila-valor">{{ reserva.cliente?.nombre }} {{ reserva.cliente?.apellido }}</span>
+            <!-- Usando campos planos del DTO en lugar de reserva.cliente?.nombre -->
+            <span class="fila-valor">{{ reserva.clienteNombre }} {{ reserva.clienteApellido }}</span>
           </div>
           <div class="fila">
             <span class="fila-label">Correo</span>
-            <span class="fila-valor">{{ reserva.cliente?.correo || '-' }}</span>
+            <span class="fila-valor">{{ reserva.clienteCorreo || '-' }}</span>
           </div>
         </div>
 
@@ -36,14 +37,15 @@
           <h2 class="seccion-titulo">Habitación</h2>
           <div class="fila">
             <span class="fila-label">Número</span>
+            <!-- Usando campos planos del DTO en lugar de reserva.habitacion?.numero -->
             <span class="fila-valor">
-              <span *ngIf="reserva.habitacion?.numero">Hab. {{ reserva.habitacion?.numero }}</span>
-              <span *ngIf="!reserva.habitacion?.numero">#{{ reserva.habitacionId }}</span>
+              <span *ngIf="reserva.habitacionNumero">Hab. {{ reserva.habitacionNumero }}</span>
+              <span *ngIf="!reserva.habitacionNumero">#{{ reserva.habitacionId }}</span>
             </span>
           </div>
           <div class="fila">
             <span class="fila-label">Tipo</span>
-            <span class="fila-valor">{{ reserva.habitacion?.tipoHabitacion?.nombre || '-' }}</span>
+            <span class="fila-valor">{{ reserva.tipoHabitacionNombre || '-' }}</span>
           </div>
         </div>
 

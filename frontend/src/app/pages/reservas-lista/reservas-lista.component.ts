@@ -5,6 +5,11 @@ import { firstValueFrom } from 'rxjs';
 import { ReservaHabitacion } from '../../models/reserva-habitacion';
 import { ReservaService } from '../../services/reserva.service';
 
+/**
+ * Componente que muestra la lista de reservas.
+ * Es reutilizado por el panel de admin y el panel de operador
+ * a través de los datos de ruta (readOnly, routePrefix).
+ */
 @Component({
   selector: 'app-reservas-lista',
   templateUrl: './reservas-lista.component.html',
@@ -24,6 +29,7 @@ export class ReservasListaComponent implements OnInit {
     private readonly route: ActivatedRoute,
   ) {}
 
+  /** Inicializa el componente: determina modo y carga reservas. */
   ngOnInit(): void {
     this.readOnly = !!this.route.snapshot.data['readOnly'];
     this.routePrefix =
@@ -31,6 +37,7 @@ export class ReservasListaComponent implements OnInit {
     void this.cargarReservas();
   }
 
+  /** Carga todas las reservas desde el backend. */
   async cargarReservas(): Promise<void> {
     this.cargando = true;
     this.error = '';
@@ -43,20 +50,24 @@ export class ReservasListaComponent implements OnInit {
     }
   }
 
+  /** Navega al detalle de una reserva. */
   verDetalle(id: number): void {
     this.router.navigate([this.routePrefix, id], {
       queryParams: { returnUrl: this.routePrefix },
     });
   }
 
+  /** Navega al formulario de nueva reserva. */
   nuevaReserva(): void {
     this.router.navigateByUrl(`${this.routePrefix}/nueva`);
   }
 
+  /** Navega al formulario de edición de una reserva. */
   editarReserva(id: number): void {
     this.router.navigateByUrl(`${this.routePrefix}/editar/${id}`);
   }
 
+  /** Confirma y elimina una reserva. */
   async eliminarReserva(reserva: ReservaHabitacion): Promise<void> {
     const nombreCliente = this.getClienteNombre(reserva);
     const confirmado = window.confirm(
@@ -75,21 +86,22 @@ export class ReservasListaComponent implements OnInit {
     }
   }
 
+  /** Retorna el nombre completo del cliente usando los campos planos del DTO. */
   getClienteNombre(reserva: ReservaHabitacion): string {
-    if (reserva.cliente) {
-      return `${reserva.cliente.nombre || ''} ${reserva.cliente.apellido || ''}`.trim();
+    if (reserva.clienteNombre) {
+      return `${reserva.clienteNombre} ${reserva.clienteApellido || ''}`.trim();
     }
     return `Cliente #${reserva.clienteId ?? '-'}`;
   }
 
+  /** Retorna la etiqueta de habitación usando los campos planos del DTO. */
   getHabitacionLabel(reserva: ReservaHabitacion): string {
-    if (reserva.habitacion?.numero) {
-      return `Hab. ${reserva.habitacion.numero}`;
-    }
+    if (reserva.habitacionNumero) return `Hab. ${reserva.habitacionNumero}`;
     return `Hab. #${reserva.habitacionId ?? '-'}`;
   }
 
+  /** Retorna el nombre del tipo de habitación usando los campos planos del DTO. */
   getTipoLabel(reserva: ReservaHabitacion): string {
-    return reserva.habitacion?.tipoHabitacion?.nombre || '-';
+    return reserva.tipoHabitacionNombre || '-';
   }
 }

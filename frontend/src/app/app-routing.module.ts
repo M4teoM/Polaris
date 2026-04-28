@@ -13,6 +13,7 @@ import { AdminServiciosListaComponent } from './pages/admin-servicios-lista/admi
 import { AdminServicioFormComponent } from './pages/admin-servicio-form/admin-servicio-form.component';
 import { AdminGuard } from './guards/admin.guard';
 import { OperadorGuard } from './guards/operador.guard';
+import { ClienteGuard } from './guards/cliente.guard';
 import { AdminClientesListaComponent } from './pages/admin-clientes-lista/admin-clientes-lista.component';
 import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-lista/admin-habitaciones-lista.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
@@ -31,9 +32,9 @@ const routes: Routes = [
   { path: 'habitaciones/:id', component: HabitacionDetalleComponent },
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
-  { path: 'reservas', redirectTo: 'admin/reservas', pathMatch: 'full' },
-  { path: 'reservas/nueva', component: ReservaCrearComponent },
-  { path: 'reservas/:id', component: ReservaDetalleComponent },
+  { path: 'reservas', redirectTo: 'clientes/ver', pathMatch: 'full' },
+  { path: 'reservas/nueva', component: ReservaCrearComponent, canActivate: [ClienteGuard] },
+  { path: 'reservas/:id', component: ReservaDetalleComponent, canActivate: [ClienteGuard] },
   { path: 'clientes/ver', component: ClientePerfilComponent },
   {
     path: 'admin',

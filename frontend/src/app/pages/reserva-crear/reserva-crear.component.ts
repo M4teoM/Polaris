@@ -82,8 +82,8 @@ export class ReservaCrearComponent implements OnInit {
       const reserva = await firstValueFrom(
         this.reservaService.getReservaById$(id),
       );
-      this.form.clienteId = reserva.cliente?.id ?? reserva.clienteId ?? 0;
-      this.form.tipoHabitacionId = reserva.habitacion?.tipoHabitacion?.id ?? 0;
+      this.form.clienteId = reserva.clienteId ?? 0;
+      this.form.tipoHabitacionId = reserva.tipoHabitacionId ?? 0;
       this.form.fechaCheckIn = reserva.fechaCheckIn;
       this.form.fechaCheckOut = reserva.fechaCheckOut;
       this.form.numeroHuespedes = reserva.numeroHuespedes;

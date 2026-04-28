@@ -122,7 +122,8 @@
             <h2>Mis Reservas</h2>
             <div class="perfil-reservas-head-actions">
                 <span>{{ reservas.length }} reserva(s)</span>
-                <a [routerLink]="['/reservas/nueva']" [queryParams]="{ returnUrl: '/clientes/ver' }" class="btn-add-reserva">+
+                <a [routerLink]="['/reservas/nueva']" [queryParams]="{ returnUrl: '/clientes/ver' }"
+                    class="btn-add-reserva">+
                     Agregar reserva</a>
             </div>
         </div>
@@ -155,6 +156,10 @@
                                 [disabled]="cancelandoReservaId === reserva.id">
                                 {{ cancelandoReservaId === reserva.id ? 'Cancelando...' : 'Cancelar' }}
                             </button>
+
+                            <a *ngIf="estadoClase(reserva.estado) !== 'cancelada'"
+                                [routerLink]="['/reservas/editar', reserva.id]"
+                                [queryParams]="{ returnUrl: '/clientes/ver' }" class="btn-editar-reserva">Editar</a>
                         </td>
                     </tr>
                 </tbody>
@@ -167,7 +172,8 @@
             <p>Aún no tienes reservas activas.</p>
             <div class="perfil-actions">
                 <a routerLink="/habitaciones" class="btn-volver">Ver Habitaciones</a>
-                <a [routerLink]="['/reservas/nueva']" [queryParams]="{ returnUrl: '/clientes/ver' }" class="btn-add-reserva">+
+                <a [routerLink]="['/reservas/nueva']" [queryParams]="{ returnUrl: '/clientes/ver' }"
+                    class="btn-add-reserva">+
                     Agregar reserva</a>
             </div>
         </div>

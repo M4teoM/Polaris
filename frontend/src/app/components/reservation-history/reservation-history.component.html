@@ -1,0 +1,85 @@
+<!-- Componente de Historial de Reservas -->
+<div class="reservation-history-container">
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando historial...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-error">
+        <span class="error-icon">⚠️</span>
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Contenido del historial -->
+    <div *ngIf="!cargando && reservas.length > 0">
+        <!-- Filtros -->
+        <div class="filter-section">
+            <h3>Filtrar por estado:</h3>
+            <div class="filter-buttons">
+                <button [class.active]="filtroEstado === 'todos'" (click)="cambiarFiltro('todos')" class="filter-btn">
+                    Todos ({{ reservas.length }})
+                </button>
+                <button [class.active]="filtroEstado === 'completadas'" (click)="cambiarFiltro('completadas')"
+                    class="filter-btn">
+                    Completadas ({{ contarCompletadas() }})
+                </button>
+                <button [class.active]="filtroEstado === 'canceladas'" (click)="cambiarFiltro('canceladas')"
+                    class="filter-btn">
+                    Canceladas ({{ contarCanceladas() }})
+                </button>
+            </div>
+        </div>
+
+        <!-- Listado de reservas en historial -->
+        <div class="history-list">
+            <div *ngFor="let reserva of reservasFiltradas" class="history-item">
+                <!-- Ícono de estado -->
+                <div class="status-icon">{{ getEstadoIcon(reserva.estado) }}</div>
+
+                <!-- Información principal -->
+                <div class="item-content">
+                    <div class="item-header">
+                        <h3>Habitación {{ reserva.habitacionNumero }}</h3>
+                        <span [ngClass]="'badge ' + getBadgeClass(reserva.estado)">
+                            {{ getBadgeText(reserva.estado) }}
+                        </span>
+                    </div>
+
+                    <!-- Tipo de habitación -->
+                    <p class="room-type">{{ reserva.tipoHabitacionNombre }}</p>
+
+                    <!-- Fechas y duración -->
+                    <div class="item-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📅</span>
+                            <span class="detail-text">
+                                {{ formatearFecha(reserva.fechaCheckIn) }} -
+                                {{ formatearFecha(reserva.fechaCheckOut) }}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏰</span>
+                            <span class="detail-text">{{ calcularDias(reserva) }} noches</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">👥</span>
+                            <span class="detail-text">{{ reserva.numeroHuespedes }} persona(s)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación -->
+                <div class="item-arrow">→</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="!cargando && reservas.length === 0" class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>Historial vacío</h3>
+        <p>No tienes reservas finalizadas o canceladas en tu historial.</p>
+    </div>
+</div>

@@ -1,0 +1,487 @@
+/* Estilos para el componente de reservas activas */
+
+.active-reservations-container {
+    /* Contenedor principal */
+    padding: 2rem;
+}
+
+.loading-state {
+    /* Estado de carga */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.spinner {
+    /* Animación de carga */
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--navy-claro);
+    border-top-color: var(--gold-principal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-state p {
+    color: var(--taupe);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.alert {
+    /* Alerta genérica */
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.alert-error {
+    /* Alerta de error */
+    background-color: rgba(178, 58, 72, 0.1);
+    border: 1px solid var(--rojo-error);
+    color: var(--rojo-error);
+}
+
+.alert-success {
+    /* Alerta de éxito */
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--verde-ok);
+    color: var(--verde-ok);
+}
+
+.error-icon,
+.success-icon {
+    /* Iconos de alerta */
+    font-size: 1.5rem;
+}
+
+.empty-state {
+    /* Estado vacío */
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: var(--ivory);
+    border-radius: 12px;
+    border: 2px dashed var(--silver);
+}
+
+.empty-icon {
+    /* Ícono del estado vacío */
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    /* Título del estado vacío */
+    color: var(--charcoal);
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+    /* Descripción del estado vacío */
+    color: var(--taupe);
+    margin: 0;
+}
+
+.reservations-grid {
+    /* Cuadrícula de reservas */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reservation-card {
+    /* Tarjeta de reserva */
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-card:hover {
+    /* Efecto hover en la tarjeta */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+.card-header {
+    /* Encabezado de la tarjeta */
+    background: linear-gradient(135deg, var(--navy-principal), var(--navy-claro));
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.room-info {
+    /* Información de la habitación */
+    color: white;
+    flex: 1;
+}
+
+.room-number {
+    /* Número de habitación */
+    color: var(--gold-principal);
+    font-size: 1.3rem;
+    margin: 0 0 0.3rem 0;
+    font-weight: 600;
+}
+
+.room-type {
+    /* Tipo de habitación */
+    color: var(--pearl);
+    font-size: 0.9rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.badge {
+    /* Badge de estado */
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge-active {
+    /* Badge activo */
+    background-color: rgba(34, 197, 94, 0.2);
+    color: var(--verde-ok);
+}
+
+.card-body {
+    /* Cuerpo de la tarjeta */
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.info-block {
+    /* Bloque de información (fechas) */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--silver);
+}
+
+.info-item {
+    /* Item individual de información */
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    flex: 1;
+}
+
+.info-item .icon {
+    /* Ícono del item */
+    font-size: 1.5rem;
+}
+
+.info-item label {
+    /* Etiqueta */
+    font-size: 0.8rem;
+    color: var(--taupe);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.info-item p {
+    /* Valor */
+    color: var(--charcoal);
+    font-size: 1rem;
+    margin: 0.3rem 0 0 0;
+    font-weight: 500;
+}
+
+.arrow {
+    /* Flecha entre fechas */
+    color: var(--aguamarina);
+    font-weight: bold;
+    font-size: 1.2rem;
+    align-self: center;
+}
+
+.info-row {
+    /* Fila de información (duración y huéspedes) */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.info-col {
+    /* Columna de información */
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.info-col .icon {
+    /* Ícono de columna */
+    font-size: 1.5rem;
+}
+
+.info-col label {
+    /* Etiqueta de columna */
+    font-size: 0.8rem;
+    color: var(--taupe);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.info-col p {
+    /* Valor de columna */
+    color: var(--charcoal);
+    font-size: 1rem;
+    margin: 0.3rem 0 0 0;
+    font-weight: 500;
+}
+
+.card-footer {
+    /* Pie de la tarjeta */
+    padding: 1.5rem;
+    background-color: var(--ivory);
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid var(--silver);
+}
+
+.btn {
+    /* Botón genérico */
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.btn-primary {
+    /* Botón primario */
+    background-color: var(--aguamarina);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: darken(#33a69b, 10%);
+    box-shadow: 0 4px 8px rgba(51, 166, 155, 0.3);
+}
+
+.btn-danger {
+    /* Botón de peligro */
+    background-color: var(--rojo-error);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: darken(#b23a48, 10%);
+    box-shadow: 0 4px 8px rgba(178, 58, 72, 0.3);
+}
+
+.btn-secondary {
+    /* Botón secundario */
+    background-color: var(--navy-claro);
+    color: var(--gold-principal);
+    border: 2px solid var(--gold-principal);
+}
+
+.btn-secondary:hover {
+    background-color: var(--gold-principal);
+    color: var(--navy-principal);
+}
+
+/* Modal */
+.modal-overlay {
+    /* Overlay del modal */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    /* Contenido del modal */
+    background: white;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    /* Encabezado del modal */
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--silver);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    /* Título del modal */
+    color: var(--navy-principal);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    /* Botón de cerrar */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--taupe);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: var(--ivory);
+    color: var(--charcoal);
+}
+
+.modal-body {
+    /* Cuerpo del modal */
+    padding: 1.5rem;
+}
+
+.form-group {
+    /* Grupo de formulario */
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    /* Etiqueta del formulario */
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--charcoal);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    /* Input del formulario */
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--silver);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--aguamarina);
+    box-shadow: 0 0 0 3px rgba(51, 166, 155, 0.1);
+}
+
+.modal-footer {
+    /* Pie del modal */
+    padding: 1.5rem;
+    border-top: 1px solid var(--silver);
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.modal-footer .btn {
+    flex: 0 1 auto;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .active-reservations-container {
+        padding: 1rem;
+    }
+
+    .reservations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    .card-footer {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

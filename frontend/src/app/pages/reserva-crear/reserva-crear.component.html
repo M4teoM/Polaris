@@ -62,7 +62,7 @@
             <label>Número de huéspedes</label>
             <input type="number" min="1" [(ngModel)]="form.numeroHuespedes" name="numeroHuespedes" required />
           </div>
-          <div class="form-field" *ngIf="modoEdicion">
+          <div class="form-field" *ngIf="modoEdicion && !authService.isCliente()">
             <label>Estado</label>
             <select [(ngModel)]="form.estado" name="estado">
               <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>

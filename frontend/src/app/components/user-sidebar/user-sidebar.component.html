@@ -1,0 +1,34 @@
+<!-- Barra lateral del Portal de Usuario -->
+<nav class="user-sidebar">
+    <!-- Título de la sección -->
+    <div class="sidebar-header">
+        <h3>Mi Portal</h3>
+    </div>
+
+    <!-- Menú de opciones -->
+    <ul class="sidebar-menu">
+        <!-- Opción de Perfil -->
+        <li class="menu-item" [class.active]="activeTab === 'perfil'">
+            <button (click)="selectTab('perfil')" class="menu-link">
+                <span class="icon">👤</span>
+                <span class="label">Mi Perfil</span>
+            </button>
+        </li>
+
+        <!-- Opción de Reservas Activas -->
+        <li class="menu-item" [class.active]="activeTab === 'activas'">
+            <button (click)="selectTab('activas')" class="menu-link">
+                <span class="icon">🏨</span>
+                <span class="label">Reservas Activas</span>
+            </button>
+        </li>
+
+        <!-- Opción de Historial -->
+        <li class="menu-item" [class.active]="activeTab === 'historial'">
+            <button (click)="selectTab('historial')" class="menu-link">
+                <span class="icon">📋</span>
+                <span class="label">Historial</span>
+            </button>
+        </li>
+    </ul>
+</nav>

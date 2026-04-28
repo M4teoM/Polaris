@@ -34,6 +34,11 @@ import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle
 import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.component';
 import { OperadorContratarServicioComponent } from './pages/operador-contratar-servicio/operador-contratar-servicio.component';
 
+import { PortalUsuarioComponent } from './pages/portal-usuario/portal-usuario.component';
+import { UserSidebarComponent } from './components/user-sidebar/user-sidebar.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { ActiveReservationsComponent } from './components/active-reservations/active-reservations.component';
+import { ReservationHistoryComponent } from './components/reservation-history/reservation-history.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +70,11 @@ import { OperadorContratarServicioComponent } from './pages/operador-contratar-s
     ReservaDetalleComponent,
     ReservaCrearComponent,
     OperadorContratarServicioComponent,
+    PortalUsuarioComponent,
+    UserSidebarComponent,
+    UserProfileComponent,
+    ActiveReservationsComponent,
+    ReservationHistoryComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

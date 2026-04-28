@@ -1,0 +1,135 @@
+<!-- Componente de Reservas Activas -->
+<div class="active-reservations-container">
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando reservas...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-error">
+        <span class="error-icon">⚠️</span>
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="mensajeExito" class="alert alert-success">
+        <span class="success-icon">✓</span>
+        <p>{{ mensajeExito }}</p>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="!cargando && reservas.length === 0 && !mostrarFormulario" class="empty-state">
+        <div class="empty-icon">🏨</div>
+        <h3>No hay reservas activas</h3>
+        <p>Por el momento no tienes reservas vigentes. ¡Realiza una nueva reserva!</p>
+    </div>
+
+    <!-- Listado de reservas activas -->
+    <div *ngIf="!mostrarFormulario && reservas.length > 0" class="reservations-grid">
+        <!-- Tarjeta de cada reserva -->
+        <div *ngFor="let reserva of reservas" class="reservation-card">
+            <!-- Encabezado de la tarjeta -->
+            <div class="card-header">
+                <div class="room-info">
+                    <h3 class="room-number">Habitación {{ reserva.habitacionNumero }}</h3>
+                    <p class="room-type">{{ reserva.tipoHabitacionNombre }}</p>
+                </div>
+                <span class="badge badge-active">Activa</span>
+            </div>
+
+            <!-- Cuerpo de la tarjeta -->
+            <div class="card-body">
+                <!-- Fechas -->
+                <div class="info-block">
+                    <div class="info-item">
+                        <span class="icon">📅</span>
+                        <div>
+                            <label>Check-in</label>
+                            <p>{{ formatearFecha(reserva.fechaCheckIn) }}</p>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="info-item">
+                        <span class="icon">📅</span>
+                        <div>
+                            <label>Check-out</label>
+                            <p>{{ formatearFecha(reserva.fechaCheckOut) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duración y huéspedes -->
+                <div class="info-row">
+                    <div class="info-col">
+                        <span class="icon">⏰</span>
+                        <div>
+                            <label>Duración</label>
+                            <p>{{ calcularDias(reserva) }} noches</p>
+                        </div>
+                    </div>
+                    <div class="info-col">
+                        <span class="icon">👥</span>
+                        <div>
+                            <label>Huéspedes</label>
+                            <p>{{ reserva.numeroHuespedes }} persona(s)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie de la tarjeta con botones -->
+            <div class="card-footer">
+                <button class="btn btn-primary" (click)="abrirEdicion(reserva)">
+                    <span>✏️</span> Editar
+                </button>
+                <button class="btn btn-danger" (click)="cancelarReserva(reserva.id)">
+                    <span>❌</span> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div *ngIf="mostrarFormulario && reservaEnEdicion" class="modal-overlay" (click)="cerrarFormulario()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <!-- Encabezado del modal -->
+            <div class="modal-header">
+                <h2>Editar Reserva</h2>
+                <button class="close-btn" (click)="cerrarFormulario()">✕</button>
+            </div>
+
+            <!-- Cuerpo del modal -->
+            <div class="modal-body">
+                <!-- Campo: Check-in -->
+                <div class="form-group">
+                    <label for="checkIn">Fecha de Check-in</label>
+                    <input type="date" id="checkIn" [(ngModel)]="formData.fechaCheckIn" class="form-input" />
+                </div>
+
+                <!-- Campo: Check-out -->
+                <div class="form-group">
+                    <label for="checkOut">Fecha de Check-out</label>
+                    <input type="date" id="checkOut" [(ngModel)]="formData.fechaCheckOut" class="form-input" />
+                </div>
+
+                <!-- Campo: Número de huéspedes -->
+                <div class="form-group">
+                    <label for="huespedes">Número de Huéspedes</label>
+                    <input type="number" id="huespedes" min="1" [(ngModel)]="formData.numeroHuespedes"
+                        class="form-input" />
+                </div>
+            </div>
+
+            <!-- Pie del modal -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" (click)="cerrarFormulario()">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" (click)="guardarEdicion()">
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

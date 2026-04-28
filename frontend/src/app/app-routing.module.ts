@@ -24,6 +24,7 @@ import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.co
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
 import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.component';
 
+import { PortalUsuarioComponent } from './pages/portal-usuario/portal-usuario.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -33,9 +34,27 @@ const routes: Routes = [
   { path: 'servicios', component: ServiciosListaComponent },
   { path: 'servicios/:id', component: ServicioDetalleComponent },
   { path: 'reservas', redirectTo: 'clientes/ver', pathMatch: 'full' },
-  { path: 'reservas/nueva', component: ReservaCrearComponent, canActivate: [ClienteGuard] },
-  { path: 'reservas/:id', component: ReservaDetalleComponent, canActivate: [ClienteGuard] },
+  {
+    path: 'reservas/nueva',
+    component: ReservaCrearComponent,
+    canActivate: [ClienteGuard],
+  },
+  {
+    path: 'reservas/editar/:id',
+    component: ReservaCrearComponent,
+    canActivate: [ClienteGuard],
+  },
+  {
+    path: 'reservas/:id',
+    component: ReservaDetalleComponent,
+    canActivate: [ClienteGuard],
+  },
   { path: 'clientes/ver', component: ClientePerfilComponent },
+  {
+    path: 'portal-usuario/:clienteId',
+    component: PortalUsuarioComponent,
+    canActivate: [ClienteGuard],
+  },
   {
     path: 'admin',
     component: AdminPanelComponent,

@@ -146,7 +146,8 @@
 .btn-editar-perfil,
 .btn-eliminar-perfil,
 .btn-add-reserva,
-.btn-cancelar-reserva {
+.btn-cancelar-reserva,
+.btn-editar-reserva {
     border: none;
     border-radius: 8px;
     padding: 10px 16px;
@@ -182,6 +183,15 @@
     color: #c0392b;
     padding: 6px 12px;
     font-size: 0.75rem;
+}
+
+.btn-editar-reserva {
+    background: #f0f4ff;
+    color: #21324f;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    margin-left: 6px;
+    display: inline-block;
 }
 
 .btn-cancelar-reserva:disabled,

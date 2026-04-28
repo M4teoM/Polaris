@@ -1,0 +1,316 @@
+/* Estilos para el componente de historial de reservas */
+
+.reservation-history-container {
+    /* Contenedor principal */
+    padding: 2rem;
+}
+
+.loading-state {
+    /* Estado de carga */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.spinner {
+    /* Animación de carga */
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--navy-claro);
+    border-top-color: var(--gold-principal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-state p {
+    color: var(--taupe);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.alert {
+    /* Alerta genérica */
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.alert-error {
+    /* Alerta de error */
+    background-color: rgba(178, 58, 72, 0.1);
+    border: 1px solid var(--rojo-error);
+    color: var(--rojo-error);
+}
+
+.error-icon {
+    /* Ícono de error */
+    font-size: 1.5rem;
+}
+
+.filter-section {
+    /* Sección de filtros */
+    margin-bottom: 2rem;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-section h3 {
+    /* Título de filtros */
+    color: var(--charcoal);
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+
+.filter-buttons {
+    /* Contenedor de botones de filtro */
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    /* Botón de filtro */
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--silver);
+    background-color: white;
+    color: var(--charcoal);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    /* Efecto hover en botón de filtro */
+    border-color: var(--aguamarina);
+    color: var(--aguamarina);
+}
+
+.filter-btn.active {
+    /* Botón de filtro activo */
+    background-color: var(--aguamarina);
+    border-color: var(--aguamarina);
+    color: white;
+}
+
+.empty-state {
+    /* Estado vacío */
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: var(--ivory);
+    border-radius: 12px;
+    border: 2px dashed var(--silver);
+}
+
+.empty-icon {
+    /* Ícono del estado vacío */
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    /* Título del estado vacío */
+    color: var(--charcoal);
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+    /* Descripción del estado vacío */
+    color: var(--taupe);
+    margin: 0;
+}
+
+.history-list {
+    /* Lista del historial */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.history-item {
+    /* Item del historial */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--silver);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    /* Efecto hover en item */
+    border-left-color: var(--aguamarina);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateX(4px);
+}
+
+.status-icon {
+    /* Ícono de estado */
+    font-size: 2rem;
+    flex-shrink: 0;
+    min-width: 50px;
+    text-align: center;
+}
+
+.item-content {
+    /* Contenido del item */
+    flex: 1;
+}
+
+.item-header {
+    /* Encabezado del item */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-header h3 {
+    /* Título del item */
+    color: var(--charcoal);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.badge {
+    /* Badge de estado */
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.badge-completed {
+    /* Badge completada */
+    background-color: rgba(34, 197, 94, 0.2);
+    color: var(--verde-ok);
+}
+
+.badge-cancelled {
+    /* Badge cancelada */
+    background-color: rgba(178, 58, 72, 0.2);
+    color: var(--rojo-error);
+}
+
+.badge-inactive {
+    /* Badge inactiva */
+    background-color: rgba(139, 126, 116, 0.2);
+    color: var(--taupe);
+}
+
+.room-type {
+    /* Tipo de habitación */
+    color: var(--taupe);
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.item-details {
+    /* Detalles del item */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    /* Item de detalle */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--charcoal);
+}
+
+.detail-icon {
+    /* Ícono de detalle */
+    font-size: 1rem;
+}
+
+.detail-text {
+    /* Texto de detalle */
+    font-weight: 500;
+}
+
+.item-arrow {
+    /* Flecha de navegación */
+    color: var(--silver);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.history-item:hover .item-arrow {
+    color: var(--aguamarina);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reservation-history-container {
+        padding: 1rem;
+    }
+
+    .filter-buttons {
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .history-item {
+        gap: 1rem;
+        padding: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .item-header {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-details {
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .item-arrow {
+        display: none;
+    }
+}

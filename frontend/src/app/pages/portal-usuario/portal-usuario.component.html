@@ -1,0 +1,34 @@
+<!-- Componente Principal del Portal de Usuario -->
+<div class="portal-usuario-container">
+    <!-- Barra lateral de navegación -->
+    <app-user-sidebar [activeTab]="activeTab" (tabChanged)="onTabChanged($event)"></app-user-sidebar>
+
+    <!-- Área de contenido principal -->
+    <div class="main-content">
+        <!-- Encabezado de la página -->
+        <header class="portal-header">
+            <div class="header-content">
+                <h1>Portal de Usuario</h1>
+                <p class="header-subtitle">Gestiona tus reservas y perfil</p>
+            </div>
+        </header>
+
+        <!-- Contenido por pestaña -->
+        <main class="portal-main">
+            <!-- Pestaña: Mi Perfil -->
+            <div *ngIf="activeTab === 'perfil'" class="tab-content">
+                <app-user-profile [clienteId]="clienteId"></app-user-profile>
+            </div>
+
+            <!-- Pestaña: Reservas Activas -->
+            <div *ngIf="activeTab === 'activas'" class="tab-content">
+                <app-active-reservations [clienteId]="clienteId"></app-active-reservations>
+            </div>
+
+            <!-- Pestaña: Historial -->
+            <div *ngIf="activeTab === 'historial'" class="tab-content">
+                <app-reservation-history [clienteId]="clienteId"></app-reservation-history>
+            </div>
+        </main>
+    </div>
+</div>

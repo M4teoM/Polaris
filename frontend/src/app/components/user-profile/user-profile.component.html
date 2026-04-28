@@ -1,0 +1,73 @@
+<!-- Componente de Perfil del Usuario -->
+<div class="profile-container">
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando perfil...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-error">
+        <span class="error-icon">⚠️</span>
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Contenido del perfil -->
+    <div *ngIf="perfil && !cargando" class="profile-content">
+        <!-- Encabezado con nombre -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <span class="avatar-text">{{ perfil?.nombre ? perfil.nombre.charAt(0).toUpperCase() : '' }}</span>
+            </div>
+            <div class="profile-title">
+                <h2>{{ nombreCompleto }}</h2>
+                <p class="profile-subtitle">Información Personal</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de información personal -->
+        <div class="profile-card">
+            <h3 class="card-title">Datos Personales</h3>
+
+            <!-- Fila: Correo -->
+            <div class="info-row">
+                <label class="info-label">Correo Electrónico</label>
+                <div class="info-value">{{ perfil.correo }}</div>
+            </div>
+
+            <!-- Fila: Cédula -->
+            <div class="info-row" *ngIf="perfil.cedula">
+                <label class="info-label">Cédula</label>
+                <div class="info-value">{{ perfil.cedula }}</div>
+            </div>
+
+            <!-- Fila: Teléfono -->
+            <div class="info-row" *ngIf="perfil.telefono">
+                <label class="info-label">Teléfono</label>
+                <div class="info-value">{{ perfil.telefono }}</div>
+            </div>
+
+            <!-- Fila: Nombre -->
+            <div class="info-row">
+                <label class="info-label">Nombre</label>
+                <div class="info-value">{{ perfil.nombre }}</div>
+            </div>
+
+            <!-- Fila: Apellido -->
+            <div class="info-row">
+                <label class="info-label">Apellido</label>
+                <div class="info-value">{{ perfil.apellido }}</div>
+            </div>
+        </div>
+
+        <!-- Sección de acciones (opcional) -->
+        <div class="profile-actions">
+            <button class="btn-secondary">
+                <span>✏️</span> Editar Perfil
+            </button>
+            <button class="btn-danger">
+                <span>🔐</span> Cambiar Contraseña
+            </button>
+        </div>
+    </div>
+</div>

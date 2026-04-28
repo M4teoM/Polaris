@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador REST para la administración de habitaciones físicas.
+ * Trabaja con DTOs planos para simplificar el consumo desde Angular.
+ */
 @RestController
 @RequestMapping("/api/habitaciones-fisicas")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,17 +27,20 @@ public class HabitacionRestController {
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
 
+    /** Lista todas las habitaciones en formato plano. */
     @GetMapping
     public List<HabitacionResponse> listar() {
         return habitacionService.obtenerTodos().stream().map(this::toResponse).toList();
     }
 
+    /** Obtiene una habitación física por su ID. */
     @GetMapping("/{id}")
     public ResponseEntity<HabitacionResponse> obtener(@PathVariable Long id) {
         Habitacion habitacion = habitacionService.obtenerPorId(id);
         return ResponseEntity.ok(toResponse(habitacion));
     }
 
+    /** Crea una nueva habitación física validando primero la solicitud. */
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody HabitacionRequest request) {
         try {
@@ -93,6 +100,7 @@ public class HabitacionRestController {
         }
     }
 
+    /** Convierte la entidad de dominio a un DTO plano para la API. */
     private HabitacionResponse toResponse(Habitacion habitacion) {
         return new HabitacionResponse(
                 habitacion.getId(),
@@ -103,6 +111,7 @@ public class HabitacionRestController {
         );
     }
 
+    /** Valida los campos obligatorios antes de crear o actualizar. */
     private String validateRequest(HabitacionRequest request) {
         if (request == null) {
             return "No se recibieron datos de la habitación.";
@@ -122,6 +131,7 @@ public class HabitacionRestController {
         return null;
     }
 
+    /** Datos mínimos requeridos para crear o actualizar una habitación física. */
     public record HabitacionRequest(
             String numero,
             Integer piso,
@@ -130,6 +140,7 @@ public class HabitacionRestController {
     ) {
     }
 
+    /** Respuesta plana que evita exponer la entidad completa al frontend. */
     public record HabitacionResponse(
             Long id,
             String numero,

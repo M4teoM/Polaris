@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * Controlador REST para las operaciones de contratación de servicios
+ * realizadas por el operador desde el panel Angular.
+ */
 @RestController
 @RequestMapping("/api/operador/servicios")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,6 +27,7 @@ public class OperadorServicioRestController {
         this.contratacionServicioService = contratacionServicioService;
     }
 
+    /** Busca la información de una habitación a partir de su número. */
     @GetMapping("/habitacion/{numeroHabitacion}")
     public ResponseEntity<?> buscarInfoHabitacion(@PathVariable String numeroHabitacion) {
         try {
@@ -32,6 +37,7 @@ public class OperadorServicioRestController {
         }
     }
 
+    /** Contrata un servicio para una habitación concreta. */
     @PostMapping("/contratar")
     public ResponseEntity<?> contratar(@RequestBody ContratarServicioRequest request) {
         try {
@@ -42,6 +48,7 @@ public class OperadorServicioRestController {
         }
     }
 
+    /** Solicitud mínima para contratar un servicio desde el frontend. */
     public record ContratarServicioRequest(String numeroHabitacion, Long servicioId) {
     }
 }

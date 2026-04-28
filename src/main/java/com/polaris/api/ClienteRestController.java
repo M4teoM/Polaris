@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Controlador REST para la administración de clientes.
+ * Incluye CRUD básico y un endpoint de login para el frontend Angular.
+ */
 @RestController
 @RequestMapping("/api/clientes")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,16 +22,19 @@ public class ClienteRestController {
     @Autowired
     private IClienteService clienteService;
 
+    /** Devuelve el listado completo de clientes. */
     @GetMapping
     public List<Cliente> listar() {
         return clienteService.obtenerTodos();
     }
 
+    /** Obtiene un cliente por su identificador. */
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.obtenerPorId(id));
     }
 
+    /** Registra un nuevo cliente y devuelve un error controlado si falla la validación. */
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Cliente cliente) {
         try {
@@ -46,6 +53,7 @@ public class ClienteRestController {
         return ResponseEntity.ok(cliente);
     }
 
+    /** Elimina un cliente. Si force=true, ignora relaciones que bloquean el borrado. */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id,
                                       @RequestParam(defaultValue = "false") boolean force) {
@@ -61,7 +69,10 @@ public class ClienteRestController {
         }
     }
 
-    // Login — Angular manda { correo, contrasena }, recibe el cliente o 401
+    /**
+     * Valida credenciales simples para el login del frontend.
+     * Angular envía { correo, contrasena } y recibe el cliente o 401.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String correo = credenciales.get("correo");

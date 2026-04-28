@@ -7,8 +7,7 @@ import { ReservaService } from '../../services/reserva.service';
 
 /**
  * Componente que muestra la lista de reservas.
- * Es reutilizado por el panel de admin y el panel de operador
- * a través de los datos de ruta (readOnly, routePrefix).
+ * Es reutilizado por el panel de admin y el panel de operador.
  */
 @Component({
   selector: 'app-reservas-lista',

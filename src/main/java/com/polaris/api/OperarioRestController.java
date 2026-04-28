@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Controlador REST para la autenticación y consulta básica de operarios.
+ */
 @RestController
 @RequestMapping("/api/operarios")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,11 +21,16 @@ public class OperarioRestController {
     @Autowired
     private IOperarioService operarioService;
 
+    /** Devuelve el listado de operarios registrados. */
     @GetMapping
     public List<Operario> listar() {
         return operarioService.obtenerTodos();
     }
 
+    /**
+     * Autentica a un operario con correo y contraseña.
+     * Si las credenciales son válidas, devuelve datos públicos mínimos.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String correo = credenciales.get("correo");

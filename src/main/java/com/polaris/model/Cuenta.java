@@ -23,7 +23,7 @@ public class Cuenta {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_reserva", nullable = false, unique = true)
+    @JoinColumn(name = "id_reserva", nullable = true, unique = true)
     private ReservaHabitacion reserva;
 
     @ToString.Exclude

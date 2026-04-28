@@ -30,4 +30,8 @@ public class ItemCuenta {
 
     @Column(nullable = false)
     private LocalDate fechaConsumo;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean pagado = false;
 }

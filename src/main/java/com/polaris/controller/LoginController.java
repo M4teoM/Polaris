@@ -44,7 +44,7 @@ public class LoginController {
         Optional<Operario> operario = operarioService.buscarPorCorreo(correoNormalizado);
 
         if (operario.isPresent() && operario.get().getContrasena().equals(contrasenaNormalizada)) {
-            return "redirect:/habitaciones/admin?tab=reservas";
+            return "redirect:/operario";
         }
 
         model.addAttribute("error", "Usuario o contraseña incorrecta");

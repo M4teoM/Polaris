@@ -11,6 +11,7 @@ import com.polaris.repository.IReservaHabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.polaris.repository.ICuentaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,11 +52,21 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
         if (reserva.getHabitacion() == null) reserva.setHabitacion(existente.getHabitacion());
         repository.save(reserva);
     }
+    @Autowired
+    private ICuentaRepository cuentaRepository;
 
     @Override
+    @Transactional
     public void eliminar(Long id) {
         if (!repository.existsById(id))
             throw new RuntimeException("Reserva con ID " + id + " no encontrada.");
+
+        // Desvincular la cuenta sin eliminarla
+        cuentaRepository.findByReservaId(id).ifPresent(cuenta -> {
+            cuenta.setReserva(null);
+            cuentaRepository.save(cuenta);
+        });
+
         repository.deleteById(id);
     }
 
@@ -115,6 +126,39 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
             throw new ErrorReservaException("No tienes permiso para cancelar esta reserva.");
 
         reserva.setEstado("Cancelada");
+        repository.save(reserva);
+    }
+
+
+
+
+    @Override
+    @Transactional
+    public void activarEstadia(Long reservaId) {
+        ReservaHabitacion reserva = obtenerPorId(reservaId);
+        if (!"Inactiva".equalsIgnoreCase(reserva.getEstado()))
+            throw new ErrorReservaException("Solo se puede activar una reserva en estado Inactiva.");
+        reserva.setEstado("Activa");
+        repository.save(reserva);
+    }
+
+    @Override
+    @Transactional
+    public void acabarEstadia(Long reservaId) {
+        ReservaHabitacion reserva = obtenerPorId(reservaId);
+        if (!"Activa".equalsIgnoreCase(reserva.getEstado()))
+            throw new ErrorReservaException("Solo se puede acabar una estadía que esté Activa.");
+
+        // Verificar que todos los items de la cuenta estén pagados
+        cuentaRepository.findByReservaId(reservaId).ifPresent(cuenta -> {
+            boolean hayPendientes = cuenta.getItems().stream()
+                    .anyMatch(item -> !item.getPagado());
+            if (hayPendientes)
+                throw new ErrorReservaException(
+                        "No se puede finalizar la estadía: hay servicios pendientes de pago.");
+        });
+
+        reserva.setEstado("Inactiva");
         repository.save(reserva);
     }
 }

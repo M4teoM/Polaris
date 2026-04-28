@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Operario | Hotel Polaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .admin-hero {
+            height: 220px;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative; overflow: hidden; margin-top: 80px;
+        }
+        .admin-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80') center/cover;
+            opacity: 0.15;
+        }
+        .admin-hero-content { position: relative; z-index: 1; }
+        .admin-hero-badge {
+            display: inline-block; background: rgba(46,196,182,0.2);
+            color: #2ec4b6; font-size: 0.75rem; letter-spacing: 2px;
+            text-transform: uppercase; padding: 4px 14px; border-radius: 20px;
+            font-family: 'Montserrat', sans-serif; margin-bottom: 12px;
+        }
+        .admin-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #fff; }
+
+        .section-tabs {
+            display: flex; gap: 4px; border-bottom: 2px solid #eef0f5; margin: 32px 0 0;
+        }
+        .section-tab {
+            padding: 12px 24px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; font-weight: 600; color: #888; cursor: pointer;
+            border: none; background: none; border-bottom: 3px solid transparent;
+            margin-bottom: -2px; transition: all 0.2s;
+        }
+        .section-tab.active { color: #0a1628; border-bottom-color: #2ec4b6; }
+        .section-tab:hover:not(.active) { color: #0a1628; }
+        .section-panel { display: none; }
+        .section-panel.active { display: block; }
+
+        .admin-toolbar {
+            display: flex; justify-content: space-between; align-items: center; padding: 28px 0 20px;
+        }
+        .admin-toolbar h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #0a1628; }
+        .admin-toolbar span { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; }
+
+        .table-wrap {
+            background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f5; overflow-x: auto; margin-bottom: 40px;
+        }
+        .data-table { width: 100%; border-collapse: collapse; font-family: 'Montserrat', sans-serif; }
+        .data-table thead { background: #0a1628; }
+        .data-table thead th {
+            padding: 14px 18px; text-align: left; font-size: 0.72rem;
+            font-weight: 700; color: rgba(255,255,255,0.7);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .data-table tbody tr { border-bottom: 1px solid #f0f3f9; transition: background 0.15s; }
+        .data-table tbody tr:last-child { border-bottom: none; }
+        .data-table tbody tr:hover { background: #f8faff; }
+        .data-table td { padding: 14px 18px; font-size: 0.85rem; color: #333; vertical-align: middle; }
+        .data-table td.num { font-family: 'Playfair Display', serif; font-size: 1rem; color: #0a1628; font-weight: 600; }
+
+        .estado-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .estado-Activa      { background: #e6faf8; color: #1a9e94; }
+        .estado-Inactiva    { background: #fef3e2; color: #b8780a; }
+        .estado-Cancelada   { background: #fdecea; color: #c0392b; }
+        .estado-Confirmada  { background: #e6faf8; color: #1a9e94; }
+
+        .tipo-chip {
+            display: inline-block; background: #f0f3f9; color: #0a1628;
+            padding: 3px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 500;
+        }
+        .table-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn-accion {
+            padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 600;
+            transition: background 0.2s; white-space: nowrap; text-decoration: none;
+            display: inline-block;
+        }
+        .btn-activar  { background: #e6faf8; color: #1a9e94; }
+        .btn-activar:hover  { background: #2ec4b6; color: #fff; }
+        .btn-acabar   { background: #fef3e2; color: #b8780a; }
+        .btn-acabar:hover   { background: #f39c12; color: #fff; }
+        .btn-eliminar { background: #fff0f0; color: #c0392b; }
+        .btn-eliminar:hover { background: #c0392b; color: #fff; }
+        .btn-pagar    { background: #e6faf8; color: #1a9e94; }
+        .btn-pagar:hover    { background: #2ec4b6; color: #fff; }
+
+        /* Formulario contratar servicio */
+        .contratar-card {
+            background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f5; padding: 28px; margin-bottom: 28px;
+        }
+        .contratar-card h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #0a1628; margin-bottom: 20px;
+        }
+        .contratar-form { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+        .contratar-field { display: flex; flex-direction: column; gap: 6px; }
+        .contratar-field label {
+            font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600;
+            color: #0a1628; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .contratar-field input, .contratar-field select {
+            padding: 10px 14px; border: 2px solid #e8edf5; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.88rem;
+            color: #0a1628; background: #fafbff; outline: none; transition: border-color 0.3s;
+            min-width: 180px;
+        }
+        .contratar-field input:focus, .contratar-field select:focus { border-color: #2ec4b6; }
+        .btn-contratar {
+            background: #2ec4b6; color: #0a1628; padding: 10px 24px; border-radius: 8px;
+            border: none; cursor: pointer; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.88rem; transition: background 0.3s;
+        }
+        .btn-contratar:hover { background: #D4AF37; }
+
+        .flash-message {
+            margin: 24px 0 0; border-radius: 10px; padding: 12px 16px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.84rem;
+            font-weight: 500; border: 1px solid transparent;
+        }
+        .flash-error   { background: #fff0f0; color: #9f2f23; border-color: #f2c8c4; }
+        .flash-success { background: #e9fbf5; color: #167f66; border-color: #b8ebdc; }
+
+        .btn-volver {
+            display: inline-flex; align-items: center; gap: 6px; color: #888;
+            font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+            text-decoration: none; transition: color 0.3s; margin: 28px 0 0;
+        }
+        .btn-volver:hover { color: #2ec4b6; }
+
+        .pagada-badge { background: #e6faf8; color: #1a9e94; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+        .pendiente-badge { background: #fef3e2; color: #b8780a; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <span class="admin-hero-badge">&#9965; Portal Operario</span>
+        <h1>Panel de Operaciones</h1>
+    </div>
+</div>
+
+<div class="container">
+    <a th:href="@{/}" class="btn-volver">&#8592; Volver al inicio</a>
+
+    <div th:if="${errorMessage}"   class="flash-message flash-error"   th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="flash-message flash-success" th:text="${successMessage}"></div>
+
+    <div class="section-tabs">
+        <button type="button" class="section-tab active" data-tab="reservas">Reservas del Hotel</button>
+        <button type="button" class="section-tab"        data-tab="servicios">Contratar Servicio</button>
+        <button type="button" class="section-tab"        data-tab="cuentas">Cuentas</button>
+    </div>
+
+    <!-- ══ PANEL: RESERVAS ══ -->
+    <div id="panel-reservas" class="section-panel active">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Todas las Reservas</h2>
+                <span th:text="${#lists.size(reservas)} + ' reservas registradas'">0</span>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Habitaci&#243;n</th>
+                    <th>Tipo</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reserva : ${reservas}">
+                    <td class="num" th:text="${reserva.id}">1</td>
+                    <td>
+                        <div style="font-weight:600;color:#0a1628;"
+                             th:text="${reserva.cliente.nombre + ' ' + reserva.cliente.apellido}"></div>
+                        <div style="font-size:0.75rem;color:#999;" th:text="${reserva.cliente.correo}"></div>
+                    </td>
+                    <td class="num" th:text="'Hab. ' + ${reserva.habitacion.numero}"></td>
+                    <td>
+                        <span class="tipo-chip" th:text="${reserva.habitacion.tipoHabitacion.nombre}"></span>
+                    </td>
+                    <td th:text="${#temporals.format(reserva.fechaCheckIn,  'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(reserva.fechaCheckOut, 'dd/MM/yyyy')}"></td>
+                    <td>
+                                <span class="estado-pill"
+                                      th:classappend="'estado-' + ${reserva.estado}"
+                                      th:text="${reserva.estado}"></span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <!-- Activar: solo si Inactiva -->
+                            <form th:if="${reserva.estado == 'Inactiva'}"
+                                  th:action="@{/operario/reservas/activar/{id}(id=${reserva.id})}" method="post">
+                                <button type="submit" class="btn-accion btn-activar"
+                                        onclick="return confirm('&#191;Activar esta estad&#237;a?')">Activar</button>
+                            </form>
+                            <!-- Acabar: solo si Activa -->
+                            <form th:if="${reserva.estado == 'Activa'}"
+                                  th:action="@{/operario/reservas/acabar/{id}(id=${reserva.id})}" method="post">
+                                <button type="submit" class="btn-accion btn-acabar"
+                                        onclick="return confirm('&#191;Finalizar esta estad&#237;a? Solo es posible si la cuenta est&#225; pagada.')">Acabar</button>
+                            </form>
+                            <!-- Eliminar: siempre disponible -->
+                            <form th:action="@{/operario/reservas/eliminar/{id}(id=${reserva.id})}" method="post">
+                                <button type="submit" class="btn-accion btn-eliminar"
+                                        onclick="return confirm('&#191;Eliminar esta reserva permanentemente?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ══ PANEL: CONTRATAR SERVICIO ══ -->
+    <div id="panel-servicios" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Contratar Servicio</h2>
+                <span>Asocia un servicio a la cuenta de una habitaci&#243;n activa</span>
+            </div>
+        </div>
+
+        <div class="contratar-card">
+            <h3>Agregar servicio a habitaci&#243;n</h3>
+            <form th:action="@{/operario/servicios/contratar}" method="post" class="contratar-form">
+                <div class="contratar-field">
+                    <label for="numeroHabitacion">N&#250;mero de habitaci&#243;n</label>
+                    <input type="text" id="numeroHabitacion" name="numeroHabitacion"
+                           placeholder="Ej: 101" required>
+                </div>
+                <div class="contratar-field">
+                    <label for="servicioId">Servicio</label>
+                    <select id="servicioId" name="servicioId" required>
+                        <option value="">-- Selecciona un servicio --</option>
+                        <option th:each="s : ${servicios}"
+                                th:value="${s.id}"
+                                th:text="${s.nombre} + ' — $' + ${#numbers.formatInteger(s.precio, 0, 'COMMA')}">
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-contratar">Contratar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══ PANEL: CUENTAS ══ -->
+    <div id="panel-cuentas" class="section-panel">
+        <div class="admin-toolbar">
+            <div>
+                <h2>Cuentas de Estad&#237;as</h2>
+                <span>Gestiona los servicios contratados y el pago individual de cada servicio</span>
+            </div>
+        </div>
+
+        <th:block th:each="cuenta : ${cuentas}">
+            <!-- Cabecera de la cuenta -->
+            <div style="background:#f8faff;border:1px solid #e0e6f4;border-radius:12px;padding:16px 20px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-family:'Montserrat',sans-serif;">
+                <span style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:#0a1628;"
+                      th:text="'Cuenta #' + ${cuenta.id}"></span>
+                    <span style="color:#888;font-size:0.82rem;margin-left:12px;"
+                          th:text="'Hab. ' + ${cuenta.reserva.habitacion.numero} + '  ·  ' + ${cuenta.cliente.nombre + ' ' + cuenta.cliente.apellido}"></span>
+                </div>
+            </div>
+
+            <!-- Items de la cuenta -->
+            <div class="table-wrap" style="margin-bottom:28px;">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Fecha consumo</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${cuenta.items}">
+                        <td th:text="${item.servicio.nombre}"></td>
+                        <td th:text="${#temporals.format(item.fechaConsumo, 'dd/MM/yyyy')}"></td>
+                        <td th:text="'$' + ${#numbers.formatInteger(item.servicio.precio, 0, 'COMMA')}"></td>
+                        <td>
+                            <span th:if="${item.pagado}"  class="pagada-badge">Pagado</span>
+                            <span th:if="${!item.pagado}" class="pendiente-badge">Pendiente</span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <!-- Pagar: solo si no pagado -->
+                                <form th:if="${!item.pagado}"
+                                      th:action="@{/operario/item/{iId}/pagar(iId=${item.id})}"
+                                      method="post">
+                                    <button type="submit" class="btn-accion btn-pagar"
+                                            onclick="return confirm('&#191;Marcar este servicio como pagado?')">Pagar</button>
+                                </form>
+                                <!-- Quitar: solo si no pagado -->
+                                <form th:if="${!item.pagado}"
+                                      th:action="@{/operario/cuenta/{cId}/item/{iId}/eliminar(cId=${cuenta.id},iId=${item.id})}"
+                                      method="post">
+                                    <button type="submit" class="btn-accion btn-eliminar"
+                                            onclick="return confirm('&#191;Quitar este servicio de la cuenta?')">Quitar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(cuenta.items)}">
+                        <td colspan="5" style="color:#aaa;font-style:italic;text-align:center;">
+                            Sin servicios contratados
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+
+
+</div>
+
+<script>
+    const tabs = document.querySelectorAll('.section-tab');
+    tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabs.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+        });
+    });
+
+    window.addEventListener('load', () => {
+        const tab = new URLSearchParams(window.location.search).get('tab');
+        if (tab) {
+            const btn = document.querySelector(`.section-tab[data-tab="${tab}"]`);
+            if (btn) btn.click();
+        }
+    });
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

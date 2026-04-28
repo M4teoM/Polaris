@@ -11,6 +11,7 @@ import com.polaris.repository.IReservaHabitacionRepository;
 import com.polaris.repository.IServicioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.polaris.errors.ErrorReservaException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,16 +37,15 @@ public class ContratacionServicioService {
     @Transactional(readOnly = true)
     public ContratacionInfo obtenerInfoPorNumeroHabitacion(String numeroHabitacion) {
         String numero = numeroHabitacion == null ? "" : numeroHabitacion.trim();
-        if (numero.isEmpty()) {
+        if (numero.isEmpty())
             throw new IllegalArgumentException("Debes ingresar el número de habitación.");
-        }
 
         ReservaHabitacion reserva = reservaRepository
-                .findReservasVigentesPorNumeroHabitacion(numero, LocalDate.now())
+                .findReservasActivasPorNumeroHabitacion(numero)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No hay una reserva vigente para esa habitación."));
+                        "No hay una reserva activa para esa habitación."));
 
         Cliente cliente = reserva.getCliente();
         Cuenta cuenta = cuentaRepository.findByReservaId(reserva.getId())
@@ -105,6 +105,39 @@ public class ContratacionServicioService {
                 totalActualizado,
                 "Servicio contratado y agregado a la cuenta."
         );
+    }
+
+    @Transactional
+    public void pagarCuenta(Long cuentaId) {
+        Cuenta cuenta = cuentaRepository.findById(cuentaId)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada."));
+        if (cuenta.getPagada())
+            throw new IllegalArgumentException("Esta cuenta ya fue pagada.");
+        cuenta.setPagada(true);
+        cuentaRepository.save(cuenta);
+    }
+
+    @Transactional
+    public void pagarItem(Long itemId) {
+        ItemCuenta item = itemCuentaRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Item no encontrado."));
+        if (item.getPagado())
+            throw new IllegalArgumentException("Este servicio ya fue pagado.");
+        item.setPagado(true);
+        itemCuentaRepository.save(item);
+    }
+
+    @Transactional
+    public void eliminarItemCuenta(Long cuentaId, Long itemId) {
+        Cuenta cuenta = cuentaRepository.findById(cuentaId)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada."));
+        if (cuenta.getPagada())
+            throw new IllegalArgumentException("No se puede modificar una cuenta ya pagada.");
+        ItemCuenta item = itemCuentaRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Item no encontrado."));
+        if (!item.getCuenta().getId().equals(cuentaId))
+            throw new IllegalArgumentException("El item no pertenece a esta cuenta.");
+        itemCuentaRepository.delete(item);
     }
 
     private double calcularTotal(Long cuentaId) {

@@ -26,4 +26,10 @@ public interface IReservaHabitacionService {
                            LocalDate checkIn, LocalDate checkOut, int numeroHuespedes);
 
     void cancelar(Long reservaId, Long clienteId);
+
+    // Operario: activar estadía (Inactiva → Activa)
+    void activarEstadia(Long reservaId);
+
+    // Operario: acabar estadía (Activa → Inactiva), solo si cuenta pagada
+    void acabarEstadia(Long reservaId);
 }

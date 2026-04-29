@@ -136,9 +136,9 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
     @Transactional
     public void activarEstadia(Long reservaId) {
         ReservaHabitacion reserva = obtenerPorId(reservaId);
-        if (!"Inactiva".equalsIgnoreCase(reserva.getEstado()))
-            throw new ErrorReservaException("Solo se puede activar una reserva en estado Inactiva.");
-        reserva.setEstado("Activa");
+        if (!"Pendiente".equalsIgnoreCase(reserva.getEstado()))
+            throw new ErrorReservaException("Solo se puede activar una reserva en estado Pendiente.");
+        reserva.setEstado("Confirmada");
         repository.save(reserva);
     }
 
@@ -146,10 +146,9 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
     @Transactional
     public void acabarEstadia(Long reservaId) {
         ReservaHabitacion reserva = obtenerPorId(reservaId);
-        if (!"Activa".equalsIgnoreCase(reserva.getEstado()))
-            throw new ErrorReservaException("Solo se puede acabar una estadía que esté Activa.");
+        if (!"Confirmada".equalsIgnoreCase(reserva.getEstado()))
+            throw new ErrorReservaException("Solo se puede acabar una estadía que esté Confirmada.");
 
-        // Verificar que todos los items de la cuenta estén pagados
         cuentaRepository.findByReservaId(reservaId).ifPresent(cuenta -> {
             boolean hayPendientes = cuenta.getItems().stream()
                     .anyMatch(item -> !item.getPagado());
@@ -158,7 +157,8 @@ public class ReservaHabitacionService implements IReservaHabitacionService {
                         "No se puede finalizar la estadía: hay servicios pendientes de pago.");
         });
 
-        reserva.setEstado("Inactiva");
+        reserva.setEstado("Finalizada");
         repository.save(reserva);
+
     }
 }

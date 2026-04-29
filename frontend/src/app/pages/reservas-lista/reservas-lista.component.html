@@ -40,11 +40,12 @@
             <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">Ver</button>
             <button *ngIf="!readOnly && !isOperador" type="button" class="btn-edit" (click)="editarReserva(reserva.id)">Editar</button>
             <button
-              *ngIf="isOperador && reserva.estado === 'Inactiva'"
+              *ngIf="isOperador && reserva.estado === 'Pendiente'"
               type="button" class="btn-activar"
               (click)="activarEstadia(reserva)">Activar</button>
+
             <button
-              *ngIf="isOperador && reserva.estado === 'Activa'"
+              *ngIf="isOperador && reserva.estado === 'Confirmada'"
               type="button" class="btn-acabar"
               (click)="acabarEstadia(reserva)">Acabar</button>
             <button *ngIf="!readOnly" type="button" class="btn-del" (click)="eliminarReserva(reserva)">Eliminar</button>

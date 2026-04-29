@@ -25,9 +25,24 @@ export class ReservasListaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.readOnly = !!this.route.snapshot.data['readOnly'];
-    this.routePrefix =
-      (this.route.snapshot.data['routePrefix'] as string) || this.routePrefix;
+    // Combinar data del snapshot actual con el del padre
+    // para capturar correctamente child routes como /operador/reservas
+    const snapData = {
+      ...this.route.parent?.snapshot.data,
+      ...this.route.snapshot.data,
+    };
+
+    this.readOnly = !!snapData['readOnly'];
+    this.routePrefix = (snapData['routePrefix'] as string) || this.routePrefix;
+
+    // Fallback: si routePrefix no llegó por data, inferirlo desde la URL actual
+    if (!snapData['routePrefix']) {
+      const url = this.router.url;
+      if (url.startsWith('/operador')) {
+        this.routePrefix = '/operador/reservas';
+      }
+    }
+
     this.isOperador = this.routePrefix.startsWith('/operador');
     void this.cargarReservas();
   }

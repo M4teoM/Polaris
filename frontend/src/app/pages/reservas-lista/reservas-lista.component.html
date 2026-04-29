@@ -11,40 +11,46 @@
   <div class="table-wrap" *ngIf="!cargando && reservas.length > 0">
     <table>
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cliente</th>
-          <th>Habitación</th>
-          <th>Tipo</th>
-          <th>Check-in</th>
-          <th>Check-out</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Habitación</th>
+        <th>Tipo</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let reserva of reservas">
-          <td>{{ reserva.id }}</td>
-          <td>{{ getClienteNombre(reserva) }}</td>
-          <td>{{ getHabitacionLabel(reserva) }}</td>
-          <td>{{ getTipoLabel(reserva) }}</td>
-          <td>{{ reserva.fechaCheckIn }}</td>
-          <td>{{ reserva.fechaCheckOut }}</td>
-          <td>{{ reserva.estado }}</td>
-          <td>
-            <div class="table-actions">
-              <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">
-                Ver
-              </button>
-              <button *ngIf="!readOnly" type="button" class="btn-edit" (click)="editarReserva(reserva.id)">
-                Editar
-              </button>
-              <button *ngIf="!readOnly" type="button" class="btn-del" (click)="eliminarReserva(reserva)">
-                Eliminar
-              </button>
-            </div>
-          </td>
-        </tr>
+      <tr *ngFor="let reserva of reservas">
+        <td>{{ reserva.id }}</td>
+        <td>{{ getClienteNombre(reserva) }}</td>
+        <td>{{ getHabitacionLabel(reserva) }}</td>
+        <td>{{ getTipoLabel(reserva) }}</td>
+        <td>{{ reserva.fechaCheckIn }}</td>
+        <td>{{ reserva.fechaCheckOut }}</td>
+        <td>
+            <span class="estado-pill" [ngClass]="'estado-' + reserva.estado">
+              {{ reserva.estado }}
+            </span>
+        </td>
+        <td>
+          <div class="table-actions">
+            <button type="button" class="btn-secondary" (click)="verDetalle(reserva.id)">Ver</button>
+            <button *ngIf="!readOnly && !isOperador" type="button" class="btn-edit" (click)="editarReserva(reserva.id)">Editar</button>
+            <button
+              *ngIf="isOperador && reserva.estado === 'Inactiva'"
+              type="button" class="btn-activar"
+              (click)="activarEstadia(reserva)">Activar</button>
+            <button
+              *ngIf="isOperador && reserva.estado === 'Activa'"
+              type="button" class="btn-acabar"
+              (click)="acabarEstadia(reserva)">Acabar</button>
+            <button *ngIf="!readOnly" type="button" class="btn-del" (click)="eliminarReserva(reserva)">Eliminar</button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>

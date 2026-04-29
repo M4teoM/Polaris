@@ -1,18 +1,19 @@
 <section class="admin-hero">
-    <div class="admin-hero-content">
-        <span class="admin-hero-badge">Panel Operador</span>
-        <h1>Gestión operativa</h1>
-        <p class="admin-panel-current">Página actual: {{ seccionActual }}</p>
-    </div>
+  <div class="admin-hero-content">
+    <span class="admin-hero-badge">Panel Operador</span>
+    <h1>Gestión operativa</h1>
+    <p class="admin-panel-current">Página actual: {{ seccionActual }}</p>
+  </div>
 </section>
 
 <section class="admin-panel-shell">
-    <nav class="section-tabs" aria-label="Módulos de operador">
-        <a routerLink="/operador/reservas" routerLinkActive="active" class="section-tab">Reservas</a>
-        <a routerLink="/operador/contratar-servicio" routerLinkActive="active" class="section-tab">Contratar Servicio</a>
-    </nav>
+  <nav class="section-tabs" aria-label="Módulos de operador">
+    <a routerLink="/operador/reservas" routerLinkActive="active" class="section-tab">Reservas</a>
+    <a routerLink="/operador/contratar-servicio" routerLinkActive="active" class="section-tab">Contratar Servicio</a>
+    <a routerLink="/operador/cuentas" routerLinkActive="active" class="section-tab">Cuentas</a>
+  </nav>
 
-    <div class="admin-panel-content">
-        <router-outlet></router-outlet>
-    </div>
+  <div class="admin-panel-content">
+    <router-outlet></router-outlet>
+  </div>
 </section>

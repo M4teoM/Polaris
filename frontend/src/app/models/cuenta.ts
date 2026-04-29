@@ -1,3 +1,5 @@
+// src/app/models/cuenta.ts — agregar campos del DTO del backend
+
 import { ItemCuenta } from './item-cuenta';
 
 export interface Cuenta {
@@ -7,6 +9,10 @@ export interface Cuenta {
   pagada: boolean;
   items?: ItemCuenta[];
   total?: number;
+  // Campos de display del backend
+  reservaHabitacionNumero?: string;
+  clienteNombre?: string;
+  clienteApellido?: string;
 }
 
 export class CuentaModel implements Cuenta {
@@ -16,11 +22,10 @@ export class CuentaModel implements Cuenta {
   pagada: boolean = false;
   items?: ItemCuenta[];
   total?: number;
+  reservaHabitacionNumero?: string;
+  clienteNombre?: string;
+  clienteApellido?: string;
 
-  /**
-   * Crea una cuenta con valores base y sobreescribe con los datos recibidos.
-   * @param data Datos opcionales de cuenta.
-   */
   constructor(data?: Partial<Cuenta>) {
     Object.assign(this, data);
   }

@@ -6,6 +6,7 @@ import { ReservaHabitacion } from '../models/reserva-habitacion';
 @Injectable({ providedIn: 'root' })
 export class ReservaService {
   private readonly apiUrl = 'http://localhost:8080/api/reservas';
+  private readonly operadorUrl = 'http://localhost:8080/api/operador/reservas';
 
   constructor(private http: HttpClient) {}
 
@@ -77,5 +78,13 @@ export class ReservaService {
 
   cancelar$(id: number, clienteId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/cancelar/${id}`, { clienteId });
+  }
+
+  activarEstadia$(id: number): Observable<any> {
+    return this.http.put(`${this.operadorUrl}/${id}/activar`, {});
+  }
+
+  acabarEstadia$(id: number): Observable<any> {
+    return this.http.put(`${this.operadorUrl}/${id}/acabar`, {});
   }
 }

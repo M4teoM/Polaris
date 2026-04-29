@@ -1,0 +1,69 @@
+<div class="cuentas-wrap">
+  <div class="cuentas-header">
+    <h2>Cuentas de Estadías</h2>
+    <span>Gestiona los servicios contratados y el pago individual de cada servicio</span>
+  </div>
+
+  <div class="alert ok" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <div *ngIf="cargando">Cargando cuentas...</div>
+
+  <ng-container *ngFor="let cuenta of cuentas">
+    <div class="cuenta-header">
+      <div>
+        <strong>Cuenta #{{ cuenta.id }}</strong>
+        <span class="muted">
+          Hab. {{ cuenta.reservaHabitacionNumero || cuenta.reservaId }}
+          &nbsp;·&nbsp;
+          {{ cuenta.clienteNombre }} {{ cuenta.clienteApellido }}
+        </span>
+      </div>
+      <span class="badge-pagada" *ngIf="cuenta.pagada">Pagada</span>
+      <span class="badge-pendiente" *ngIf="!cuenta.pagada">Pendiente</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+        <tr>
+          <th>Servicio</th>
+          <th>Fecha consumo</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of cuenta.items">
+          <td>{{ item.servicioNombre }}</td>
+          <td>{{ item.fechaConsumo }}</td>
+          <td>${{ (item.servicioPrecio || 0) | number:'1.0-0' }}</td>
+          <td>
+            <span class="badge-pagada" *ngIf="item.pagado">Pagado</span>
+            <span class="badge-pendiente" *ngIf="!item.pagado">Pendiente</span>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button
+                *ngIf="!item.pagado"
+                type="button" class="btn-pagar"
+                (click)="pagarItem(cuenta.id, item.id)">Pagar</button>
+              <button
+                *ngIf="!item.pagado"
+                type="button" class="btn-del"
+                (click)="eliminarItem(cuenta.id, item.id)">Quitar</button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="!cuenta.items || cuenta.items.length === 0">
+          <td colspan="5" class="empty">Sin servicios contratados</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <div *ngIf="!cargando && cuentas.length === 0" class="empty">
+    No hay cuentas registradas.
+  </div>
+</div>

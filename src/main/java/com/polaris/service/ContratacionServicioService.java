@@ -139,8 +139,16 @@ public class ContratacionServicioService {
     public void pagarCuenta(Long cuentaId) {
         Cuenta cuenta = cuentaRepository.findById(cuentaId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada."));
-        if (cuenta.getPagada())
-            throw new IllegalArgumentException("Esta cuenta ya fue pagada.");
+        if (Boolean.TRUE.equals(cuenta.getPagada()) &&
+                itemCuentaRepository.findByCuentaId(cuentaId).stream().allMatch(i -> Boolean.TRUE.equals(i.getPagado())))
+            throw new IllegalArgumentException("Esta cuenta ya está completamente pagada.");
+
+        // Marcar todos los ítems como pagados
+        List<ItemCuenta> items = itemCuentaRepository.findByCuentaId(cuentaId);
+        items.forEach(item -> item.setPagado(true));
+        itemCuentaRepository.saveAll(items);
+
+        // Marcar la cuenta como pagada
         cuenta.setPagada(true);
         cuentaRepository.save(cuenta);
     }

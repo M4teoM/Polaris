@@ -19,12 +19,13 @@ import { AdminHabitacionesListaComponent } from './pages/admin-habitaciones-list
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { OperadorPanelComponent } from './pages/operador-panel/operador-panel.component';
 import { OperadorContratarServicioComponent } from './pages/operador-contratar-servicio/operador-contratar-servicio.component';
+import { OperadorCuentasComponent } from './pages/operador-cuentas/operador-cuentas.component';
 import { ClientePerfilComponent } from './pages/cliente-perfil/cliente-perfil.component';
 import { ReservasListaComponent } from './pages/reservas-lista/reservas-lista.component';
 import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
 import { ReservaCrearComponent } from './pages/reserva-crear/reserva-crear.component';
-
 import { PortalUsuarioComponent } from './pages/portal-usuario/portal-usuario.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -163,6 +164,11 @@ const routes: Routes = [
         component: OperadorContratarServicioComponent,
         data: { sectionLabel: 'Contratar Servicio' },
       },
+      {
+        path: 'cuentas',
+        component: OperadorCuentasComponent,
+        data: { sectionLabel: 'Cuentas' },
+      },
     ],
   },
   { path: '**', redirectTo: '' },
@@ -171,7 +177,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'enabled',
+      scrollPositionRestoration: 'disabled',
       anchorScrolling: 'enabled',
     }),
   ],

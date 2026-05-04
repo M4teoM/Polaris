@@ -1,78 +1,76 @@
 <div class="admin-wrap">
-    <section class="admin-panel room-form-wrap">
-        <div class="admin-toolbar">
-            <div>
-                <h2>{{ editandoId ? 'Editar habitación' : 'Nueva habitación' }}</h2>
-                <span>Gestión de habitaciones físicas</span>
+  <section class="admin-panel room-form-wrap">
+    <div class="admin-toolbar">
+      <div>
+        <h2>{{ editandoId ? 'Editar habitación' : 'Nueva habitación' }}</h2>
+        <span>Gestión de habitaciones físicas</span>
+      </div>
+    </div>
+
+    <div class="flash-message flash-success" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+    <div class="flash-message flash-error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
+
+    <div class="form-grid">
+      <input [(ngModel)]="form.numero" placeholder="Número" />
+      <input [(ngModel)]="form.piso" type="number" min="1" placeholder="Piso" />
+      <select [(ngModel)]="form.tipoHabitacionId">
+        <option [ngValue]="0" disabled>Selecciona un tipo</option>
+        <option *ngFor="let tipo of tiposHabitacion" [ngValue]="tipo.id">
+          {{ tipo.nombre }}
+        </option>
+      </select>
+      <select [(ngModel)]="form.estado">
+        <option value="disponible">DISPONIBLE</option>
+        <option value="Mantenimiento">MANTENIMIENTO</option>
+        <option value="Limpieza">LIMPIEZA</option>
+      </select>
+    </div>
+
+    <div class="actions room-actions">
+      <button class="btn-nueva" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear habitación' }}</button>
+      <button *ngIf="editandoId" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+  </section>
+
+  <section class="admin-panel">
+    <div class="admin-toolbar">
+      <div>
+        <h2>Habitaciones</h2>
+        <span>{{ habitaciones.length }} habitación(es) registradas</span>
+      </div>
+    </div>
+    <div class="rooms-table-wrap" *ngIf="habitaciones.length; else sinDatos">
+      <table class="rooms-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Número</th>
+          <th>Piso</th>
+          <th>Estado</th>
+          <th>Tipo de habitación</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let h of habitaciones">
+          <td>{{ h.id }}</td>
+          <td class="num">{{ h.numero }}</td>
+          <td>{{ h.piso }}</td>
+          <td><span class="estado-pill" [ngClass]="h.estado.toLowerCase()">{{ h.estado }}</span></td>
+          <td><span class="tipo-chip">{{ getNombreTipoHabitacion(h.tipoHabitacionId) }}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="btn-tbl-edit" (click)="editar(h)">Editar</button>
+              <button class="btn-tbl-del" (click)="eliminar(h.id)">Eliminar</button>
             </div>
-        </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="flash-message flash-success" *ngIf="mensajeExito">{{ mensajeExito }}</div>
-        <div class="flash-message flash-error" *ngIf="errorGeneral">{{ errorGeneral }}</div>
-
-        <div class="form-grid">
-            <input [(ngModel)]="form.numero" placeholder="Número" />
-            <input [(ngModel)]="form.piso" type="number" min="1" placeholder="Piso" />
-            <select [(ngModel)]="form.tipoHabitacionId">
-                <option [ngValue]="0" disabled>Selecciona un tipo</option>
-                <option *ngFor="let tipo of tiposHabitacion" [ngValue]="tipo.id">
-                    {{ tipo.nombre }}
-                </option>
-            </select>
-            <select [(ngModel)]="form.estado">
-                <option value="DISPONIBLE">DISPONIBLE</option>
-                <option value="OCUPADA">OCUPADA</option>
-                <option value="MANTENIMIENTO">MANTENIMIENTO</option>
-                <option value="LIMPIEZA">LIMPIEZA</option>
-            </select>
-        </div>
-
-        <div class="actions room-actions">
-            <button class="btn-nueva" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear habitación'
-                }}</button>
-            <button *ngIf="editandoId" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
-        </div>
-    </section>
-
-    <section class="admin-panel">
-        <div class="admin-toolbar">
-            <div>
-                <h2>Habitaciones</h2>
-                <span>{{ habitaciones.length }} habitación(es) registradas</span>
-            </div>
-        </div>
-        <div class="rooms-table-wrap" *ngIf="habitaciones.length; else sinDatos">
-            <table class="rooms-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Número</th>
-                        <th>Piso</th>
-                        <th>Estado</th>
-                        <th>Tipo de habitación</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let h of habitaciones">
-                        <td>{{ h.id }}</td>
-                        <td class="num">{{ h.numero }}</td>
-                        <td>{{ h.piso }}</td>
-                        <td><span class="estado-pill" [ngClass]="h.estado.toLowerCase()">{{ h.estado }}</span></td>
-                        <td><span class="tipo-chip">{{ getNombreTipoHabitacion(h.tipoHabitacionId) }}</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn-tbl-edit" (click)="editar(h)">Editar</button>
-                                <button class="btn-tbl-del" (click)="eliminar(h.id)">Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <ng-template #sinDatos>
-            <p>No hay habitaciones para mostrar.</p>
-        </ng-template>
-    </section>
+    <ng-template #sinDatos>
+      <p>No hay habitaciones para mostrar.</p>
+    </ng-template>
+  </section>
 </div>

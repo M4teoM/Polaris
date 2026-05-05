@@ -48,4 +48,9 @@ public interface IReservaHabitacionRepository extends JpaRepository<ReservaHabit
             "AND LOWER(r.estado) IN ('activa', 'confirmada', 'inactiva')")
     List<ReservaHabitacion> findReservasActivasPorNumeroHabitacion(
             @Param("numeroHabitacion") String numeroHabitacion);
+
+    // Reservas asociadas a clientes cuyo nombre coincide parcialmente con el filtro.
+    @Query("SELECT r FROM ReservaHabitacion r JOIN r.cliente c " +
+            "WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%', :nombreCliente, '%'))")
+    List<ReservaHabitacion> findByNombreCliente(@Param("nombreCliente") String nombreCliente);
 }

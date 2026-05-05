@@ -98,6 +98,7 @@ public class OperadorCuentaRestController {
 
     // ── Endpoints ────────────────────────────────────────────────────────────
 
+    // GET http://localhost:8080/api/operador/cuentas
     @GetMapping
     public List<CuentaDto> listar() {
         return cuentaRepository.findAllConDetalle()
@@ -106,6 +107,7 @@ public class OperadorCuentaRestController {
                 .collect(Collectors.toList());
     }
 
+    // PUT http://localhost:8080/api/operador/cuentas/item/{itemId}/pagar
     @PutMapping("/item/{itemId}/pagar")
     public ResponseEntity<?> pagarItem(@PathVariable Long itemId) {
         try {
@@ -116,6 +118,7 @@ public class OperadorCuentaRestController {
         }
     }
 
+    // DELETE http://localhost:8080/api/operador/cuentas/{cuentaId}/item/{itemId}
     @DeleteMapping("/{cuentaId}/item/{itemId}")
     public ResponseEntity<?> eliminarItem(@PathVariable Long cuentaId,
                                           @PathVariable Long itemId) {

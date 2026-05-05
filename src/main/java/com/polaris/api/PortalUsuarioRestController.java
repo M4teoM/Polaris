@@ -37,6 +37,7 @@ public class PortalUsuarioRestController {
      * @param clienteId identificador único del cliente.
      * @return perfil del cliente en DTO plano.
      */
+    // GET http://localhost:8080/api/portal-usuario/clientes/{clienteId}/perfil
     @GetMapping("/clientes/{clienteId}/perfil")
     public ResponseEntity<ClientePerfilDTO> obtenerPerfil(@PathVariable Long clienteId) {
         return ResponseEntity.ok(portalUsuarioService.obtenerPerfilCliente(clienteId));
@@ -51,6 +52,7 @@ public class PortalUsuarioRestController {
      * @param clienteId identificador del cliente.
      * @return listado de reservas activas en formato plano.
      */
+    // GET http://localhost:8080/api/portal-usuario/clientes/{clienteId}/reservas/activas
     @GetMapping("/clientes/{clienteId}/reservas/activas")
     public ResponseEntity<List<ReservaDTO>> obtenerReservasActivas(@PathVariable Long clienteId) {
         return ResponseEntity.ok(portalUsuarioService.obtenerReservasActivas(clienteId));
@@ -64,6 +66,7 @@ public class PortalUsuarioRestController {
      * @param clienteId identificador del cliente.
      * @return listado histórico de reservas en DTO plano.
      */
+    // GET http://localhost:8080/api/portal-usuario/clientes/{clienteId}/reservas/historial
     @GetMapping("/clientes/{clienteId}/reservas/historial")
     public ResponseEntity<List<ReservaDTO>> obtenerHistorial(@PathVariable Long clienteId) {
         return ResponseEntity.ok(portalUsuarioService.obtenerHistorialReservas(clienteId));
@@ -76,6 +79,7 @@ public class PortalUsuarioRestController {
      * @param reservaId reserva que se desea cancelar.
      * @return reserva actualizada en DTO plano.
      */
+    // PUT http://localhost:8080/api/portal-usuario/clientes/{clienteId}/reservas/{reservaId}/cancelar
     @PutMapping("/clientes/{clienteId}/reservas/{reservaId}/cancelar")
     public ResponseEntity<ReservaDTO> cancelarReserva(@PathVariable Long clienteId,
                                                       @PathVariable Long reservaId) {
@@ -93,6 +97,7 @@ public class PortalUsuarioRestController {
      * @param request DTO con nuevas fechas y datos opcionales.
      * @return reserva actualizada en formato plano.
      */
+    // PUT http://localhost:8080/api/portal-usuario/clientes/{clienteId}/reservas/{reservaId}
     @PutMapping("/clientes/{clienteId}/reservas/{reservaId}")
     public ResponseEntity<ReservaDTO> actualizarReserva(@PathVariable Long clienteId,
                                                         @PathVariable Long reservaId,

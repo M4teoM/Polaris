@@ -22,18 +22,21 @@ public class TipoHabitacionRestController {
     private ITipoHabitacionService tipoHabitacionService;
 
     /** Lista todos los tipos de habitación disponibles. */
+    // GET http://localhost:8080/api/habitaciones
     @GetMapping
     public List<TipoHabitacion> listar() {
         return tipoHabitacionService.obtenerTodos();
     }
 
     /** Recupera un tipo de habitación por ID. */
+    // GET http://localhost:8080/api/habitaciones/{id}
     @GetMapping("/{id}")
     public ResponseEntity<TipoHabitacion> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(tipoHabitacionService.obtenerPorId(id));
     }
 
     /** Crea un nuevo tipo de habitación. */
+    // POST http://localhost:8080/api/habitaciones
     @PostMapping
     public ResponseEntity<TipoHabitacion> crear(@RequestBody TipoHabitacion tipo) {
         tipoHabitacionService.crear(tipo);
@@ -41,6 +44,7 @@ public class TipoHabitacionRestController {
     }
 
     /** Actualiza un tipo existente usando el identificador de la ruta. */
+    // PUT http://localhost:8080/api/habitaciones/{id}
     @PutMapping("/{id}")
     public ResponseEntity<TipoHabitacion> actualizar(@PathVariable Long id,
                                                      @RequestBody TipoHabitacion tipo) {
@@ -50,6 +54,7 @@ public class TipoHabitacionRestController {
     }
 
     /** Elimina un tipo de habitación. Si force=true, fuerza el borrado. */
+    // DELETE http://localhost:8080/api/habitaciones/{id}?force={true|false}
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id,
                                       @RequestParam(defaultValue = "false") boolean force) {

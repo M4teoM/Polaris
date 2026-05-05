@@ -26,6 +26,7 @@ public class OperarioController {
     @Autowired
     private ICuentaRepository cuentaRepository;
 
+    // GET http://localhost:8080/operario
     @GetMapping
     public String panel(Model model) {
         model.addAttribute("reservas",  reservaService.obtenerTodos());
@@ -34,6 +35,7 @@ public class OperarioController {
         return "operario/panel";
     }
 
+    // POST http://localhost:8080/operario/reservas/eliminar/{id}
     @PostMapping("/reservas/eliminar/{id}")
     public String eliminarReserva(@PathVariable Long id, RedirectAttributes ra) {
         try {
@@ -45,6 +47,7 @@ public class OperarioController {
         return "redirect:/operario?tab=reservas";
     }
 
+    // POST http://localhost:8080/operario/reservas/activar/{id}
     @PostMapping("/reservas/activar/{id}")
     public String activarEstadia(@PathVariable Long id, RedirectAttributes ra) {
         try {
@@ -56,6 +59,7 @@ public class OperarioController {
         return "redirect:/operario?tab=reservas";
     }
 
+    // POST http://localhost:8080/operario/reservas/acabar/{id}
     @PostMapping("/reservas/acabar/{id}")
     public String acabarEstadia(@PathVariable Long id, RedirectAttributes ra) {
         try {
@@ -67,6 +71,7 @@ public class OperarioController {
         return "redirect:/operario?tab=reservas";
     }
 
+    // POST http://localhost:8080/operario/servicios/contratar
     @PostMapping("/servicios/contratar")
     public String contratarServicio(@RequestParam String numeroHabitacion,
                                     @RequestParam Long servicioId,
@@ -81,6 +86,7 @@ public class OperarioController {
         return "redirect:/operario?tab=servicios";
     }
 
+    // POST http://localhost:8080/operario/cuenta/{cuentaId}/item/{itemId}/eliminar
     @PostMapping("/cuenta/{cuentaId}/item/{itemId}/eliminar")
     public String eliminarItemCuenta(@PathVariable Long cuentaId,
                                      @PathVariable Long itemId,
@@ -94,6 +100,7 @@ public class OperarioController {
         return "redirect:/operario?tab=cuentas";
     }
 
+    // POST http://localhost:8080/operario/item/{itemId}/pagar
     @PostMapping("/item/{itemId}/pagar")
     public String pagarItem(@PathVariable Long itemId, RedirectAttributes ra) {
         try {

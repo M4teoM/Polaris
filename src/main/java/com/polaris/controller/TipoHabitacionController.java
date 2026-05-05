@@ -21,6 +21,7 @@ public class TipoHabitacionController {
     @Autowired private IServicioService servicioService;
     @Autowired private IReservaHabitacionService reservaService;
 
+    // GET http://localhost:8080/habitaciones
     @GetMapping
     public String listar(@RequestParam(required = false) Long clienteId, Model model) {
         model.addAttribute("habitaciones", tipoHabitacionService.obtenerTodos());
@@ -28,6 +29,7 @@ public class TipoHabitacionController {
         return "habitaciones/lista";
     }
 
+    // GET http://localhost:8080/habitaciones/admin
     @GetMapping("/admin")
     public String admin(Model model) {
         model.addAttribute("habitaciones", tipoHabitacionService.obtenerTodos());
@@ -44,6 +46,7 @@ public class TipoHabitacionController {
         return "habitaciones/lista-admin";
     }
 
+    // GET http://localhost:8080/habitaciones/{id}?clienteId={clienteId}
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id,
                           @RequestParam(required = false) Long clienteId,
@@ -53,24 +56,28 @@ public class TipoHabitacionController {
         return "habitaciones/detalle";
     }
 
+    // GET http://localhost:8080/habitaciones/nueva
     @GetMapping("/nueva")
     public String nuevaForm(Model model) {
         model.addAttribute("habitacion", new TipoHabitacion());
         return "habitaciones/formulario";
     }
 
+    // POST http://localhost:8080/habitaciones/nueva
     @PostMapping("/nueva")
     public String nuevaGuardar(@ModelAttribute TipoHabitacion habitacion) {
         tipoHabitacionService.crear(habitacion);
         return "redirect:/habitaciones/admin";
     }
 
+    // GET http://localhost:8080/habitaciones/editar/{id}
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         model.addAttribute("habitacion", tipoHabitacionService.obtenerPorId(id));
         return "habitaciones/formulario";
     }
 
+    // POST http://localhost:8080/habitaciones/editar/{id}
     @PostMapping("/editar/{id}")
     public String editarGuardar(@PathVariable Long id, @ModelAttribute TipoHabitacion habitacion) {
         habitacion.setId(id);
@@ -78,6 +85,7 @@ public class TipoHabitacionController {
         return "redirect:/habitaciones/admin";
     }
 
+    // POST http://localhost:8080/habitaciones/eliminar/{id}
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {

@@ -19,12 +19,14 @@ public class HabitacionController {
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
 
+    // GET http://localhost:8080/rooms
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("rooms", habitacionService.obtenerTodos());
         return "rooms/lista";
     }
 
+    // GET http://localhost:8080/rooms/{id}
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
         Habitacion h = habitacionService.obtenerPorId(id);
@@ -33,12 +35,14 @@ public class HabitacionController {
         return "rooms/detalle";
     }
 
+    // GET http://localhost:8080/rooms/admin
     @GetMapping("/admin")
     public String admin(Model model) {
         model.addAttribute("rooms", habitacionService.obtenerTodos());
         return "rooms/lista-admin";
     }
 
+    // GET http://localhost:8080/rooms/nueva
     @GetMapping("/nueva")
     public String nuevaForm(Model model) {
         model.addAttribute("room", new Habitacion());
@@ -46,6 +50,7 @@ public class HabitacionController {
         return "rooms/formulario";
     }
 
+    // POST http://localhost:8080/rooms/nueva
     @PostMapping("/nueva")
     public String nuevaGuardar(@ModelAttribute Habitacion habitacion,
                                @RequestParam Long tipoHabitacionId) {
@@ -55,6 +60,7 @@ public class HabitacionController {
         return "redirect:/rooms/admin";
     }
 
+    // GET http://localhost:8080/rooms/editar/{id}
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         Habitacion h = habitacionService.obtenerPorId(id);
@@ -64,6 +70,7 @@ public class HabitacionController {
         return "rooms/formulario";
     }
 
+    // POST http://localhost:8080/rooms/editar/{id}
     @PostMapping("/editar/{id}")
     public String editarGuardar(@PathVariable Long id,
                                 @ModelAttribute Habitacion habitacion,
@@ -75,6 +82,7 @@ public class HabitacionController {
         return "redirect:/rooms/admin";
     }
 
+    // POST http://localhost:8080/rooms/eliminar/{id}
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         habitacionService.eliminar(id);

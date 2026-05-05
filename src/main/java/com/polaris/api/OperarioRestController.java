@@ -22,6 +22,7 @@ public class OperarioRestController {
     private IOperarioService operarioService;
 
     /** Devuelve el listado de operarios registrados. */
+    // GET http://localhost:8080/api/operarios
     @GetMapping
     public List<Operario> listar() {
         return operarioService.obtenerTodos();
@@ -31,6 +32,7 @@ public class OperarioRestController {
      * Autentica a un operario con correo y contraseña.
      * Si las credenciales son válidas, devuelve datos públicos mínimos.
      */
+    // POST http://localhost:8080/api/operarios/login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String correo = credenciales.get("correo");

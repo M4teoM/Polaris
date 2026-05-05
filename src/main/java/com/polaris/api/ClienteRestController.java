@@ -23,18 +23,21 @@ public class ClienteRestController {
     private IClienteService clienteService;
 
     /** Devuelve el listado completo de clientes. */
+    // GET http://localhost:8080/api/clientes
     @GetMapping
     public List<Cliente> listar() {
         return clienteService.obtenerTodos();
     }
 
     /** Obtiene un cliente por su identificador. */
+    // GET http://localhost:8080/api/clientes/{id}
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.obtenerPorId(id));
     }
 
     /** Registra un nuevo cliente y devuelve un error controlado si falla la validación. */
+    // POST http://localhost:8080/api/clientes
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Cliente cliente) {
         try {
@@ -45,6 +48,7 @@ public class ClienteRestController {
         }
     }
 
+    // PUT http://localhost:8080/api/clientes/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> actualizar(@PathVariable Long id,
                                               @RequestBody Cliente cliente) {
@@ -54,6 +58,7 @@ public class ClienteRestController {
     }
 
     /** Elimina un cliente. Si force=true, ignora relaciones que bloquean el borrado. */
+    // DELETE http://localhost:8080/api/clientes/{id}?force={true|false}
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id,
                                       @RequestParam(defaultValue = "false") boolean force) {
@@ -73,6 +78,7 @@ public class ClienteRestController {
      * Valida credenciales simples para el login del frontend.
      * Angular envía { correo, contrasena } y recibe el cliente o 401.
      */
+    // POST http://localhost:8080/api/clientes/login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String correo = credenciales.get("correo");

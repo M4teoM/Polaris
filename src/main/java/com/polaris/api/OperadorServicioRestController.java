@@ -28,6 +28,7 @@ public class OperadorServicioRestController {
     }
 
     /** Busca la información de una habitación a partir de su número. */
+    // GET http://localhost:8080/api/operador/servicios/habitacion/{numeroHabitacion}
     @GetMapping("/habitacion/{numeroHabitacion}")
     public ResponseEntity<?> buscarInfoHabitacion(@PathVariable String numeroHabitacion) {
         try {
@@ -38,6 +39,7 @@ public class OperadorServicioRestController {
     }
 
     /** Contrata un servicio para una habitación concreta. */
+    // POST http://localhost:8080/api/operador/servicios/contratar
     @PostMapping("/contratar")
     public ResponseEntity<?> contratar(@RequestBody ContratarServicioRequest request) {
         try {

@@ -28,12 +28,14 @@ public class HabitacionRestController {
     private ITipoHabitacionService tipoHabitacionService;
 
     /** Lista todas las habitaciones en formato plano. */
+    // GET http://localhost:8080/api/habitaciones-fisicas
     @GetMapping
     public List<HabitacionResponse> listar() {
         return habitacionService.obtenerTodos().stream().map(this::toResponse).toList();
     }
 
     /** Obtiene una habitación física por su ID. */
+    // GET http://localhost:8080/api/habitaciones-fisicas/{id}
     @GetMapping("/{id}")
     public ResponseEntity<HabitacionResponse> obtener(@PathVariable Long id) {
         Habitacion habitacion = habitacionService.obtenerPorId(id);
@@ -41,6 +43,7 @@ public class HabitacionRestController {
     }
 
     /** Crea una nueva habitación física validando primero la solicitud. */
+    // POST http://localhost:8080/api/habitaciones-fisicas
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody HabitacionRequest request) {
         try {
@@ -65,6 +68,7 @@ public class HabitacionRestController {
         }
     }
 
+    // PUT http://localhost:8080/api/habitaciones-fisicas/{id}
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody HabitacionRequest request) {
         try {
@@ -90,6 +94,7 @@ public class HabitacionRestController {
         }
     }
 
+    // DELETE http://localhost:8080/api/habitaciones-fisicas/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         try {

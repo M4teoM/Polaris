@@ -24,6 +24,7 @@ public class ReservaController {
     private IClienteService clienteService;
 
     // Formulario — llega desde "Reservar Ahora" en habitaciones/detalle.html
+    // GET http://localhost:8080/reservas/nueva?tipoHabitacionId={tipoHabitacionId}&clienteId={clienteId}
     @GetMapping("/nueva")
     public String nuevaForm(@RequestParam Long tipoHabitacionId,
                             @RequestParam Long clienteId,
@@ -34,6 +35,7 @@ public class ReservaController {
         return "reservas/formulario";
     }
 
+    // GET http://localhost:8080/reservas/nueva/admin
     @GetMapping("/nueva/admin")
     public String nuevaFormAdmin(Model model) {
         model.addAttribute("tipos", tipoHabitacionService.obtenerTodos());
@@ -43,6 +45,7 @@ public class ReservaController {
     }
 
     // Confirmar reserva
+    // POST http://localhost:8080/reservas/nueva
     @PostMapping("/nueva")
     public String nuevaGuardar(@RequestParam Long tipoHabitacionId,
                                @RequestParam Long clienteId,
@@ -60,6 +63,7 @@ public class ReservaController {
         return "redirect:/clientes/ver/" + clienteId;
     }
 
+    // POST http://localhost:8080/reservas/nueva/admin
     @PostMapping("/nueva/admin")
     public String nuevaGuardarAdmin(@RequestParam Long tipoHabitacionId,
                                     @RequestParam Long clienteId,
@@ -78,6 +82,7 @@ public class ReservaController {
     }
 
     // Cancelar
+    // POST http://localhost:8080/reservas/cancelar/{id}?clienteId={clienteId}&redirect={admin}
     @PostMapping("/cancelar/{id}")
     public String cancelar(@PathVariable Long id,
                            @RequestParam Long clienteId,

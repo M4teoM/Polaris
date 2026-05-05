@@ -19,12 +19,14 @@ public class ClienteController {
     @Autowired
     private IReservaHabitacionService reservaService;
 
+    // GET http://localhost:8080/clientes/admin
     @GetMapping("/admin")
     public String admin(Model model) {
         model.addAttribute("clientes", clienteService.obtenerTodos());
         return "clientes/lista-admin";
     }
 
+    // GET http://localhost:8080/clientes/ver/{id}
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable Long id, Model model) {
         model.addAttribute("cliente", clienteService.obtenerPorId(id));
@@ -32,12 +34,14 @@ public class ClienteController {
         return "clientes/perfil";
     }
 
+    // GET http://localhost:8080/clientes/nuevo
     @GetMapping("/nuevo")
     public String nuevoForm(Model model) {
         model.addAttribute("cliente", new Cliente());
         return "clientes/formulario";
     }
 
+    // POST http://localhost:8080/clientes/nuevo
     @PostMapping("/nuevo")
     public String nuevoGuardar(@ModelAttribute Cliente cliente, Model model) {
         try {
@@ -50,12 +54,14 @@ public class ClienteController {
         }
     }
 
+    // GET http://localhost:8080/clientes/editar/{id}
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         model.addAttribute("cliente", clienteService.obtenerPorId(id));
         return "clientes/formulario";
     }
 
+    // POST http://localhost:8080/clientes/editar/{id}
     @PostMapping("/editar/{id}")
     public String editarGuardar(@PathVariable Long id, @ModelAttribute Cliente cliente, HttpSession session) {
         cliente.setId(id);
@@ -64,6 +70,7 @@ public class ClienteController {
         return "redirect:/clientes/ver/" + id;
     }
 
+    // POST http://localhost:8080/clientes/eliminar/{id}
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         try {

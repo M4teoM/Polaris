@@ -23,18 +23,21 @@ public class ServicioRestController {
     private IServicioService servicioService;
 
     /** Devuelve todos los servicios registrados. */
+    // GET http://localhost:8080/api/servicios
     @GetMapping
     public List<Servicio> listar() {
         return servicioService.obtenerTodos();
     }
 
     /** Obtiene un servicio por su identificador. */
+    // GET http://localhost:8080/api/servicios/{id}
     @GetMapping("/{id}")
     public ResponseEntity<Servicio> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(servicioService.obtenerPorId(id));
     }
 
     /** Crea un nuevo servicio a partir del JSON recibido. */
+    // POST http://localhost:8080/api/servicios
     @PostMapping
     public ResponseEntity<Servicio> crear(@RequestBody Servicio servicio) {
         servicioService.crear(servicio);
@@ -42,6 +45,7 @@ public class ServicioRestController {
     }
 
     /** Actualiza un servicio existente usando el ID de la URL. */
+    // PUT http://localhost:8080/api/servicios/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Servicio> actualizar(@PathVariable Long id, @RequestBody Servicio servicio) {
         servicio.setId(id);
@@ -50,6 +54,7 @@ public class ServicioRestController {
     }
 
     /** Elimina un servicio, con opción de forzar el borrado si existe dependencia. */
+    // DELETE http://localhost:8080/api/servicios/{id}?force={true|false}
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id,
                                       @RequestParam(defaultValue = "false") boolean force) {

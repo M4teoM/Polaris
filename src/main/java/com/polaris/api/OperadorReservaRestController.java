@@ -17,6 +17,7 @@ public class OperadorReservaRestController {
         this.reservaService = reservaService;
     }
 
+    // PUT http://localhost:8080/api/operador/reservas/{id}/activar
     @PutMapping("/{id}/activar")
     public ResponseEntity<?> activar(@PathVariable Long id) {
         try {
@@ -27,6 +28,7 @@ public class OperadorReservaRestController {
         }
     }
 
+    // PUT http://localhost:8080/api/operador/reservas/{id}/acabar
     @PutMapping("/{id}/acabar")
     public ResponseEntity<?> acabar(@PathVariable Long id) {
         try {

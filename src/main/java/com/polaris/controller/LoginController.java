@@ -23,11 +23,13 @@ public class LoginController {
     @Autowired
     private IOperarioService operarioService;
 
+    // GET http://localhost:8080/login
     @GetMapping("/login")
     public String loginForm() {
         return "login";
     }
 
+    // POST http://localhost:8080/login
     @PostMapping("/login")
     public String loginProcesar(@RequestParam String correo,
                                 @RequestParam String contrasena,

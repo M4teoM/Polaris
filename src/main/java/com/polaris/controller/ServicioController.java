@@ -17,12 +17,14 @@ public class ServicioController {
     @Autowired
     private IServicioService servicioService;
 
+    // GET http://localhost:8080/servicios
     @GetMapping
     public String listarServicios(Model model) {
         model.addAttribute("servicios", servicioService.obtenerTodos());
         return "servicios-tabla";
     }
 
+    // GET http://localhost:8080/servicios/cards
     @GetMapping("/cards")
     public String listarCards(Model model) {
         List<Servicio> servicios = servicioService.obtenerTodos();
@@ -36,30 +38,35 @@ public class ServicioController {
         return "servicios-cards";
     }
 
+    // GET http://localhost:8080/servicios/{id}
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model) {
         model.addAttribute("servicio", servicioService.obtenerPorId(id));
         return "servicio-detalle";
     }
 
+    // GET http://localhost:8080/servicios/nuevo
     @GetMapping("/nuevo")
     public String formularioNuevo(Model model) {
         model.addAttribute("servicio", new Servicio());
         return "servicios/formulario";
     }
 
+    // POST http://localhost:8080/servicios/nuevo
     @PostMapping("/nuevo")
     public String crearServicio(@ModelAttribute Servicio servicio) {
         servicioService.crear(servicio);
         return "redirect:/habitaciones/admin?tab=servicios";
     }
 
+    // GET http://localhost:8080/servicios/editar/{id}
     @GetMapping("/editar/{id}")
     public String formularioEditar(@PathVariable Long id, Model model) {
         model.addAttribute("servicio", servicioService.obtenerPorId(id));
         return "servicios/formulario";
     }
 
+    // POST http://localhost:8080/servicios/editar/{id}
     @PostMapping("/editar/{id}")
     public String actualizarServicio(@PathVariable Long id, @ModelAttribute Servicio servicio) {
         servicio.setId(id);
@@ -67,6 +74,7 @@ public class ServicioController {
         return "redirect:/habitaciones/admin?tab=servicios";
     }
 
+    // POST http://localhost:8080/servicios/eliminar/{id}
     @PostMapping("/eliminar/{id}")
     public String eliminarServicio(@PathVariable Long id) {
         servicioService.eliminar(id);

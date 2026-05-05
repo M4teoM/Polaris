@@ -12,6 +12,7 @@ public class HomeController {
     @Autowired
     private ITipoHabitacionService tipoHabitacionService;
 
+    // GET http://localhost:8080/
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("habitaciones", tipoHabitacionService.obtenerTodos());

@@ -77,7 +77,11 @@ public class ReservaRestController {
     /** Retorna una reserva específica por su ID en formato plano. */
     @GetMapping("/{id}")
     public ResponseEntity<ReservaResponse> obtener(@PathVariable Long id) {
-        return ResponseEntity.ok(toResponse(reservaService.obtenerPorId(id)));
+        ReservaHabitacion reserva = reservaService.obtenerPorId(id);
+        if (reserva == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(toResponse(reserva));
     }
 
     /** Retorna todas las reservas asociadas a un cliente específico. */
@@ -102,7 +106,7 @@ public class ReservaRestController {
             int huespedes     = Integer.parseInt(body.get("numeroHuespedes").toString());
 
             reservaService.crearDesdeDetalle(clienteId, tipoId, checkIn, checkOut, huespedes);
-            return ResponseEntity.ok(Map.of("mensaje", "Reserva creada correctamente"));
+            return ResponseEntity.status(201).body(Map.of("mensaje", "Reserva creada correctamente"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

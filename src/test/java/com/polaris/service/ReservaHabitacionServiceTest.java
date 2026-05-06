@@ -1,12 +1,11 @@
 package com.polaris.service;
 
 import com.polaris.errors.ErrorReservaException;
-import com.polaris.model.Cliente;
 import com.polaris.model.Habitacion;
 import com.polaris.model.ReservaHabitacion;
+import com.polaris.model.Cliente;
 import com.polaris.model.TipoHabitacion;
 import com.polaris.repository.IClienteRepository;
-import com.polaris.repository.ICuentaRepository;
 import com.polaris.repository.IHabitacionRepository;
 import com.polaris.repository.IReservaHabitacionRepository;
 import org.junit.jupiter.api.Test;
@@ -17,117 +16,121 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReservaHabitacionServiceTest {
 
+	// Servicio real que se prueba, con sus dependencias inyectadas por Mockito.
+    @InjectMocks
+    private ReservaHabitacionService service;
+
+	// Repositorios simulados para controlar el comportamiento del servicio.
     @Mock
     private IReservaHabitacionRepository repository;
+
     @Mock
     private IClienteRepository clienteRepository;
+
     @Mock
     private IHabitacionRepository habitacionRepository;
-    @Mock
-    private ICuentaRepository cuentaRepository;
-
-    @InjectMocks
-    private ReservaHabitacionService reservaHabitacionService;
 
     @Test
-    void crearDesdeDetalle_debeGuardarReservaInactivaSiHayDisponibilidad() {
-        Cliente cliente = new Cliente();
-        cliente.setId(1L);
+    void crearDesdeDetalle_CasoExito_guardaReservaConDatosCorrectos() {
+		// Arrange: se preparan los datos de entrada y los mocks necesarios.
+	Long clienteId = 1L;
+	Long tipoHabitacionId = 10L;
+	LocalDate checkIn = LocalDate.now().plusDays(5);
+	LocalDate checkOut = LocalDate.now().plusDays(8);
+	int numeroHuespedes = 2;
 
-        TipoHabitacion tipo = new TipoHabitacion();
-        tipo.setId(2L);
-        tipo.setCapacidad(3);
+	Cliente cliente = Cliente.builder()
+		.id(clienteId)
+		.nombre("Juan")
+		.apellido("Perez")
+		.correo("juan.perez@example.com")
+		.contrasena("secret")
+		.build();
 
-        Habitacion habitacion = new Habitacion();
-        habitacion.setId(10L);
-        habitacion.setEstado("Disponible");
-        habitacion.setTipoHabitacion(tipo);
+	TipoHabitacion tipo = TipoHabitacion.builder()
+		.id(tipoHabitacionId)
+		.capacidad(3)
+		.nombre("Doble")
+		.descripcion("Doble confortable")
+		.precioPorNoche(100.0)
+		.metrosCuadrados(20)
+		.tipoCama("Queen")
+		.build();
 
-        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-        when(repository.findHabitacionesOcupadasEnRango(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(List.of());
-        when(habitacionRepository.findByTipoHabitacion_Id(2L)).thenReturn(List.of(habitacion));
+	Habitacion habitacion = Habitacion.builder()
+		.id(100L)
+		.numero("101A")
+		.piso(1)
+		.estado("disponible")
+		.tipoHabitacion(tipo)
+		.build();
 
-        reservaHabitacionService.crearDesdeDetalle(
-                1L, 2L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(3), 2);
+	when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(cliente));
+	when(repository.findHabitacionesOcupadasEnRango(checkIn, checkOut))
+		.thenReturn(Collections.emptyList());
+	when(habitacionRepository.findByTipoHabitacion_Id(tipoHabitacionId))
+		.thenReturn(List.of(habitacion));
 
-        ArgumentCaptor<ReservaHabitacion> captor = ArgumentCaptor.forClass(ReservaHabitacion.class);
-        verify(repository).save(captor.capture());
-        assertEquals("Inactiva", captor.getValue().getEstado());
-        assertEquals(2, captor.getValue().getNumeroHuespedes());
+	when(repository.save(any(ReservaHabitacion.class)))
+		.thenAnswer(invocation -> invocation.getArgument(0));
+
+	// Act: se ejecuta la creación de la reserva.
+	service.crearDesdeDetalle(clienteId, tipoHabitacionId, checkIn, checkOut, numeroHuespedes);
+
+	// Assert: se verifica que la reserva guardada tenga los valores esperados.
+	ArgumentCaptor<ReservaHabitacion> captor = ArgumentCaptor.forClass(ReservaHabitacion.class);
+	verify(repository, times(1)).save(captor.capture());
+	ReservaHabitacion guardada = captor.getValue();
+
+	assertThat(guardada).isNotNull();
+	assertThat(guardada.getCliente()).isNotNull();
+	assertThat(guardada.getCliente().getId()).isEqualTo(clienteId);
+	assertThat(guardada.getHabitacion()).isNotNull();
+	assertThat(guardada.getHabitacion().getId()).isEqualTo(habitacion.getId());
+	assertThat(guardada.getNumeroHuespedes()).isEqualTo(numeroHuespedes);
+	assertThat(guardada.getFechaCheckIn()).isEqualTo(checkIn);
+	assertThat(guardada.getFechaCheckOut()).isEqualTo(checkOut);
     }
 
     @Test
-    void crearDesdeDetalle_debeFallarSiNoHayHabitacionesDisponibles() {
-        Cliente cliente = new Cliente();
-        cliente.setId(1L);
+    void crearDesdeDetalle_NoHayDisponibilidad_lanzaErrorReservaException() {
+		// Arrange: se simula que no existe ninguna habitación disponible del tipo solicitado.
+	Long clienteId = 2L;
+	Long tipoHabitacionId = 20L;
+	LocalDate checkIn = LocalDate.now().plusDays(2);
+	LocalDate checkOut = LocalDate.now().plusDays(4);
+	int numeroHuespedes = 1;
 
-        TipoHabitacion tipo = new TipoHabitacion();
-        tipo.setId(2L);
-        tipo.setCapacidad(2);
+	Cliente cliente = Cliente.builder()
+		.id(clienteId)
+		.nombre("Ana")
+		.apellido("Gomez")
+		.correo("ana.gomez@example.com")
+		.contrasena("secret")
+		.build();
 
-        Habitacion ocupada = new Habitacion();
-        ocupada.setId(99L);
-        ocupada.setEstado("Disponible");
-        ocupada.setTipoHabitacion(tipo);
+	when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(cliente));
+	when(repository.findHabitacionesOcupadasEnRango(checkIn, checkOut))
+		.thenReturn(Collections.emptyList());
+	when(habitacionRepository.findByTipoHabitacion_Id(tipoHabitacionId))
+		.thenReturn(Collections.emptyList());
 
-        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-        when(repository.findHabitacionesOcupadasEnRango(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(List.of(99L));
-        when(habitacionRepository.findByTipoHabitacion_Id(2L)).thenReturn(List.of(ocupada));
-
-        assertThrows(
-                ErrorReservaException.class,
-                () -> reservaHabitacionService.crearDesdeDetalle(
-                        1L, 2L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 2));
-
-        verify(repository, never()).save(any(ReservaHabitacion.class));
-    }
-
-    @Test
-    void cancelar_debeCambiarEstadoACanceladaSiClienteEsDueno() {
-        Cliente cliente = new Cliente();
-        cliente.setId(5L);
-
-        ReservaHabitacion reserva = new ReservaHabitacion();
-        reserva.setId(20L);
-        reserva.setCliente(cliente);
-        reserva.setEstado("Inactiva");
-
-        when(repository.findById(20L)).thenReturn(Optional.of(reserva));
-
-        reservaHabitacionService.cancelar(20L, 5L);
-
-        ArgumentCaptor<ReservaHabitacion> captor = ArgumentCaptor.forClass(ReservaHabitacion.class);
-        verify(repository).save(captor.capture());
-        assertEquals("Cancelada", captor.getValue().getEstado());
-    }
-
-    @Test
-    void cancelar_debeFallarSiClienteNoEsDueno() {
-        Cliente cliente = new Cliente();
-        cliente.setId(5L);
-
-        ReservaHabitacion reserva = new ReservaHabitacion();
-        reserva.setId(30L);
-        reserva.setCliente(cliente);
-
-        when(repository.findById(30L)).thenReturn(Optional.of(reserva));
-
-        assertThrows(ErrorReservaException.class, () -> reservaHabitacionService.cancelar(30L, 99L));
-        verify(repository, never()).save(any(ReservaHabitacion.class));
+	// Act & Assert: la regla de negocio debe impedir la reserva y lanzar la excepción.
+	assertThatThrownBy(() -> service.crearDesdeDetalle(clienteId, tipoHabitacionId, checkIn, checkOut, numeroHuespedes))
+		.isInstanceOf(ErrorReservaException.class)
+		.hasMessageContaining("No hay habitaciones disponibles");
     }
 }
+

@@ -187,7 +187,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="reserva : ${reservas}">
+                <tr th:each="reserva : ${reservas}" th:attr="id='reserva-row-' + ${reserva.id}">
                     <td class="num" th:text="${reserva.id}">1</td>
                     <td>
                         <div style="font-weight:600;color:#0a1628;"
@@ -207,16 +207,19 @@
                     </td>
                     <td>
                         <div class="table-actions">
-                            <!-- Activar: solo si Inactiva -->
-                            <form th:if="${reserva.estado == 'Inactiva'}"
-                                  th:action="@{/operario/reservas/activar/{id}(id=${reserva.id})}" method="post">
+                            <!-- Activar: solo si Pendiente (servicio: Pendiente -> Confirmada) -->
+                            <form th:if="${reserva.estado == 'Pendiente'}"
+                                  th:action="@{/operario/reservas/activar/{id}(id=${reserva.id})}" method="post"
+                                  th:attr="id='form-activar-' + ${reserva.id}">
                                 <button type="submit" class="btn-accion btn-activar"
+                                        th:attr="id='btn-activar-' + ${reserva.id}"
                                         onclick="return confirm('&#191;Activar esta estad&#237;a?')">Activar</button>
                             </form>
-                            <!-- Acabar: solo si Activa -->
-                            <form th:if="${reserva.estado == 'Activa'}"
+                            <!-- Acabar: solo si Confirmada (servicio: Confirmada -> Finalizada) -->
+                            <form th:if="${reserva.estado == 'Confirmada'}"
                                   th:action="@{/operario/reservas/acabar/{id}(id=${reserva.id})}" method="post">
                                 <button type="submit" class="btn-accion btn-acabar"
+                                        th:attr="id='btn-acabar-' + ${reserva.id}"
                                         onclick="return confirm('&#191;Finalizar esta estad&#237;a? Solo es posible si la cuenta est&#225; pagada.')">Acabar</button>
                             </form>
                             <!-- Eliminar: siempre disponible -->

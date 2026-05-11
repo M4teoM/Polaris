@@ -19,6 +19,7 @@
       <label>
         Número de habitación
         <input
+          id="input-habitacion"
           type="text"
           [(ngModel)]="numeroHabitacion"
           placeholder="Ej: 101"
@@ -26,7 +27,12 @@
         />
       </label>
       <div class="actions">
-        <button class="btn primary" type="button" (click)="buscarHabitacion()" [disabled]="cargandoInfo">
+        <button
+          id="btn-buscar-habitacion"
+          class="btn primary"
+          type="button"
+          (click)="buscarHabitacion()"
+          [disabled]="cargandoInfo">
           {{ cargandoInfo ? 'Buscando...' : 'Buscar habitación' }}
         </button>
       </div>
@@ -36,14 +42,14 @@
   <div class="card card-client" *ngIf="infoHabitacion as info">
     <h3 class="card-title">2. Confirmación del cliente</h3>
     <div class="info-grid">
-      <div class="info-item"><span>Habitación</span><strong>{{ info.habitacionNumero }}</strong></div>
-      <div class="info-item"><span>Reserva ID</span><strong>#{{ info.reservaId }}</strong></div>
-      <div class="info-item"><span>Cliente</span><strong>{{ info.clienteNombre }} {{ info.clienteApellido }}</strong></div>
-      <div class="info-item"><span>Correo</span><strong>{{ info.clienteCorreo }}</strong></div>
+      <div class="info-item"><span>Habitación</span><strong id="info-habitacion-numero">{{ info.habitacionNumero }}</strong></div>
+      <div class="info-item"><span>Reserva ID</span><strong id="info-reserva-id">#{{ info.reservaId }}</strong></div>
+      <div class="info-item"><span>Cliente</span><strong id="info-cliente-nombre">{{ info.clienteNombre }} {{ info.clienteApellido }}</strong></div>
+      <div class="info-item"><span>Correo</span><strong id="info-cliente-correo">{{ info.clienteCorreo }}</strong></div>
       <div class="info-item"><span>Cédula</span><strong>{{ info.clienteCedula || '-' }}</strong></div>
       <div class="info-item"><span>Teléfono</span><strong>{{ info.clienteTelefono || '-' }}</strong></div>
-      <div class="info-item"><span>Cuenta ID</span><strong>{{ info.cuentaId || 'Se creará' }}</strong></div>
-      <div class="info-item"><span>Total cuenta</span><strong>${{ info.totalCuenta | number:'1.0-0' }}</strong></div>
+      <div class="info-item"><span>Cuenta ID</span><strong id="info-cuenta-id">{{ info.cuentaId || 'Se creará' }}</strong></div>
+      <div class="info-item"><span>Total cuenta</span><strong id="info-total-cuenta">${{ info.totalCuenta | number:'1.0-0' }}</strong></div>
     </div>
 
     <hr />
@@ -52,20 +58,20 @@
     <div class="grid">
       <label>
         Servicio a contratar
-        <select [(ngModel)]="servicioId">
+        <select id="select-servicio" [(ngModel)]="servicioId">
           <option [ngValue]="0">Selecciona un servicio</option>
-          <option *ngFor="let s of servicios" [ngValue]="s.id">
+          <option *ngFor="let s of servicios" [ngValue]="s.id" [id]="'opcion-servicio-' + s.id">
             {{ s.nombre }} - ${{ s.precio | number:'1.0-0' }}
           </option>
         </select>
       </label>
       <div class="actions">
         <button
+          id="btn-agregar-servicio"
           class="btn primary"
           type="button"
           (click)="contratarServicio()"
-          [disabled]="contratando"
-        >
+          [disabled]="contratando">
           {{ contratando ? 'Agregando...' : 'Agregar a cuenta' }}
         </button>
       </div>

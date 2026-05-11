@@ -23,10 +23,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let reserva of reservas">
+      <tr *ngFor="let reserva of reservas" [id]="'reserva-row-' + reserva.id">
         <td>{{ reserva.id }}</td>
         <td>{{ getClienteNombre(reserva) }}</td>
-        <td>{{ getHabitacionLabel(reserva) }}</td>
+        <td class="habitacion-numero">{{ getHabitacionLabel(reserva) }}</td>
         <td>{{ getTipoLabel(reserva) }}</td>
         <td>{{ reserva.fechaCheckIn }}</td>
         <td>{{ reserva.fechaCheckOut }}</td>
@@ -41,11 +41,12 @@
             <button *ngIf="!readOnly && !isOperador" type="button" class="btn-edit" (click)="editarReserva(reserva.id)">Editar</button>
             <button
               *ngIf="isOperador && reserva.estado === 'Pendiente'"
+              [id]="'btn-activar-' + reserva.id"
               type="button" class="btn-activar"
               (click)="activarEstadia(reserva)">Activar</button>
-
             <button
               *ngIf="isOperador && reserva.estado === 'Confirmada'"
+              [id]="'btn-acabar-' + reserva.id"
               type="button" class="btn-acabar"
               (click)="acabarEstadia(reserva)">Acabar</button>
             <button *ngIf="!readOnly" type="button" class="btn-del" (click)="eliminarReserva(reserva)">Eliminar</button>

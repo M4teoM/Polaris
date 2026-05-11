@@ -9,7 +9,7 @@
   <div *ngIf="cargando">Cargando cuentas...</div>
 
   <ng-container *ngFor="let cuenta of cuentas">
-    <div class="cuenta-header">
+    <div class="cuenta-header" [id]="'cuenta-' + cuenta.id">
       <div>
         <strong>Cuenta #{{ cuenta.id }}</strong>
         <span class="muted">
@@ -23,7 +23,7 @@
     </div>
 
     <div class="table-wrap">
-      <table>
+      <table [id]="'tabla-cuenta-' + cuenta.id">
         <thead>
         <tr>
           <th>Servicio</th>
@@ -34,10 +34,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let item of cuenta.items">
+        <tr *ngFor="let item of cuenta.items" [id]="'item-row-' + item.id">
           <td>{{ item.servicioNombre }}</td>
           <td>{{ item.fechaConsumo }}</td>
-          <td>${{ (item.servicioPrecio || 0) | number:'1.0-0' }}</td>
+          <td class="item-precio">${{ (item.servicioPrecio || 0) | number:'1.0-0' }}</td>
           <td>
             <span class="badge-pagada" *ngIf="item.pagado">Pagado</span>
             <span class="badge-pendiente" *ngIf="!item.pagado">Pendiente</span>
@@ -46,10 +46,12 @@
             <div class="table-actions">
               <button
                 *ngIf="!item.pagado"
+                [id]="'btn-pagar-' + item.id"
                 type="button" class="btn-pagar"
                 (click)="pagarItem(cuenta.id, item.id)">Pagar</button>
               <button
                 *ngIf="!item.pagado"
+                [id]="'btn-quitar-' + item.id"
                 type="button" class="btn-del"
                 (click)="eliminarItem(cuenta.id, item.id)">Quitar</button>
             </div>

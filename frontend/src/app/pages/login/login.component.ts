@@ -37,7 +37,7 @@ export class LoginComponent {
         const rol = response.rol;
         if      (rol === 'ROLE_ADMIN')    this.router.navigate(['/admin']);
         else if (rol === 'ROLE_OPERARIO') this.router.navigate(['/operador']);
-        else if (rol === 'ROLE_CLIENTE')  this.router.navigate(['/portal']);
+        else if (rol === 'ROLE_CLIENTE')  this.router.navigate(['/portal-usuario', response.id]);
         else                              this.router.navigate(['/']);
       },
       error: () => {

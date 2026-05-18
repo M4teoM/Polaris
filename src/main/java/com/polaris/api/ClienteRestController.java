@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Controlador REST para la administración de clientes.
@@ -74,22 +73,4 @@ public class ClienteRestController {
         }
     }
 
-    /**
-     * Valida credenciales simples para el login del frontend.
-     * Angular envía { correo, contrasena } y recibe el cliente o 401.
-     */
-    // POST http://localhost:8080/api/clientes/login
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
-        String correo = credenciales.get("correo");
-        String contrasena = credenciales.get("contrasena");
-
-        Optional<Cliente> resultado = clienteService.buscarPorCorreo(correo);
-
-        if (resultado.isPresent() && resultado.get().getContrasena().equals(contrasena)) {
-            return ResponseEntity.ok(resultado.get());
-        }
-
-        return ResponseEntity.status(401).body(Map.of("error", "Credenciales incorrectas"));
-    }
 }

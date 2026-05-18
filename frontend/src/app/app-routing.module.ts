@@ -50,7 +50,7 @@ const routes: Routes = [
     component: ReservaDetalleComponent,
     canActivate: [ClienteGuard],
   },
-  { path: 'clientes/ver', component: ClientePerfilComponent },
+  { path: 'clientes/ver', component: ClientePerfilComponent, canActivate: [ClienteGuard] },
   {
     path: 'portal-usuario/:clienteId',
     component: PortalUsuarioComponent,

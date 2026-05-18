@@ -1,0 +1,497 @@
+{
+  "info": {
+    "name": "Polaris Hotel API",
+    "description": "Colección completa de endpoints REST del sistema de gestión hotelera Polaris. Usar la variable {{token}} después de ejecutar POST /api/auth/login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token",    "value": "",                      "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) pm.collectionVariables.set('token', res.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@polaris.com\",\n  \"contrasena\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] },
+            "description": "Autentica al usuario y guarda el JWT en la variable {{token}}. Credenciales disponibles:\n- Admin: admin@polaris.com / admin123\n- Operario: operario@polaris.com / operario123\n- Cliente: samutovar10@gmail.com / 8888"
+          }
+        },
+        {
+          "name": "Get Current User (me)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/auth/me", "host": ["{{base_url}}"], "path": ["api","auth","me"] },
+            "description": "Devuelve los datos del usuario autenticado por el token JWT actual."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{base_url}}/api/auth/logout", "host": ["{{base_url}}"], "path": ["api","auth","logout"] },
+            "description": "Endpoint documental. Con JWT el logout real ocurre borrando el token en el cliente."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tipos de Habitación (ADMIN / Público GET)",
+      "item": [
+        {
+          "name": "Listar tipos de habitación",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/habitaciones", "host": ["{{base_url}}"], "path": ["api","habitaciones"] },
+            "description": "Público. Devuelve todos los tipos de habitación para la landing page."
+          }
+        },
+        {
+          "name": "Obtener tipo por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/habitaciones/1", "host": ["{{base_url}}"], "path": ["api","habitaciones","1"] }
+          }
+        },
+        {
+          "name": "Crear tipo de habitación",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Suite Junior\",\n  \"descripcion\": \"Suite intermedia con terraza privada.\",\n  \"precioPorNoche\": 350000,\n  \"imagenUrl\": \"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800\",\n  \"metrosCuadrados\": 40,\n  \"capacidad\": 2,\n  \"tipoCama\": \"Cama King\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/habitaciones", "host": ["{{base_url}}"], "path": ["api","habitaciones"] }
+          }
+        },
+        {
+          "name": "Actualizar tipo de habitación",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Suite Junior Deluxe\",\n  \"descripcion\": \"Suite intermedia renovada con terraza privada.\",\n  \"precioPorNoche\": 380000,\n  \"imagenUrl\": \"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800\",\n  \"metrosCuadrados\": 42,\n  \"capacidad\": 2,\n  \"tipoCama\": \"Cama King\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/habitaciones/1", "host": ["{{base_url}}"], "path": ["api","habitaciones","1"] }
+          }
+        },
+        {
+          "name": "Eliminar tipo de habitación",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/habitaciones/6?force=false", "host": ["{{base_url}}"], "path": ["api","habitaciones","6"], "query": [{ "key": "force", "value": "false" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Habitaciones Físicas (ADMIN)",
+      "item": [
+        {
+          "name": "Listar habitaciones físicas",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/habitaciones-fisicas", "host": ["{{base_url}}"], "path": ["api","habitaciones-fisicas"] }
+          }
+        },
+        {
+          "name": "Obtener habitación física por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/habitaciones-fisicas/1", "host": ["{{base_url}}"], "path": ["api","habitaciones-fisicas","1"] }
+          }
+        },
+        {
+          "name": "Crear habitación física",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"601\",\n  \"piso\": 6,\n  \"estado\": \"Disponible\",\n  \"tipoHabitacionId\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/habitaciones-fisicas", "host": ["{{base_url}}"], "path": ["api","habitaciones-fisicas"] }
+          }
+        },
+        {
+          "name": "Actualizar habitación física",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"601\",\n  \"piso\": 6,\n  \"estado\": \"Mantenimiento\",\n  \"tipoHabitacionId\": 2\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/habitaciones-fisicas/1", "host": ["{{base_url}}"], "path": ["api","habitaciones-fisicas","1"] }
+          }
+        },
+        {
+          "name": "Eliminar habitación física",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/habitaciones-fisicas/51", "host": ["{{base_url}}"], "path": ["api","habitaciones-fisicas","51"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Servicios (ADMIN / Público GET lista)",
+      "item": [
+        {
+          "name": "Listar servicios",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/servicios", "host": ["{{base_url}}"], "path": ["api","servicios"] },
+            "description": "Público. Devuelve todos los servicios para la landing page."
+          }
+        },
+        {
+          "name": "Obtener servicio por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/servicios/1", "host": ["{{base_url}}"], "path": ["api","servicios","1"] }
+          }
+        },
+        {
+          "name": "Crear servicio",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Pilates Privado\",\n  \"descripcion\": \"Sesión privada de pilates con instructor certificado.\",\n  \"descripcionDetallada\": \"Clase de pilates de 60 minutos en nuestro estudio equipado.\",\n  \"precio\": 95000,\n  \"imagenUrl\": \"https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800\",\n  \"categoria\": \"Bienestar\",\n  \"duracion\": \"60 minutos\",\n  \"horario\": \"Todos los días de 7:00 AM a 8:00 PM\",\n  \"incluye\": \"Instructor certificado|Mat y accesorios|Agua infusionada\",\n  \"destacados\": \"Clase personalizada|Estudio climatizado\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/servicios", "host": ["{{base_url}}"], "path": ["api","servicios"] }
+          }
+        },
+        {
+          "name": "Actualizar servicio",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Spa Premium Plus\",\n  \"descripcion\": \"Experiencia completa de relajación avanzada.\",\n  \"descripcionDetallada\": \"Nuestro Spa Premium Plus ofrece una experiencia renovada.\",\n  \"precio\": 200000,\n  \"imagenUrl\": \"https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800\",\n  \"categoria\": \"Bienestar\",\n  \"duracion\": \"2.5 horas\",\n  \"horario\": \"Todos los días de 8:00 AM a 9:00 PM\",\n  \"incluye\": \"Masaje premium|Tratamiento facial|Sauna|Jacuzzi\",\n  \"destacados\": \"Terapeutas certificados|Productos orgánicos\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/servicios/1", "host": ["{{base_url}}"], "path": ["api","servicios","1"] }
+          }
+        },
+        {
+          "name": "Eliminar servicio",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/servicios/21?force=false", "host": ["{{base_url}}"], "path": ["api","servicios","21"], "query": [{ "key": "force", "value": "false" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clientes (ADMIN)",
+      "item": [
+        {
+          "name": "Listar clientes",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/clientes", "host": ["{{base_url}}"], "path": ["api","clientes"] }
+          }
+        },
+        {
+          "name": "Obtener cliente por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/clientes/1", "host": ["{{base_url}}"], "path": ["api","clientes","1"] }
+          }
+        },
+        {
+          "name": "Registrar nuevo cliente",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Laura\",\n  \"apellido\": \"Jiménez\",\n  \"correo\": \"laura.jimenez@email.com\",\n  \"contrasena\": \"laura123\",\n  \"cedula\": \"123456789\",\n  \"telefono\": \"3001234567\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/clientes", "host": ["{{base_url}}"], "path": ["api","clientes"] },
+            "description": "Crea un nuevo cliente. También usado para el registro público desde Angular."
+          }
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Samuel\",\n  \"apellido\": \"Tovar Gómez\",\n  \"correo\": \"samutovar10@gmail.com\",\n  \"contrasena\": \"8888\",\n  \"cedula\": \"1001234567\",\n  \"telefono\": \"3009876543\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/clientes/1", "host": ["{{base_url}}"], "path": ["api","clientes","1"] }
+          }
+        },
+        {
+          "name": "Eliminar cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/clientes/11?force=false", "host": ["{{base_url}}"], "path": ["api","clientes","11"], "query": [{ "key": "force", "value": "false" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operarios (ADMIN)",
+      "item": [
+        {
+          "name": "Listar operarios",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operarios", "host": ["{{base_url}}"], "path": ["api","operarios"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservas (ADMIN + CLIENTE)",
+      "item": [
+        {
+          "name": "Listar todas las reservas",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/reservas", "host": ["{{base_url}}"], "path": ["api","reservas"] }
+          }
+        },
+        {
+          "name": "Obtener reserva por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/reservas/1", "host": ["{{base_url}}"], "path": ["api","reservas","1"] }
+          }
+        },
+        {
+          "name": "Reservas por cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/reservas/cliente/1", "host": ["{{base_url}}"], "path": ["api","reservas","cliente","1"] }
+          }
+        },
+        {
+          "name": "Crear reserva",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": 1,\n  \"tipoHabitacionId\": 1,\n  \"fechaCheckIn\": \"2026-09-01\",\n  \"fechaCheckOut\": \"2026-09-05\",\n  \"numeroHuespedes\": 2\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/reservas", "host": ["{{base_url}}"], "path": ["api","reservas"] }
+          }
+        },
+        {
+          "name": "Actualizar reserva",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaCheckIn\": \"2026-09-02\",\n  \"fechaCheckOut\": \"2026-09-06\",\n  \"numeroHuespedes\": 3,\n  \"estado\": \"Confirmada\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/reservas/1", "host": ["{{base_url}}"], "path": ["api","reservas","1"] }
+          }
+        },
+        {
+          "name": "Cancelar reserva",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/reservas/cancelar/1", "host": ["{{base_url}}"], "path": ["api","reservas","cancelar","1"] }
+          }
+        },
+        {
+          "name": "Eliminar reserva",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/reservas/21", "host": ["{{base_url}}"], "path": ["api","reservas","21"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Portal Usuario (ADMIN + CLIENTE)",
+      "item": [
+        {
+          "name": "Perfil del cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/portal-usuario/clientes/1/perfil", "host": ["{{base_url}}"], "path": ["api","portal-usuario","clientes","1","perfil"] }
+          }
+        },
+        {
+          "name": "Reservas activas del cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/portal-usuario/clientes/1/reservas/activas", "host": ["{{base_url}}"], "path": ["api","portal-usuario","clientes","1","reservas","activas"] }
+          }
+        },
+        {
+          "name": "Historial de reservas del cliente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/portal-usuario/clientes/1/reservas/historial", "host": ["{{base_url}}"], "path": ["api","portal-usuario","clientes","1","reservas","historial"] }
+          }
+        },
+        {
+          "name": "Cancelar reserva (portal)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "url": { "raw": "{{base_url}}/api/portal-usuario/clientes/1/reservas/1/cancelar", "host": ["{{base_url}}"], "path": ["api","portal-usuario","clientes","1","reservas","1","cancelar"] }
+          }
+        },
+        {
+          "name": "Actualizar fechas de reserva (portal)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaCheckIn\": \"2026-09-03\",\n  \"fechaCheckOut\": \"2026-09-07\",\n  \"numeroHuespedes\": 2\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/portal-usuario/clientes/1/reservas/1", "host": ["{{base_url}}"], "path": ["api","portal-usuario","clientes","1","reservas","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operador — Cuentas (ADMIN + OPERARIO)",
+      "item": [
+        {
+          "name": "Listar cuentas con detalle",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operador/cuentas", "host": ["{{base_url}}"], "path": ["api","operador","cuentas"] }
+          }
+        },
+        {
+          "name": "Pagar ítem de cuenta",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "url": { "raw": "{{base_url}}/api/operador/cuentas/item/1/pagar", "host": ["{{base_url}}"], "path": ["api","operador","cuentas","item","1","pagar"] }
+          }
+        },
+        {
+          "name": "Eliminar ítem de cuenta",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/operador/cuentas/1/item/1", "host": ["{{base_url}}"], "path": ["api","operador","cuentas","1","item","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operador — Reservas / Estadías (ADMIN + OPERARIO)",
+      "item": [
+        {
+          "name": "Activar estadía",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "url": { "raw": "{{base_url}}/api/operador/reservas/1/activar", "host": ["{{base_url}}"], "path": ["api","operador","reservas","1","activar"] }
+          }
+        },
+        {
+          "name": "Finalizar estadía",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "url": { "raw": "{{base_url}}/api/operador/reservas/1/acabar", "host": ["{{base_url}}"], "path": ["api","operador","reservas","1","acabar"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operador — Servicios (ADMIN + OPERARIO)",
+      "item": [
+        {
+          "name": "Buscar info de habitación por número",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operador/servicios/habitacion/101", "host": ["{{base_url}}"], "path": ["api","operador","servicios","habitacion","101"] },
+            "description": "Devuelve la cuenta y los datos del cliente asociados al número de habitación ingresado."
+          }
+        },
+        {
+          "name": "Contratar servicio para habitación",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroHabitacion\": \"101\",\n  \"servicioId\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/operador/servicios/contratar", "host": ["{{base_url}}"], "path": ["api","operador","servicios","contratar"] }
+          }
+        }
+      ]
+    }
+  ]
+}

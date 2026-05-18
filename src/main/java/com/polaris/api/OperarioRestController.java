@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Controlador REST para la autenticación y consulta básica de operarios.
@@ -28,27 +26,4 @@ public class OperarioRestController {
         return operarioService.obtenerTodos();
     }
 
-    /**
-     * Autentica a un operario con correo y contraseña.
-     * Si las credenciales son válidas, devuelve datos públicos mínimos.
-     */
-    // POST http://localhost:8080/api/operarios/login
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
-        String correo = credenciales.get("correo");
-        String contrasena = credenciales.get("contrasena");
-
-        Optional<Operario> resultado = operarioService.buscarPorCorreo(correo);
-
-        if (resultado.isPresent() && resultado.get().getContrasena().equals(contrasena)) {
-            Operario operario = resultado.get();
-            return ResponseEntity.ok(Map.of(
-                    "id", operario.getId(),
-                    "correo", operario.getCorreo(),
-                    "nombre", operario.getNombre()
-            ));
-        }
-
-        return ResponseEntity.status(401).body(Map.of("error", "Credenciales incorrectas"));
-    }
 }

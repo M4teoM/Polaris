@@ -62,7 +62,7 @@ public class AuthRestController {
             return ResponseEntity.ok(new LoginResponseDTO(
                 token,
                 user.getRol().name(),
-                user.getId(),
+                user.getEntidadId(),
                 user.getNombre(),
                 user.getCorreo()
             ));
@@ -95,7 +95,7 @@ public class AuthRestController {
         return ResponseEntity.ok(new LoginResponseDTO(
             null,
             user.getRol().name(),
-            user.getId(),
+            user.getEntidadId(),
             user.getNombre(),
             user.getCorreo()
         ));

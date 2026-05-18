@@ -14,7 +14,7 @@ export class ClienteGuard implements CanActivate {
   ) {}
 
   canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isCliente()) {
       return true;
     }
     this.router.navigate(['/login']);

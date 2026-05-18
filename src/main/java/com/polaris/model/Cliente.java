@@ -32,6 +32,7 @@ public class Cliente {
     @Column(length = 100, nullable = false, unique = true)
     private String correo;
 
+    @JsonIgnore
     @Column(length = 100, nullable = false)
     private String contrasena;
 

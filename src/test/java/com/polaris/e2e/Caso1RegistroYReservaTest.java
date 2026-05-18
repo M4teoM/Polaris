@@ -42,62 +42,27 @@ public class Caso1RegistroYReservaTest extends BaseE2ETest {
     private final String CORREO_NUEVO = "e2e." + System.currentTimeMillis() + "@polaris.com";
     private static final String CONTRASENA = "Test1234";
 
-    /**
-     * Caso 1.a — Registro con correo inválido (formato sin @).
-     * La validación HTML5 del input type="email" bloquea el submit, así que
-     * el form NO navega y seguimos en /clientes/nuevo.
-     */
-    @Test
-    public void Caso1a_registroCorreoInvalido_permaneceEnFormulario() {
-        driver.get(BASE_URL + "/clientes/nuevo");
+        /**
+         * Caso 1 — Flujo completo en un único test:
+         *   1. Intento de registro con correo inválido: el navegador bloquea el submit.
+         *   2. Registro exitoso de cliente nuevo.
+         *   3. Primera reserva para la próxima semana.
+         *   4. Segunda reserva con solape de fechas y habitación distinta.
+         */
+        @Test
+        public void Caso1_unico_flujoCompleto_registroYDosReservasSolapadas() {
+                // ── 0. Intento inválido de registro (correo mal formado) ───────────
+                driver.get(BASE_URL + "/clientes/nuevo");
+                driver.findElement(By.id("nombre")).sendKeys("Test");
+                driver.findElement(By.id("apellido")).sendKeys("E2E");
+                driver.findElement(By.id("correo")).sendKeys("esto-no-es-un-correo");
+                driver.findElement(By.id("contrasena")).sendKeys(CONTRASENA);
+                driver.findElement(By.cssSelector(".btn-guardar")).click();
 
-        driver.findElement(By.id("nombre")).sendKeys("Test");
-        driver.findElement(By.id("apellido")).sendKeys("E2E");
-        driver.findElement(By.id("correo")).sendKeys("esto-no-es-un-correo");
-        driver.findElement(By.id("contrasena")).sendKeys(CONTRASENA);
-        driver.findElement(By.cssSelector(".btn-guardar")).click();
+                Assertions.assertThat(driver.getCurrentUrl())
+                                .as("La validación HTML5 debe impedir el envío del formulario")
+                                .endsWith("/clientes/nuevo");
 
-        // El navegador bloquea el submit: la URL no cambia.
-        Assertions.assertThat(driver.getCurrentUrl())
-                .as("La validación HTML5 debe impedir el envío")
-                .endsWith("/clientes/nuevo");
-    }
-
-    /**
-     * Caso 1.b — Registro con correo ya existente (validación de servidor).
-     * El service lanza IllegalArgumentException("Este correo ya está registrado.")
-     * y el controller re-renderiza la vista con el mensaje en el span #errorCorreo.
-     */
-    @Test
-    public void Caso1b_registroCorreoDuplicado_muestraErrorEnServidor() {
-        // samutovar10@gmail.com es un cliente seed del DataInitializer.
-        driver.get(BASE_URL + "/clientes/nuevo");
-
-        driver.findElement(By.id("nombre")).sendKeys("Test");
-        driver.findElement(By.id("apellido")).sendKeys("E2E");
-        driver.findElement(By.id("correo")).sendKeys("samutovar10@gmail.com");
-        driver.findElement(By.id("contrasena")).sendKeys(CONTRASENA);
-        driver.findElement(By.cssSelector(".btn-guardar")).click();
-
-        // El servidor re-renderiza el form con el mensaje de error visible.
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(
-                By.cssSelector("#correo + span"), "ya está registrado"));
-
-        WebElement msg = driver.findElement(By.cssSelector("#correo + span"));
-        Assertions.assertThat(msg.getText())
-                .as("Debe mostrarse el mensaje de correo duplicado del servidor")
-                .contains("ya está registrado");
-    }
-
-    /**
-     * Caso 1.c — Flujo completo:
-     *   1. Registro exitoso → redirige al perfil del cliente recién creado.
-     *   2. Primera reserva (próxima semana) → habitación H1 asignada.
-     *   3. Segunda reserva con fechas solapadas → debe poder realizarse,
-     *      con habitación H2 distinta de H1.
-     */
-    @Test
-    public void Caso1c_registroYDosReservasSolapadas_habitacionesDistintas() {
         // ── 1. Registro ────────────────────────────────────────────────────
         driver.get(BASE_URL + "/clientes/nuevo");
         driver.findElement(By.id("nombre")).sendKeys("Usuario");

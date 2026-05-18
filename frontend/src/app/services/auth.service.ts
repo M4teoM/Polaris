@@ -1,223 +1,103 @@
 import { Injectable } from '@angular/core';
-import { Cliente } from '../models/cliente';
-import { Operario } from '../models/operario';
-import { ClienteService } from './cliente.service';
-import { OperarioService } from './operario.service';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router }     from '@angular/router';
+import { Observable, tap } from 'rxjs';
 
-export type UserRole = 'admin' | 'cliente' | 'operador';
-
-interface SessionUser {
-  role: UserRole;
+export interface LoginResponse {
+  token:  string;
+  rol:    string;
+  id:     number;
   nombre: string;
   correo: string;
-  cliente?: Cliente;
-  operario?: Operario;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private static readonly STORAGE_KEY = 'polaris_session_user';
 
-  private currentUser: SessionUser | null = null;
+  private apiUrl    = 'http://localhost:8080/api/auth';
+  private TOKEN_KEY = 'polaris_token';
+  private USER_KEY  = 'polaris_user';
 
-  private readonly adminCredentials = {
-    correo: 'admin@polaris.com',
-    contrasena: 'admin123',
-    nombre: 'Administrador',
-  };
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(
-    private clienteService: ClienteService,
-    private operarioService: OperarioService,
-  ) {
-    this.restoreSession();
-  }
+  // ── Autenticación ────────────────────────────────────────────────────────
 
-  /**
-   * Simula el inicio de sesión y guarda el usuario actual en memoria.
-   * @param correo Correo del usuario.
-   * @param contrasena Contraseña del usuario.
-   * @returns true si los datos básicos existen; false en caso contrario.
-   */
-  login(correo: string, contrasena: string): Observable<boolean> {
-    const correoNormalizado = (correo || '').trim();
-    const contrasenaNormalizada = (contrasena || '').trim();
-
-    if (
-      correoNormalizado.toLowerCase() ===
-        this.adminCredentials.correo.toLowerCase() &&
-      contrasenaNormalizada === this.adminCredentials.contrasena
-    ) {
-      this.currentUser = {
-        role: 'admin',
-        nombre: this.adminCredentials.nombre,
-        correo: this.adminCredentials.correo,
-      };
-      this.persistSession();
-      return of(true);
-    }
-
-    return this.operarioService
-      .login$(correoNormalizado, contrasenaNormalizada)
+  login(correo: string, contrasena: string): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/login`, { correo, contrasena })
       .pipe(
-        tap((operario) => {
-          this.currentUser = {
-            role: 'operador',
-            nombre: operario.nombre,
-            correo: operario.correo,
-            operario,
-          };
-          this.persistSession();
-        }),
-        map(() => true),
-        catchError(() =>
-          this.clienteService.getClientes$().pipe(
-            map((clientes) =>
-              clientes.find(
-                (c) =>
-                  c.correo.toLowerCase() === correoNormalizado.toLowerCase() &&
-                  (c.contrasena || '') === contrasenaNormalizada,
-              ),
-            ),
-            tap((cliente) => {
-              if (!cliente) {
-                this.currentUser = null;
-                this.clearSession();
-                return;
-              }
-
-              this.currentUser = {
-                role: 'cliente',
-                nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
-                correo: cliente.correo,
-                cliente,
-              };
-              this.persistSession();
-            }),
-            map((cliente) => !!cliente),
-          ),
-        ),
+        tap(response => {
+          localStorage.setItem(this.TOKEN_KEY, response.token);
+          localStorage.setItem(this.USER_KEY, JSON.stringify(response));
+        })
       );
   }
 
-  /**
-   * Cierra la sesión eliminando el usuario autenticado actual.
-   */
+  // Registro de cliente nuevo — llama al endpoint existente de clientes
+  register(cliente: any): Observable<any> {
+    return this.http.post('http://localhost:8080/api/clientes', cliente);
+  }
+
   logout(): void {
-    this.currentUser = null;
-    this.clearSession();
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
+    this.router.navigate(['/login']);
   }
 
-  /**
-   * Informa si hay un usuario activo en la sesión local.
-   * @returns true cuando existe usuario autenticado; false cuando no.
-   */
+  // ── Getters del token y usuario ──────────────────────────────────────────
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  getUser(): LoginResponse | null {
+    const u = localStorage.getItem(this.USER_KEY);
+    return u ? JSON.parse(u) : null;
+  }
+
+  // Alias usado en algunos componentes existentes
+  getCurrentUser(): LoginResponse | null {
+    return this.getUser();
+  }
+
   isLoggedIn(): boolean {
-    return this.currentUser !== null;
+    return !!this.getToken();
   }
 
-  isAdmin(): boolean {
-    return this.currentUser?.role === 'admin';
+  getRol(): string | null {
+    return this.getUser()?.rol ?? null;
   }
 
-  isCliente(): boolean {
-    return this.currentUser?.role === 'cliente';
-  }
-
-  isOperador(): boolean {
-    return this.currentUser?.role === 'operador';
-  }
-
-  getRole(): UserRole | null {
-    return this.currentUser?.role ?? null;
-  }
-
+  // Nombre para mostrar en la navbar — "Samuel Tovar"
   getDisplayName(): string {
-    return this.currentUser?.nombre || 'Usuario';
+    return this.getUser()?.nombre ?? '';
   }
 
-  /**
-   * Obtiene el usuario autenticado actualmente.
-   * @returns Cliente autenticado o null si no hay sesión.
-   */
-  getCurrentUser(): Cliente | null {
-    return this.currentUser?.cliente || null;
-  }
+  // ── Verificadores de rol ─────────────────────────────────────────────────
 
-  getCurrentOperario(): Operario | null {
-    return this.currentUser?.operario || null;
-  }
+  isAdmin():    boolean { return this.getRol() === 'ROLE_ADMIN'; }
+  isOperario(): boolean { return this.getRol() === 'ROLE_OPERARIO'; }
+  isCliente():  boolean { return this.getRol() === 'ROLE_CLIENTE'; }
 
-  updateClienteSession(cliente: Cliente): void {
-    if (!this.currentUser || this.currentUser.role !== 'cliente') {
-      return;
-    }
+  // Alias para compatibilidad con código existente que usaba isOperador()
+  isOperador(): boolean { return this.isOperario(); }
 
-    this.currentUser = {
-      role: 'cliente',
-      nombre: `${cliente.nombre} ${cliente.apellido}`.trim(),
-      correo: cliente.correo,
-      cliente,
+  // ── Actualizar datos del usuario en sesión ───────────────────────────────
+
+  // Usado en cliente-perfil cuando el usuario edita sus datos
+  // Actualiza el localStorage sin tocar el token
+  updateClienteSession(clienteActualizado: any): void {
+    const user = this.getUser();
+    if (!user) return;
+
+    const updated: LoginResponse = {
+      ...user,
+      nombre: clienteActualizado.nombre
+              ? `${clienteActualizado.nombre} ${clienteActualizado.apellido ?? ''}`.trim()
+              : user.nombre,
+      correo: clienteActualizado.correo ?? user.correo
     };
-    this.persistSession();
-  }
 
-  /**
-   * Simula el registro de un cliente.
-   * @param cliente Datos del cliente a registrar.
-   * @returns true mientras el flujo simulado sea exitoso.
-   */
-  register(cliente: Cliente): Observable<Cliente> {
-    return this.clienteService
-      .crearCliente$({
-        nombre: cliente.nombre,
-        apellido: cliente.apellido,
-        correo: cliente.correo,
-        contrasena: cliente.contrasena,
-        cedula: cliente.cedula,
-        telefono: cliente.telefono,
-      })
-      .pipe(
-        tap((creado) => {
-          this.currentUser = {
-            role: 'cliente',
-            nombre: `${creado.nombre} ${creado.apellido}`.trim(),
-            correo: creado.correo,
-            cliente: creado,
-          };
-          this.persistSession();
-        }),
-      );
-  }
-
-  private persistSession(): void {
-    if (!this.currentUser) {
-      return;
-    }
-    localStorage.setItem(
-      AuthService.STORAGE_KEY,
-      JSON.stringify(this.currentUser),
-    );
-  }
-
-  private restoreSession(): void {
-    const raw = localStorage.getItem(AuthService.STORAGE_KEY);
-    if (!raw) {
-      return;
-    }
-
-    try {
-      this.currentUser = JSON.parse(raw) as SessionUser;
-    } catch {
-      this.currentUser = null;
-      this.clearSession();
-    }
-  }
-
-  private clearSession(): void {
-    localStorage.removeItem(AuthService.STORAGE_KEY);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(updated));
   }
 }

@@ -1,55 +1,49 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Router }    from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  correo = '';
-  contrasena = '';
-  errorMessage = '';
-  infoMessage =
-    'Accesos: admin@polaris.com / admin123, operario@polaris.com / operario123';
+
+  correo:       string  = '';
+  contrasena:   string  = '';
+  errorMessage: string  = '';
+  infoMessage:  string  = '';
+  cargando:     boolean = false;
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
-  /**
-   * Intenta autenticar al usuario y redirige al inicio si es exitoso.
-   */
-  async onLogin(): Promise<void> {
+  // El HTML llama onLogin() — internamente ejecuta login()
+  onLogin(): void {
+    this.login();
+  }
+
+  login(): void {
     this.errorMessage = '';
+    this.infoMessage  = '';
+    this.cargando     = true;
 
-    try {
-      const ok = await firstValueFrom(
-        this.authService.login(this.correo, this.contrasena),
-      );
+    this.authService.login(this.correo, this.contrasena).subscribe({
+      next: (response) => {
+        this.cargando = false;
 
-      if (ok) {
-        if (this.authService.isAdmin()) {
-          this.router.navigate(['/admin']);
-          return;
-        }
-
-        if (this.authService.isOperador()) {
-          this.router.navigate(['/operador']);
-          return;
-        }
-
-        this.router.navigate(['/clientes/ver']);
-        return;
+        // Redirigimos según el rol que devolvió el backend
+        const rol = response.rol;
+        if      (rol === 'ROLE_ADMIN')    this.router.navigate(['/admin']);
+        else if (rol === 'ROLE_OPERARIO') this.router.navigate(['/operador']);
+        else if (rol === 'ROLE_CLIENTE')  this.router.navigate(['/portal']);
+        else                              this.router.navigate(['/']);
+      },
+      error: () => {
+        this.cargando     = false;
+        this.errorMessage = 'Correo o contraseña incorrectos';
       }
-
-      this.errorMessage = 'Credenciales incorrectas';
-    } catch {
-      this.errorMessage =
-        'No se pudo iniciar sesión. Revisa si el backend está encendido.';
-    }
+    });
   }
 }

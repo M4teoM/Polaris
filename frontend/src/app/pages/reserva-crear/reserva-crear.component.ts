@@ -17,7 +17,11 @@ import { AuthService } from '../../services/auth.service';
 export class ReservaCrearComponent implements OnInit {
   clientes: Cliente[] = [];
   tipos: TipoHabitacion[] = [];
-  clienteSesion: Cliente | null = null;
+
+  // Cambiamos el tipo a 'any' para aceptar tanto Cliente como LoginResponse
+  // ya que cuando el usuario es CLIENTE, getCurrentUser() devuelve LoginResponse
+  clienteSesion: any = null;
+
   modoEdicion = false;
   idEdicion: number | null = null;
   estados = ['Pendiente', 'Confirmada', 'Finalizada', 'Cancelada'];
@@ -67,13 +71,45 @@ export class ReservaCrearComponent implements OnInit {
       this.returnUrl = dataReturn;
     }
 
+    // getCurrentUser() devuelve LoginResponse — usamos 'any' para compatibilidad
     this.clienteSesion = this.authService.getCurrentUser();
-    if (this.authService.isCliente() && this.clienteSesion?.id) {
-      this.form.clienteId = this.clienteSesion.id;
+
+    // Si el usuario es cliente, precargamos su id en el formulario
+    // El id del LoginResponse corresponde al id del UserEntity,
+    // pero necesitamos el id del Cliente — lo buscamos por correo
+    if (this.authService.isCliente()) {
+      this.cargarClientePorCorreo();
     }
+
     void this.cargarCatalogos();
+
     if (this.modoEdicion && this.idEdicion) {
       void this.cargarReservaEnEdicion(this.idEdicion);
+    }
+  }
+
+  // Busca el Cliente real en la base de datos usando el correo del JWT
+  // para obtener el id correcto de la tabla clientes
+  async cargarClientePorCorreo(): Promise<void> {
+    try {
+      const correo = this.clienteSesion?.correo;
+      if (!correo) return;
+
+      const todosLosClientes = await firstValueFrom(
+        this.clienteService.getClientes$()
+      );
+
+      const clienteReal = todosLosClientes.find(
+        (c: Cliente) => c.correo === correo
+      );
+
+      if (clienteReal) {
+        // Reemplazamos clienteSesion con el objeto Cliente completo
+        this.clienteSesion = clienteReal;
+        this.form.clienteId = clienteReal.id ?? 0;
+      }
+    } catch {
+      this.error = 'No se pudo cargar la información del cliente.';
     }
   }
 
@@ -82,12 +118,12 @@ export class ReservaCrearComponent implements OnInit {
       const reserva = await firstValueFrom(
         this.reservaService.getReservaById$(id),
       );
-      this.form.clienteId = reserva.clienteId ?? 0;
+      this.form.clienteId       = reserva.clienteId ?? 0;
       this.form.tipoHabitacionId = reserva.tipoHabitacionId ?? 0;
-      this.form.fechaCheckIn = reserva.fechaCheckIn;
-      this.form.fechaCheckOut = reserva.fechaCheckOut;
+      this.form.fechaCheckIn    = reserva.fechaCheckIn;
+      this.form.fechaCheckOut   = reserva.fechaCheckOut;
       this.form.numeroHuespedes = reserva.numeroHuespedes;
-      this.form.estado = reserva.estado || 'Pendiente';
+      this.form.estado          = reserva.estado || 'Pendiente';
     } catch {
       this.error = 'No se pudo cargar la reserva a editar.';
     }
@@ -110,6 +146,7 @@ export class ReservaCrearComponent implements OnInit {
       this.tipos = tipos;
 
       if (this.authService.isCliente() && this.clienteSesion?.id) {
+        // Al cliente solo se le muestra a sí mismo en el selector
         this.clientes = [this.clienteSesion];
       } else {
         this.clientes = await firstValueFrom(
@@ -123,16 +160,16 @@ export class ReservaCrearComponent implements OnInit {
 
   async crear(): Promise<void> {
     this.error = '';
-    this.ok = '';
+    this.ok    = '';
 
     if (this.authService.isCliente() && this.clienteSesion?.id) {
       this.form.clienteId = this.clienteSesion.id;
     }
 
     if (
-      !this.form.clienteId ||
+      !this.form.clienteId      ||
       !this.form.tipoHabitacionId ||
-      !this.form.fechaCheckIn ||
+      !this.form.fechaCheckIn   ||
       !this.form.fechaCheckOut
     ) {
       this.error = 'Completa todos los campos obligatorios.';
@@ -149,10 +186,10 @@ export class ReservaCrearComponent implements OnInit {
       if (this.modoEdicion && this.idEdicion) {
         await firstValueFrom(
           this.reservaService.update$(this.idEdicion, {
-            fechaCheckIn: this.form.fechaCheckIn,
-            fechaCheckOut: this.form.fechaCheckOut,
+            fechaCheckIn:    this.form.fechaCheckIn,
+            fechaCheckOut:   this.form.fechaCheckOut,
             numeroHuespedes: this.form.numeroHuespedes,
-            estado: this.form.estado,
+            estado:          this.form.estado,
           }),
         );
         this.ok = 'Reserva actualizada correctamente.';

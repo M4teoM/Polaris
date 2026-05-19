@@ -1,0 +1,486 @@
+{
+  "info": {
+    "name": "Polaris Hotel API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Autenticación",
+      "item": [
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.environment.set('token_admin', json.token);",
+                  "    console.log('Token admin guardado');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@polaris.com\",\n  \"contrasena\": \"admin123\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/auth/login", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Operario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.environment.set('token_operario', json.token);",
+                  "    console.log('Token operario guardado');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"operario@polaris.com\",\n  \"contrasena\": \"operario123\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/auth/login", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.environment.set('token_cliente', json.token);",
+                  "    console.log('Token cliente guardado');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"samutovar10@gmail.com\",\n  \"contrasena\": \"8888\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/auth/login", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Credenciales Incorrectas",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@polaris.com\",\n  \"contrasena\": \"contrasena_mal\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/auth/login", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Ver mi usuario (me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/auth/me", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "me"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/auth/logout", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Pruebas de Seguridad",
+      "item": [
+        {
+          "name": "[401] Clientes sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "[403] Clientes con token CLIENTE",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_cliente}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "[403] Clientes con token OPERARIO",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_operario}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "[200] Clientes con token ADMIN",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "[200] Habitaciones sin token (pública)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/habitaciones", "host": ["localhost"], "port": "8080", "path": ["api", "habitaciones"] }
+          }
+        },
+        {
+          "name": "[200] Servicios sin token (pública)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/servicios", "host": ["localhost"], "port": "8080", "path": ["api", "servicios"] }
+          }
+        },
+        {
+          "name": "[401] Portal reservas sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/portal/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "portal", "reservas"] }
+          }
+        },
+        {
+          "name": "[403] Portal reservas con token OPERARIO",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_operario}}" }],
+            "url": { "raw": "http://localhost:8080/api/portal/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "portal", "reservas"] }
+          }
+        },
+        {
+          "name": "[401] Operarios sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/operarios", "host": ["localhost"], "port": "8080", "path": ["api", "operarios"] }
+          }
+        },
+        {
+          "name": "[403] Operador cuentas con token CLIENTE",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_cliente}}" }],
+            "url": { "raw": "http://localhost:8080/api/operador/cuentas", "host": ["localhost"], "port": "8080", "path": ["api", "operador", "cuentas"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Clientes (ADMIN)",
+      "item": [
+        {
+          "name": "Listar todos los clientes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "Ver cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes/1", "host": ["localhost"], "port": "8080", "path": ["api", "clientes", "1"] }
+          }
+        },
+        {
+          "name": "Crear cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"juan.perez@email.com\",\n  \"contrasena\": \"juan123\",\n  \"cedula\": \"1234567890\",\n  \"telefono\": \"3001234567\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/clientes", "host": ["localhost"], "port": "8080", "path": ["api", "clientes"] }
+          }
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Actualizado\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"juan.perez@email.com\",\n  \"contrasena\": \"juan123\",\n  \"cedula\": \"1234567890\",\n  \"telefono\": \"3009999999\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/clientes/1", "host": ["localhost"], "port": "8080", "path": ["api", "clientes", "1"] }
+          }
+        },
+        {
+          "name": "Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/clientes/1", "host": ["localhost"], "port": "8080", "path": ["api", "clientes", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Operarios (ADMIN)",
+      "item": [
+        {
+          "name": "Listar todos los operarios",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/operarios", "host": ["localhost"], "port": "8080", "path": ["api", "operarios"] }
+          }
+        },
+        {
+          "name": "Ver operario por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/operarios/1", "host": ["localhost"], "port": "8080", "path": ["api", "operarios", "1"] }
+          }
+        },
+        {
+          "name": "Crear operario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nuevo Operario\",\n  \"correo\": \"nuevo.operario@polaris.com\",\n  \"contrasena\": \"operario123\",\n  \"administrador\": { \"id\": 1 }\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/operarios", "host": ["localhost"], "port": "8080", "path": ["api", "operarios"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Habitaciones",
+      "item": [
+        {
+          "name": "Listar habitaciones (pública)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/habitaciones", "host": ["localhost"], "port": "8080", "path": ["api", "habitaciones"] }
+          }
+        },
+        {
+          "name": "Ver habitación por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/habitaciones/1", "host": ["localhost"], "port": "8080", "path": ["api", "habitaciones", "1"] }
+          }
+        },
+        {
+          "name": "Crear habitación (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"601\",\n  \"piso\": 6,\n  \"estado\": \"Disponible\",\n  \"tipoHabitacion\": { \"id\": 1 }\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/habitaciones", "host": ["localhost"], "port": "8080", "path": ["api", "habitaciones"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Tipos de Habitación",
+      "item": [
+        {
+          "name": "Listar tipos (pública)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/tipos-habitacion", "host": ["localhost"], "port": "8080", "path": ["api", "tipos-habitacion"] }
+          }
+        },
+        {
+          "name": "Ver tipo por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/tipos-habitacion/1", "host": ["localhost"], "port": "8080", "path": ["api", "tipos-habitacion", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Servicios",
+      "item": [
+        {
+          "name": "Listar servicios (pública)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/servicios", "host": ["localhost"], "port": "8080", "path": ["api", "servicios"] }
+          }
+        },
+        {
+          "name": "Ver servicio por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/servicios/1", "host": ["localhost"], "port": "8080", "path": ["api", "servicios", "1"] }
+          }
+        },
+        {
+          "name": "Crear servicio (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Masaje Relajante\",\n  \"descripcion\": \"Masaje de 60 minutos\",\n  \"precio\": 120000,\n  \"categoria\": \"Bienestar\",\n  \"duracion\": \"60 minutos\",\n  \"horario\": \"Todos los días 9am-6pm\",\n  \"incluye\": \"Aceites esenciales|Toalla\",\n  \"destacados\": \"Terapeuta certificado\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/servicios", "host": ["localhost"], "port": "8080", "path": ["api", "servicios"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Reservas (ADMIN y CLIENTE)",
+      "item": [
+        {
+          "name": "Listar reservas (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "reservas"] }
+          }
+        },
+        {
+          "name": "Ver reserva por ID (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/reservas/1", "host": ["localhost"], "port": "8080", "path": ["api", "reservas", "1"] }
+          }
+        },
+        {
+          "name": "Crear reserva (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_admin}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaCheckIn\": \"2026-09-01\",\n  \"fechaCheckOut\": \"2026-09-05\",\n  \"numeroHuespedes\": 2,\n  \"cliente\": { \"id\": 1 },\n  \"habitacion\": { \"id\": 1 }\n}"
+            },
+            "url": { "raw": "http://localhost:8080/api/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "reservas"] }
+          }
+        },
+        {
+          "name": "Cancelar reserva (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_admin}}" }],
+            "url": { "raw": "http://localhost:8080/api/reservas/1/cancelar", "host": ["localhost"], "port": "8080", "path": ["api", "reservas", "1", "cancelar"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Portal Cliente",
+      "item": [
+        {
+          "name": "Mis reservas activas (CLIENTE)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_cliente}}" }],
+            "url": { "raw": "http://localhost:8080/api/portal/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "portal", "reservas"] }
+          }
+        },
+        {
+          "name": "Mi perfil (CLIENTE)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_cliente}}" }],
+            "url": { "raw": "http://localhost:8080/api/portal/perfil", "host": ["localhost"], "port": "8080", "path": ["api", "portal", "perfil"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Operador (ADMIN y OPERARIO)",
+      "item": [
+        {
+          "name": "Listar cuentas (OPERARIO)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_operario}}" }],
+            "url": { "raw": "http://localhost:8080/api/operador/cuentas", "host": ["localhost"], "port": "8080", "path": ["api", "operador", "cuentas"] }
+          }
+        },
+        {
+          "name": "Listar reservas operador (OPERARIO)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_operario}}" }],
+            "url": { "raw": "http://localhost:8080/api/operador/reservas", "host": ["localhost"], "port": "8080", "path": ["api", "operador", "reservas"] }
+          }
+        },
+        {
+          "name": "Listar servicios operador (OPERARIO)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_operario}}" }],
+            "url": { "raw": "http://localhost:8080/api/operador/servicios", "host": ["localhost"], "port": "8080", "path": ["api", "operador", "servicios"] }
+          }
+        }
+      ]
+    }
+  ]
+}

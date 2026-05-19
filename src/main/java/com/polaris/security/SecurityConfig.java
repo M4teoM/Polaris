@@ -1,5 +1,6 @@
 package com.polaris.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,6 +77,19 @@ public class SecurityConfig {
             // Deshabilitamos el login de Thymeleaf — usamos Angular
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
+            // Respuestas JSON para errores de autenticación y autorización
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"error\": \"No autenticado. Debes enviar un token JWT válido.\"}");
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"error\": \"Acceso denegado. No tienes permisos para este recurso.\"}");
+                })
+            )
             // Registramos nuestro filtro JWT antes del filtro estándar de usuario/contraseña
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

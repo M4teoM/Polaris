@@ -4,11 +4,15 @@ import com.polaris.errors.ErrorUserNotFoundException;
 import com.polaris.model.Cliente;
 import com.polaris.model.Cuenta;
 import com.polaris.model.ReservaHabitacion;
+import com.polaris.model.Role;
+import com.polaris.model.UserEntity;
 import com.polaris.repository.IClienteRepository;
 import com.polaris.repository.ICuentaRepository;
 import com.polaris.repository.IPedidoRepository;
+import com.polaris.repository.IUserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,12 @@ public class ClienteService implements IClienteService {
     @Autowired
     private IPedidoRepository pedidoRepo;
 
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<Cliente> obtenerTodos() {
         return repository.findAll();
@@ -48,11 +58,23 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
+    @Transactional
     public void crear(Cliente cliente) {
         if (repository.findByCorreo(cliente.getCorreo()).isPresent()) {
             throw new IllegalArgumentException("Este correo ya está registrado.");
         }
         repository.save(cliente);
+
+        // Crear el UserEntity para que Spring Security pueda autenticar al nuevo cliente
+        userRepository.save(
+            UserEntity.builder()
+                .correo(cliente.getCorreo())
+                .contrasena(passwordEncoder.encode(cliente.getContrasena()))
+                .nombre(cliente.getNombre() + " " + cliente.getApellido())
+                .rol(Role.ROLE_CLIENTE)
+                .entidadId(cliente.getId())
+                .build()
+        );
     }
 
     @Override

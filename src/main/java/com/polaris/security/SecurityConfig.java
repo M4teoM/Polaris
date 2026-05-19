@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.http.HttpMethod;
+
 import java.util.List;
 
 @Configuration
@@ -49,6 +51,9 @@ public class SecurityConfig {
                     "/h2/**",
                     "/h2-console/**"
                 ).permitAll()
+
+                // Registro de nuevos clientes — público, sin token
+                .requestMatchers(HttpMethod.POST, "/api/clientes").permitAll()
 
                 // Solo ADMIN puede gestionar clientes, operarios, habitaciones y servicios
                 .requestMatchers(
